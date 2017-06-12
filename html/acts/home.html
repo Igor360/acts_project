@@ -1,0 +1,246 @@
+<!DOCTYPE html> 
+<html lang="ua">
+<head>
+	<meta charset="UTF-8">
+  <title>Автоматика і Управління в Технічних Системах (АУТС)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="author" content="Dmitry Korzunov">
+  <meta name="author" content="Igor Davidenko">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" media="all" href="css/home_page_style.css">
+  <link rel="stylesheet" media="all" href="css/icons.css">
+  <link rel="stylesheet" media="all" href="css/waves.css">
+  <link href="masterslider/style/masterslider.css" rel="stylesheet" media="screen">
+  <link rel="stylesheet" media="all" href="css/normalise.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="img/icon.ico">
+  <script src="js/modernizr.custom.js"></script>
+  <script src="js/detectizr.min.js"></script>
+</head>
+
+<body>
+
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<button type="button" class="close-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<div class="modal-content text-center">
+				<h4>Вхід з других мереж</h4>
+				<div class="space-bottom-2x">
+					<a href="#" class="btn google-login waves-effect waves-light">Google<i class="fa fa-google"></i></a>
+					<a href="#" class="btn twitter-login waves-effect waves-light">Twitter<i class="fa fa-twitter"></i></a>
+					<a href="#" class="btn facebook-login waves-effect waves-light">Facebook<i class="fa fa-facebook"></i></a>
+				</div>
+				<h4>Або по Email</h4>
+				<form method="post">
+					<input type="email" class="form-control" placeholder="Email" required>
+					<input type="password" class="form-control" placeholder="Password" required>
+					<div class="form-group">
+						<button type="submit" class="btn login-btn btn-default waves-effect waves-light">Увійти на свій аккаунт<i class="icon-head"></i></button>
+					</div>
+				</form><!-- <form> -->
+			</div><!-- .modal-content -->
+		</div><!-- .modal-dialog -->
+	</div><!-- .modal.fade -->
+
+	<header class="navbar home-navbar">
+
+		<!-- Toolbar -->
+		<div class="topbar">
+			<div class="container">
+				<a href="home.html" class="site-logo">
+					<img src="img/logo.png">
+        </a><!-- .site-logo -->
+        <!-- Mobile Menu Toggle -->
+        <div class="nav-toggle"><span></span></div>
+
+        <div class="toolbar">
+         <a href="#" class="btn btn-sm btn-default btn-icon-right waves-effect waves-light" data-toggle="modal" data-target="#loginModal">Увійти<i class="icon-head"></i></a>
+         <div class="search-btn">
+          <i class="icon-search"></i>
+          <form method="post" class="search-box">
+           <input type="text" class="form-control input-sm" placeholder="Пошук">
+           <button type="submit"><i class="icon-search"></i></button>
+         </form>
+       </div><!-- .search-btn -->
+     </div><!-- .toolbar -->
+   </div><!-- .container -->
+ </div><!-- .topbar -->
+
+ <div class="container-fluid">
+   <nav class="main-navigation home-nav">
+    <ul class="menu">
+      <li class="current-menu-item menu-item-has-children">
+      <a href="#">Про АУТС</a>
+        <ul class="sub-menu"> 
+         <li><a href="about.html">Про кафедру</a></li>
+         <li><a href="history.html">Історія кафедри</a></li>
+         <li><a href="teacher.html">Педагогічний склад</a></li>
+         <li><a href="otherpersonal.html">Допоміжний персонал</a></li>
+         <li><a href="studLife.html">Студентське життя</a></li>
+         <li><a href="diplomWorks.html">Дипломні роботи</a></li>
+         <li><a href="employment.html">Працевлаштування</a></li>
+         <li><a href="practice.html">Практика</a></li>              
+       </ul>
+     </li>
+     <li class="menu-item-has-children">
+      <a href="#">Вступнику</a>
+      <ul class="sub-menu">
+        <li><a href="вступнику/1kurs.html">Вступ на 1 курс</a></li>
+        <li><a href="вступнику/5kurs.html">Вступ на 5 курс (магістратура)</a></li>
+        <li><a href="вступнику/offDoc.html">Офіційні документи</a></li>
+        <li><a href="вступнику/learnToActs.html">Навчання на АУТС</a></li>
+        <li><a href="вступнику/actualInfo.html">Актуальна інформація для вступника 2017</a></li>
+        <li><a href="вступнику/contacts.html">Як нас знайти</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="forStudents.html">Студентам</a>
+    </li>
+    <li>
+      <a href="aspirantura.html">Аспірантам</a>
+    </li>
+    <li>
+      <a href="development.html">Розробки</a>
+    </li>
+    <li>
+      <a href="science.html">Наука</a>
+    </li>
+    <li>
+      <a href="sport.html">Спорт</a>
+    </li>
+  </ul><!-- .menu -->
+</nav><!-- .main-navigation -->
+</div><!-- .container --> 
+</header>
+<!-- Intro Full Width Slider -->
+    <section class="master-slider fw-slider content-slider ms-skin-default space-bottom" id="intro-slider">
+      <div class="ms-slide" style="background-image: url(http://acts.kpi.ua/app/uploads/2016/03/IMG_41451.jpg);">
+        <div class="container-fluid padding-top-3x">
+          <div class="text-center padding-top-3x">
+            <h1 class="text-skyblue">Одна з найкращих кафедр КПІ</h1>
+          </div>
+        </div>
+      </div><!-- .ms-slide -->
+      <div class="ms-slide" style="background-image: url(http://acts.kpi.ua/app/uploads/2015/07/IMG_5284-e1459003266492.jpg);">
+        <div class="container-fluid padding-top-3x">
+          <div class="text-center padding-top-3x">
+            <h1 class="text-skyblue">Одна з найкращих кафедр КПІ</h1>
+          </div>
+        </div>
+      </div><!-- .ms-slide -->
+      <div class="ms-slide" style="background-image: url(http://acts.kpi.ua/app/uploads/2015/09/20150915_113944_1-e1459002450484.jpg);">
+        <div class="container-fluid padding-top-3x">
+          <div class="text-center padding-top-3x">
+            <h1 class="text-skyblue">Одна з найкращих кафедр КПІ</h1>
+          </div>
+        </div>
+    </section><!-- .master-slider.ms-skin-default -->
+
+<div class="container-fluid">
+ <div class = "container" id="main">
+  <div class = "row">
+   <div class = "col-sm-12 col-md-12 col-xs-12 main">
+    <section class = "article_block">
+     <h2 class="c__block-title col-xs-12" style="text-align: left;">Про кафедру АУТС</h2>
+     <img class="presentation" data-wow-duration="2s" src="img/about.jpg" alt="" height="300px" align="center">
+     <span class="text-left"><p><br>Однією з провідних кафедр України, діяльність випускників яких пов’язана з інформатизацією, є кафедра Автоматики та Управління в Технічних Системах факультету Інформатики та Обчислювальної Техніки Національного Технічного Університету України “Київський політехнічний інститут”.<br></span>
+     <span class="text-left"><br>Особливістю підготовки наших випускників є глибоке вивчення найсучасніших високотехнологічних галузей науки і техніки: інформаційних технологій, комп’ютерної, мікропроцесорної техніки та електроніки, систем та мереж передачі даних і телекомунікацій, комп’ютеризованих систем управління. Наші студенти отримують грунтовні знання з: програмування (алгоритмічні мови та програмування, об’єктно-орієнтоване програмування, сучасні технології програмування, системне програмування, бази даних, операційні системи, WEB-технології тощо).<br></p>
+     </span>
+   </section>
+   <section class="article_block bounceInUp wow" data-wow-duration="0.5s" data-wow-delay="0.2s" data-wow-offset = "100">
+     <h2 class="c__block-title col-xs-12" style="text-align: left;">Історія кафедри АУТС</h2>
+     <img class="presentation" data-wow-duration="2s" src="img/fict.jpg" alt="" height="300px" width="200px" align="center">
+     <span class="text-left">Історія кафедри АУТС починається з 1945 року, коли було засновно "Кафедру Реле і Автоматики”. У 1963 р. вона отримала назву “Автоматики і Телемеханіки”, а в 1988 р. – “Автоматики та Управління в Технічних Системах” (АУТС). " Кафедра Реле і Автоматики” відокремилась зі складу кафедри центральних електричних станцій для підготовки фахівців з електричних та телемеханічних пристроїв.<br>
+      Протягом свого існування кафедра розвивалася в освітньому і науковому напрямках, освоюючи все складніші досягнення наукового й технічного прогресу у сфері управління в технічних системах.<br></span>
+      <span class="text-left"><br>Окрім основної діяльності – підготовки фахівців зі своєї галузі, на кафедрі виконувалась значна методична і наукова робота. Кафедра тісно співпрацювала з підприємствами й інститутами, виконуючи значні об’єми господарських робіт. Кафедру “Реле і Автоматики” було засновано в КПІ 23 серпня 1945 р. на електроенергетичному факультеті (наказ ©2193К всесоюзної комісії зі справ Вищої Школи при РНК СРСР).<br>
+       <br>Засновник кафедри професор Гребень Йосиф Ілліч (1897-1973), закінчив КПІ у 1925 році, доцент з 1930 р., а з 1932 професор і завідуючий кафедри електричних станцій, з 1945 р. по 1966 р. завідуючий кафедри автоматики.<br></span>
+     </section>
+     <!-- Section news -->
+     <section class = "article_block bounceInUp wow col-xs-12" data-wow-duration="0.5s" data-wow-delay="0.2s" data-wow-offset = "100">
+       <h2 class="c__block-title" style="text-align: left;">Новини</h2>
+       <div class="news">
+        <a class="news__news" href="">
+         <div class="news__news__img">
+          <img src="http://fiot.kpi.ua/wp-content/uploads/2014/02/3-680x330.jpg" alt="">
+        </div>
+        <h3 class="news__news__header">
+          Розклад занять другого семестру
+        </h3>
+        <span class="news__news__date">
+          Лютий 15, 2017
+        </span>
+      </a>
+      <a class="news__news" href="">
+       <div class="news__news__img">
+        <img src="http://acts.kpi.ua/app/uploads/2017/03/cisco.png" alt="">
+      </div>
+      <h3 class="news__news__header">
+        Кафедра АУТС є головним партнером Мережевої Академії “CISCO”
+      </h3>
+      <span class="news__news__date">
+        Березень 1, 2017
+      </span>
+    </a>
+    <a class="news__news" href="">
+     <div class="news__news__img">
+      <img src="http://acts.kpi.ua/app/uploads/2017/03/%D1%84%D0%BE%D1%80%D0%BC%D0%B0-%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F.jpg" alt="">
+    </div>
+    <h3 class="news__news__header">
+      Наука
+    </h3>
+    <span class="news__news__date">
+      Березень 6, 2017
+    </span>
+  </a>
+</div>
+<a href="" class="c__button btn" style="margin-left: 40.2%; margin-top: 2.5%;">Архів</a>
+</section>
+<!-- End news -->
+</div>
+</div>
+</div>
+</div>
+<!-- Scroll To Top Button -->
+<a href="#" class="scroll-to-top-btn">
+ <i class="icon-arrow-up"></i>   
+</a><!-- .scroll-to-top-btn -->
+<!-- flie Footer -->
+<footer class="footer" style="position: relative; bottom: 0; width: 100%;">
+ <div class="footer__header">
+  <h1 class="footer_h1">Наші партнери</h1>
+  <div class="prtners" style="border-bottom: none;">
+   <a href="http://microsoft.com">
+    <img src="http://orig14.deviantart.net/7dc4/f/2012/237/3/1/microsoft_new_logo___2012___png_by_bymemristor-d5cck4d.png" alt="">
+  </a>
+  <a href="http://microsoft.com">
+    <img src="http://img.talkandroid.com/uploads/2011/02/Texas-Instruments-logo-design.png" alt="">
+  </a>
+  <a href="http://microsoft.com">
+    <img src="http://logos-download.com/wp-content/uploads/2016/03/Cisco_logo_emblem_logotype.png" alt="">
+  </a>
+  <a href="http://microsoft.com">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Atmel_logo_svg.svg/2000px-Atmel_logo_svg.svg.png" alt="">
+  </a>
+</div>
+</div>
+<div class="footer__contacts">
+  <p>
+   &copy; ACTS | +380 (44) 204 86 10 | +380 (44) 204 92 85 | kafedra@acts.kpi.ua 
+ </p>
+</div>
+</footer><!-- end Footer -->
+
+</body>
+
+<script src="bootstrap/js/jquery-3.1.1.min.js"></script>
+<script src="masterslider/masterslider.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/waves.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/velocity.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/scrollreveal.min.js"></script>
+<script src="js/smoothscroll.js"></script>
+</html>

@@ -1,0 +1,204 @@
+.teachers{
+	display:  flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+}
+.teacher img{
+	width: 100%;
+	height: 350px;
+	position: relative;
+	z-index: 999;
+}
+.teacher{
+	width: 228px;
+}
+.description{
+	position: relative;
+	background: rgba(0,0,0,0.6);
+	height: 80px;
+	margin-top: -80px;
+	z-index: 9900;
+	padding-top: 20px;
+	text-align: center;
+	width: 100%;
+
+}
+.description h6{
+	color:  white;
+	text-shadow:0px 0px 10px #a34067;
+	font-size: auto;
+	padding: 10px;
+	padding-top: 0px;
+	text-align: center;
+}
+
+
+.about_teacher{
+	display: none;
+	float:  none;
+	width: 0px;
+}
+.aboutTeacherLeft{
+	margin-left: -700px;
+}
+.aboutTeacherRight{
+	margin-left: 80px;
+}
+.about_teacher .text{
+	width: 400px;
+	position: relative;
+	z-index:  99;
+	padding-left: 20px;
+	margin-top: 80px;
+	max-width: 500px;
+	text-align: center;
+	color: #1006ce;
+	text-shadow:0px 0px 8px black;
+}
+.teacher_name{
+	text-shadow:0px 0px 8px #a34067;
+	font-size: 20pt;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	color: #1006ce;
+	border-radius: 10px;
+	border-bottom:  1px solid #063cc7;
+}
+.teacherbtn{
+	padding: 10px;
+	background: rgba(0,0,0,0);
+	margin-top: 20px;
+	border-radius: 10px;
+	border: 1px solid #063cc7;
+	color: #1006ce;
+	font-size: 10pt;
+
+}
+.teacherbtn:hover{
+	color: #063cc7;
+}
+
+
+@media screen and (max-width: 321px) {
+	.teachers{
+		margin-left: 30px;
+	} 
+	.about_teacher .text{
+		width: 400px;
+		position: relative;
+		z-index:  99;
+		margin-top: 400px;
+		margin-left: -330px;
+		max-width: 500px;
+		text-align: center;
+		color: #1006ce;
+		text-shadow:0px 0px 5px black;
+	}
+	.teacher_name{
+		margin-left: 15px;
+		font-size: 22px;
+		white-space: normal;
+		color: #1006ce;
+		padding-right: 20px;
+	}
+	h3{
+		margin-left: 30px;
+	}
+	.teachDescr{
+		padding-right: 40px;
+	}
+}
+@media screen and (max-width: 600px) {
+	.teachers{
+		margin-left: 45px;
+	} 
+	.about_teacher .text{
+		width: 400px;
+		position: relative;
+		z-index:  99;
+		margin-top: 400px;
+		margin-left: -330px;
+		max-width: 500px;
+		text-align: center;
+		color: #1006ce;
+		text-shadow:0px 0px 5px black;
+	}
+	.teacher_name{
+		white-space: normal;
+		color: #1006ce;
+	}
+	p{
+		white-space: normal;
+		margin-left: 40px !important;
+		text-shadow:0px 0px 2px black;
+		color: #1006ce;
+	}
+}
+@media screen and (max-width: 800px) {
+	.about_teacher .text{
+		width: 400px;
+		position: relative;
+		z-index:  99;
+		margin-top: 400px;
+		margin-left: -330px;
+		max-width: 500px;
+		text-align: center;
+		color: #1006ce;
+		text-shadow:0px 0px 5px black;
+	}
+	.teacher_name{
+		white-space: normal;
+		color: #1006ce;
+		padding-left: 30px;
+	}
+	p{
+		white-space: normal;
+		margin-left: 40px !important;
+		text-shadow:0px 0px 2px black;
+		color: #1006ce;
+	}
+}
+@media screen and (max-width: 1025px) {
+	.about_teacher .text{
+		width: 400px;
+		position: relative;
+		z-index:  99;
+		margin-top: 400px;
+		margin-left: -330px;
+		max-width: 500px;
+		text-align: center;
+		color: #1006ce;
+		text-shadow:0px 0px 5px black;
+	}
+	.teacher_name{
+		white-space: normal;
+		color: #1006ce;
+	}
+	p{
+		white-space: normal;
+		margin-left: 40px !important;
+		text-shadow:0px 0px 2px black;
+		color: #1006ce;
+		}}
+		.namepage{
+			display: table;
+			white-space: normal;
+			margin-right: 30px;
+		}
+		.namepage .left-line{
+			display: table-cell;
+			border-top: 1px solid #063cc7;
+			position: relative;
+			top: 23px;
+			width: 40%;
+		}
+		.namepage .name-text{
+			display: table-cell;
+		}
+		.namepage .right-line{
+			display: table-cell;
+			border-top: 1px solid #063cc7;
+			position: relative;
+			top: 23px;
+			width: 40%;
+		}
