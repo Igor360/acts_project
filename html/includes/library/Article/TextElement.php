@@ -25,26 +25,36 @@ class TextElement extends Model
 	// метод для отримання всіх елементов таблици
 	public function getAll()
 	{
-		global $connection;
-		ConnectOpen();
+
+		Model::ConnectOpen();
 		$query = "SELECT * FROM textelements;";
-		$result = mysqli_query(Model::$conection,$query);
-		ConnectClose();
+		$result = Model::$conection->query($query);
+		Model::ConnectClose();
 		return Pages::generateResult($result);
 	}
 
 	// метод для отриманя етлементов по его индетификатору
 	public function getElement($id)
 	{
-		global $connection;
-		ConnectOpen();
+		Model::ConnectOpen();
 		$query = "SELECT * FROM textelements WHERE id = {$id}";
-		$result = mysqli_query(Model::$conection,$query);
-		ConnectClose();
-		$row = mysqli_fetch_array($result, MYSQL_NUM); 
-		$element = null;
-  		$element = TextElement::generate($row[0],$row[1]);
+		$result = Model::$conection->query($query);
+		Model::ConnectClose();
+		$row = $result->fetch_row(); 
+  		$element = new TextElement($row[0],$row[1]);
 		return $element;
+	}
+
+
+	public function delete($id)
+	{
+		Model::ConnectOpen();
+		$query = "DELETE FROM textelements WHERE id = {$id}";
+		$result = Model::$connection->query($query);
+		Model::ConnectClose();
+		if ( $result != null )
+			return True;
+		return False;
 	}
 
 
@@ -52,9 +62,9 @@ class TextElement extends Model
 	private static function generateResult($resquery)
 	{
 		$PagesCollection = array();
-		while ($row = mysqli_fetch_array($resquery, MYSQL_NUM)) 
+		while ($row = $resquery->fetch_row()) 
 		{
-  			  array_push($PagesCollection,TextElement::generate ($row[0],$row[1]));
+  			  array_push($PagesCollection,new TextElement($row[0],$row[1]));
 		}
 		return $PagesCollection;
 	}

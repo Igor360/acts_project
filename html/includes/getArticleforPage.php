@@ -20,10 +20,10 @@ if ($Articles != null)
   	if($article->description != null)	
       foreach ($article->description as  $d)
       {
-        echo "<span class=\"text-left\">{$d["text"]}</span>";
+        echo $d["text"];
       }
     echo "<br>";
-  	if ($article->text != null)
+  	if ($article->isText)
   			echo "<p class=\"text-right\"><a class=\"social-url\" href = \"{$baseLink}/pages/more.php?page={$name}&numarticle={$article->id}\"><button type = \"button\" class = \"btn btn-default\">Детальнiше</button></a></p>";
   		echo "<br></section>";  
 	}

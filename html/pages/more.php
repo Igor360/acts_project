@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
-use library\Model\News as News;
 
-require_once("library/News.php");
-	require "header.php";	
+use library\Models\Articles as Article;
+
+require_once("library/Articles.php");
+require "header.php";	
 ?>
 <div class="container-fluid">
  <div class = "container" id="main">
@@ -19,7 +20,7 @@ if(isset($page))
 	switch ($page) {
 	case 'news':
 		if (isset($article_id))
-			$news = (new News())->getElement($article_id);
+			$news = Article::getOneNews($article_id);
 		break;
 	case 'science':
 		if (isset($article_id))
@@ -52,9 +53,8 @@ if(isset($news) and $news != null)
 			echo "<h2 class=\"c__block-title col-xs-12\" style=\"text-align: left;\">".$news->title."</h2>";
 		if ($news->img != null)
 			echo "<img class=\"presentation\" data-wow-duration=\"2s\" src=\"{$news->img}\" alt=\"\" height=\"300px\" width=\"200px\" align=\"center\">";
-		echo "<span class=\"text-left\">{$news->description}</span>";
-		if($news->text != null)	
-    	  foreach ($news->text as  $d)
+		if($news->description != null)	
+    	  foreach ($news->description as  $d)
       	{
         	echo $d["text"];
       	}

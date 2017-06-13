@@ -5,56 +5,61 @@ use library\ModelTable as Model; // импрорт пространства им
 
 require_once("library/ModelTable.php");  // включене файла в проект
 
-require_once("connectDB.php");
 
 class Pages extends Model
 {
-	public  $name;
+	public  $Name;
 
-	public function __construct() // конструктор класу
-	{	}
-
-	// метод для генерации елментов
-	public static function generatePage($Id, $Name)
+	public function __construct($id, $name) // конструктор класу
 	{
-		$page = new Pages();
-		$page->id = $Id;
-		$page->name = $Name;
-		return $page;
+		$this->id = $id;
+		$this->Name = $name;
 	}
 
 	// метод для отримання всіх елементов таблици
 	public function getAll()
 	{
-		global $connection;
-		ConnectOpen();
+		Model::ConnectOpen();
 		$query = "SELECT * FROM pages;";
-		$result = mysqli_query($connection,$query);
-		ConnectClose();
+		$result = Model::$connection->query($query);
+		Model::ConnectClose();
 		return Pages::generateResult($result);
 	}
 
 	// метод для отриманя етлементов по его индетификатору
 	public function getElement($id)
 	{
-		global $connection;
-		ConnectOpen();
+		Model::ConnectOpen();
 		$query = "SELECT * FROM pages WHERE name = \"{$id}\"";
-		$result = mysqli_query($connection,$query);
-		ConnectClose();
-		$page = null;
-		$row = mysqli_fetch_array($result, MYSQL_NUM); 
-  		$page = Pages::generatePage($row[0],$row[1]);
-		return $page;
+		$result = Model::$connection->query($query);
+		Model::ConnectClose();
+		if ($result)
+		{ 
+			$row = $result->fetch_row();
+			return new Pages($row[0], $row[1]);
+		}
+		return null;
+	}
+
+
+	public function delete($id)
+	{
+		Model::ConnectOpen();
+		$query = "DELETE FROM pages WHERE id = {$id}";
+		$result = Model::$connection->query($query);
+		Model::ConnectClose();
+		if ( $result != null )
+			return True;
+		return False;
 	}
 
 	// метод для генерации результату
 	private static function generateResult($resquery)
 	{
 		$PagesCollection = array();
-		while ($row = mysqli_fetch_array($resquery, MYSQL_NUM)) 
+		while ($row = $resquery->fetch_row()) 
 		{
-  			  array_push($PagesCollection,Pages::generatePage ($row[0],$row[1]));
+  			  array_push($PagesCollection,new Pages($row[0],$row[1]));
 		}
 		return $PagesCollection;
 	}

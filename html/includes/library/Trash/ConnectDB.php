@@ -1,36 +1,29 @@
-<?php
-
-namespace library; // обявление пространства имен 
-
-use mysqli;
-
-// Класс для роботи з базою даних
-abstract class ConnectDB
-{
+<?php 
 
 	// поля котрие описивают дание какие нужны для подключения к бд
-	public static $dbhost = "localhost";
-	public static $dbusername = "root";  // имя пользвателя
- 	public static $dbpassword  = "1234"; // пароля
-	public static $dbname = "fiot_acts"; // имя бд
+	$dbhost = "localhost";
+	$dbusername = "root";  // имя пользвателя
+ 	$dbpassword  = "1234"; // пароля
+	$dbname = "fiot_acts"; // имя бд
 
-	protected static $conection; // поле котрое ханит подключение к бд
+	$connection = null; // поле котрое ханит подключение к бд
 
+	function ConnectOpen()
+	{
+		ini_set('max_execution_time', 300); 
+		global $dbname, $dbhost, $dbusername, $dbpassword, $connection;
 	// откритие подключения к бд
-	 public static function ConnectOpen() 
- 	{
- 		ConnectDB::$conection = new mysqli(ConnectDB::$dbhost, ConnectDB::$dbusername, ConnectDB::$dbpassword, ConnectDB::$dbname);
- 		mysqli_query( ConnectDB::$conection,"SET NAMES 'utf8';");
-     	mysqli_query( ConnectDB::$conection,"SET CHARACTER SET utf8;");
-     	mysqli_set_charset( ConnectDB::$conection,'utf8' );
+ 		$connection = new mysqli($dbhost, $dbusername, $dbpassword, $dbname);
+ 		mysqli_query($connection,"SET NAMES 'utf8';");
+     	mysqli_query($connection,"SET CHARACTER SET utf8;");
+     	mysqli_set_charset($connection,'utf8' );
 	}
 
 	// закритие подключения к бд
-	public static function ConnectClose()
+	 function ConnectClose()
 	{
-		if (ConnectDB::$conection)
-			ConnectDB::$conection->close();	
+		global $connection;
+		if ($connection)
+			$connection->close();	
 	}
-
-}
 ?>

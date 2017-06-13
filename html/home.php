@@ -18,11 +18,14 @@ include_once("getArticleforPage.php");
        <div class="news">
 
 <?php
-use library\Model\News as News;
-require_once("library/News.php");
-$NewsMain = News::getSome(3);
-foreach ($NewsMain as $news) 
-{
+use library\Models\Articles as Article;
+
+require_once("library/Articles.php");
+
+$NewsMain = Article::getSomeNews(3);
+if ($NewsMain != null)
+  foreach ($NewsMain as $news) 
+  {
         echo "<a class=\"news__news\" href=\"{$baseLink}/pages/more.php?page=news&numarticle={$news->id}\">";
         echo "<div class=\"news__news__img\">";
         echo "<img src=\"{$news->img}\" alt=\"\">";
@@ -31,10 +34,10 @@ foreach ($NewsMain as $news)
         echo  $news->title;
         echo "</h3>";
         echo "<span class=\"news__news__date\">";
-        echo News::ConvertDate($news->data);
+        echo Article::ConvertDate($news->date);
         echo "</span>";
         echo "</a>";
-}
+  }
 ?>
 </div>
 <a href="" class="c__button btn" style="margin-left: 40.2%; margin-top: 2.5%; padding-top: 0px;">Архів</a>

@@ -7,6 +7,8 @@ use library\Models\Article\GenerateArticle as GenerateArticle;
 require_once("library/Articles.php");
 require_once("library/Article/GenerateArticle.php");
 
+require_once("Timer.php");
+
 require "header.php";	
 ?>
 <div class="container-fluid">
@@ -21,7 +23,9 @@ else
 switch ($page)
 {
 	case "department_info":
+
 	$Articles = Article::getPageArticles("about_page");
+	
 	break;
 
 	case "history":

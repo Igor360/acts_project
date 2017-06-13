@@ -5,12 +5,15 @@ namespace library\Models\Article;
 use library\Models\Articles as Article;
 
 require_once("library/Articles.php");
-require_once("library/Article/BaseTextStyle.php");
+require_once("library/Article/TextStyle.php");
+require_once("Timer.php");
 
 class GenerateArticle
 {
+
 	public static function ShowArticles($Articles)
 	{
+
 	if ($Articles != null)
 		foreach ($Articles as $article) 
 		{
@@ -28,25 +31,24 @@ class GenerateArticle
         	echo $d["text"];
       	}
       echo "<br>";
-  		if ($article->text != null)
+  		if ($article->isText)
   			echo "<p class=\"text-right\"><a class=\"social-url\" href = \"{$baseLink}/pages/more.php?page={$name}&numarticle={$article->id}\"><button type = \"button\" class = \"btn btn-default\">Детальнiше</button></a></p>";
   		echo "<br></section>";  
 	}
 	else
 		echo "<h2 class=\"c__block-title col-xs-12\" style=\"text-align: left;\">Дані відсутні</h2><hr>";
-	}
+
+  }
 
 
-  public static function AddDescriptionStyles($description)
+  public static function AddDescriptionStyles($article_text)
   {
-    $id_description = $description[0];
-    $descriptions = TextStyle::getTextStyle($id_description);
-    if (count($description) > 0)
-      $text = $description[1];
-    foreach ($descriptions as $t) 
+    $styles = TextStyle::getTextStyle($article_text[0]);
+    $text = $article_text[1];
+    foreach ($styles as $style) 
     {
-      $style = $t['textstyle'];
-      switch ($style) {
+      $style_text = $style['textstyle'];
+      switch ($style_text) {
           case 'paragraph':
             $lasttext = $text;
             $text = "<p>{$text}</p>";
@@ -94,9 +96,7 @@ class GenerateArticle
             break;
         }  
     }
-    if (isset($text))
-      return $text;
-    return null;
+    return $text;
   }
 
 }
