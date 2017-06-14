@@ -28,7 +28,7 @@ CREATE TABLE `pages` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `pages` (
 
 LOCK TABLES `pages` WRITE;
 /*!40000 ALTER TABLE `pages` DISABLE KEYS */;
-INSERT INTO `pages` VALUES (2,'about_page'),(9,'aspirantura'),(10,'development'),(5,'diplomWorks'),(6,'employment'),(8,'forStudents'),(3,'history_page'),(1,'home'),(13,'incoming_1kurs'),(14,'incoming_5kurs'),(17,'incoming_actualInfo'),(18,'incoming_contacts'),(16,'incoming_learnToActs'),(15,'incoming_offDoc'),(7,'practice'),(11,'science'),(12,'sport'),(4,'studLife');
+INSERT INTO `pages` VALUES (2,'about_page'),(9,'aspirantura'),(10,'development'),(5,'diplomWorks'),(6,'employment'),(8,'forStudents'),(3,'history_page'),(1,'home'),(13,'incoming_1kurs'),(14,'incoming_5kurs'),(17,'incoming_actualInfo'),(18,'incoming_contacts'),(16,'incoming_learnToActs'),(15,'incoming_offDoc'),(19,'news'),(7,'practice'),(11,'science'),(12,'sport'),(4,'studLife');
 /*!40000 ALTER TABLE `pages` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-12 20:13:01
+-- Dump completed on 2017-06-14  9:54:26
