@@ -5,7 +5,7 @@ use library\ModelTable as Model;
 
 require_once("library/ModelTable.php");
 
-require_once("Timer.php");
+
 
 class TextStyle extends Model
 {

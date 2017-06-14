@@ -7,7 +7,6 @@ use library\Models\Article\Text as Text;
 require_once("library/ModelTable.php");  // включене файла в проект
 require_once("library/Article/Text.php");
 
-require_once("Timer.php");
 
 // Клас котрий реализуєт доступ до таблици статтів
 class Articles extends Model
