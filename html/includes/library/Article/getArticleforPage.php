@@ -2,7 +2,7 @@
 
 use library\Models\Articles as Article;
 
-require_once("library/Articles.php");
+require_once("library/Article/Articles.php");
 
 
 

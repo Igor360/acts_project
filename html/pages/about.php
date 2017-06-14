@@ -4,12 +4,11 @@ header('Content-Type: text/html; charset=UTF-8');
 use library\Models\Articles as Article;
 use library\Models\Article\GenerateArticle as GenerateArticle;
 
-require_once("library/Articles.php");
+require_once("library/Article/Articles.php");
 require_once("library/Article/GenerateArticle.php");
 
-require_once("Timer.php");
 
-require "header.php";	
+require "PageParts/header.php";	
 ?>
 <div class="container-fluid">
  <div class = "container" id="main">
@@ -68,7 +67,7 @@ if ($Articles == null)
 </a><!-- .scroll-to-top-btn -->
 <!-- flie Footer -->
 <?php
-	require "footer.php";
+	require "PageParts/footer.php";
 ?>
 <!-- end Footer -->
 

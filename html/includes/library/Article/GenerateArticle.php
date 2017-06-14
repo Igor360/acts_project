@@ -4,7 +4,7 @@ namespace library\Models\Article;
 
 use library\Models\Articles as Article;
 
-require_once("library/Articles.php");
+require_once("library/Article/Articles.php");
 require_once("library/Article/TextStyle.php");
 
 class GenerateArticle

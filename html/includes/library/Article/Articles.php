@@ -4,7 +4,7 @@ namespace library\Models; // обявление пространства име�
 use library\ModelTable as Model; // импорта пространства имен
 use library\Models\Article\Text as Text; 
 
-require_once("library/ModelTable.php");  // включене файла в проект
+require_once("library/BaseClasses/ModelTable.php");  // включене файла в проект
 require_once("library/Article/Text.php");
 
 

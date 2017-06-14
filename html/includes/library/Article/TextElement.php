@@ -4,7 +4,7 @@ namespace library\Models\Article; // обявление пространства
 
 use library\ModelTable as Model; // импрорт пространства имен
 
-require_once("library/ModelTable.php");  // включене файла в проект
+require_once("library/BaseClasses/ModelTable.php");  // включене файла в проект
 
 class TextElement extends Model
 {

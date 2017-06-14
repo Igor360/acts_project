@@ -1,0 +1,7 @@
+@font-face{
+font-family: Roboto;
+src: url('fonts/CronusItalic.otf');
+}
+body{
+	font-family: Roboto !important;
+}

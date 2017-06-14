@@ -83,6 +83,8 @@ switch ($name) {
 	case 'development':
 		echo "<title>Розробки</title>";
 		break;
+	case 'registration':
+		echo "<title>Реєстрація</title>";
 	default:
 		echo "<title>Автоматика і Управління в Технічних Системах (АУТС)</title>";
 		break;

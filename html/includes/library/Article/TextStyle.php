@@ -3,7 +3,7 @@ namespace  library\Models\Article;
 
 use library\ModelTable as Model;
 
-require_once("library/ModelTable.php");
+require_once("library/BaseClasses/ModelTable.php");
 
 
 

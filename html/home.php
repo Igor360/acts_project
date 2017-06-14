@@ -1,7 +1,7 @@
 <?php
-	require "header.php";	
+	require "PageParts/header.php";	
  //<!--Intro Full Width Slider -->
-	require "slider.php";
+	require "PageParts/slider.php";
 //<!-- .master-slider.ms-skin-default -->
 ?>
 <div class="container-fluid">
@@ -10,7 +10,7 @@
    <div class = "col-sm-12 col-md-12 col-xs-12 main">
 <?php
 // Вибор статей
-include_once("getArticleforPage.php");
+require_once("library/Article/getArticleforPage.php");
  ?>
      <!-- Section news -->
      <section class = "article_block bounceInUp wow col-xs-12" data-wow-duration="0.5s" data-wow-delay="0.2s" data-wow-offset = "100">
@@ -20,7 +20,7 @@ include_once("getArticleforPage.php");
 <?php
 use library\Models\Articles as Article;
 
-require_once("library/Articles.php");
+require_once("library/Article/Articles.php");
 
 $NewsMain = Article::getSomeNews(3);
 if ($NewsMain != null)
@@ -53,7 +53,7 @@ if ($NewsMain != null)
 </a><!-- .scroll-to-top-btn -->
 <!-- flie Footer -->
 <?php
-require "footer.php";
+require "PageParts/footer.php";
 ?>
 <!-- end Footer -->
 

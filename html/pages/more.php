@@ -3,8 +3,8 @@ header('Content-Type: text/html; charset=UTF-8');
 
 use library\Models\Articles as Article;
 
-require_once("library/Articles.php");
-require "header.php";	
+require_once("library/Article/Articles.php");
+require "PageParts/header.php";	
 ?>
 <div class="container-fluid">
  <div class = "container" id="main">
@@ -87,7 +87,7 @@ if(isset($article) and $article != null)
 </a><!-- .scroll-to-top-btn -->
 <!-- flie Footer -->
 <?php
-require "footer.php";
+require "PageParts/footer.php";
 ?>
 <!-- end Footer -->
 

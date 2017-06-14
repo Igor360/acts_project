@@ -2,7 +2,7 @@
 
 namespace library; // обявление пространства имен
 
-require_once("library/ConnectDB.php");
+require_once("library/BaseClasses/ConnectDB.php");
 // абстрактний клас котрий описивает поля та методи 
 abstract class ModelTable extends ConnectDB
 {

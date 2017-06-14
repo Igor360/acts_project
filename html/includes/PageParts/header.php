@@ -8,7 +8,7 @@ $page_name = basename($_SERVER['PHP_SELF']);
 <html lang="ua">
 <head>
   <meta charset="UTF-8">
-  <?php include_once("header_title.php"); ?>
+  <?php include_once("PageParts/header_title.php"); ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="author" content="Dmitry Korzunov">
   <meta name="author" content="Igor Davidenko">
@@ -33,10 +33,11 @@ $page_name = basename($_SERVER['PHP_SELF']);
       <div class="modal-content text-center">
         <h4>Увійти</h4>
         <form method="post">
-          <input type="email" class="form-control" placeholder="Email" required>
+          <input type="email" class="form-control" placeholder="Email or Login" required>
           <input type="password" class="form-control" placeholder="Password" required>
           <div class="form-group">
             <button type="submit" class="btn login-btn btn-default waves-effect waves-light">Увійти на свій аккаунт<i class="icon-head"></i></button>
+            <a href="<?php echo $baseLink;?>/pages/registration.php">Зареєструватися</a>
           </div>
         </form><!-- <form> -->
       </div><!-- .modal-content -->
@@ -68,7 +69,7 @@ $page_name = basename($_SERVER['PHP_SELF']);
  </div><!-- .topbar -->
 
  <div class="container-fluid">
-   <nav class="main-navigation <?php if ($page_name == "home.php") { echo "home-nav"; } ?>">
+   <nav class="main-navigation <?php if ($page_name == "home.php" or $page_name == "registration.php") { echo "home-nav"; } ?>">
     <ul class="menu">
       <li class="<?php if($page_name == "home.php" or $page_name == "about.php") { echo "current-menu-item"; } ?> menu-item-has-children">
       <a class="menu_name">Про АУТС</a>
