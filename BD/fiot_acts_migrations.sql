@@ -16,28 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `textelements`
+-- Table structure for table `migrations`
 --
 
-DROP TABLE IF EXISTS `textelements`;
+DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `textelements` (
-  `id` int(11) NOT NULL,
-  `Name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `textelements`
+-- Dumping data for table `migrations`
 --
 
-LOCK TABLES `textelements` WRITE;
-/*!40000 ALTER TABLE `textelements` DISABLE KEYS */;
-INSERT INTO `textelements` VALUES (1,'paragraph'),(2,'numberList'),(3,'pointList'),(4,'boldText'),(5,'italicText'),(6,'list'),(7,'image');
-/*!40000 ALTER TABLE `textelements` ENABLE KEYS */;
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (3,'2014_10_12_1200000_create_users_table',1),(4,'2014_10_12_130000_create_password_resets_table',1);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

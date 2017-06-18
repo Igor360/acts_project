@@ -16,28 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `textelements`
+-- Table structure for table `masterworks`
 --
 
-DROP TABLE IF EXISTS `textelements`;
+DROP TABLE IF EXISTS `masterworks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `textelements` (
-  `id` int(11) NOT NULL,
-  `Name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+CREATE TABLE `masterworks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT '"Дані відсутні"',
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `mainText` longtext COLLATE utf8_unicode_ci,
+  `datepublish` date DEFAULT NULL,
+  `user_id` int(10) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `user_id_idx` (`user_id`),
+  KEY `user_id_itdx` (`user_id`),
+  CONSTRAINT `user_id__` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `textelements`
+-- Dumping data for table `masterworks`
 --
 
-LOCK TABLES `textelements` WRITE;
-/*!40000 ALTER TABLE `textelements` DISABLE KEYS */;
-INSERT INTO `textelements` VALUES (1,'paragraph'),(2,'numberList'),(3,'pointList'),(4,'boldText'),(5,'italicText'),(6,'list'),(7,'image');
-/*!40000 ALTER TABLE `textelements` ENABLE KEYS */;
+LOCK TABLES `masterworks` WRITE;
+/*!40000 ALTER TABLE `masterworks` DISABLE KEYS */;
+INSERT INTO `masterworks` VALUES (1,'df','2323','2321','0003-02-23',16,'2017-06-18 18:56:41');
+/*!40000 ALTER TABLE `masterworks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-19  1:22:53
+-- Dump completed on 2017-06-19  1:22:52
