@@ -16,14 +16,14 @@
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
 @endif
-  <form method = "POST" action="{{ route('changeuser')}}">
+  <form method = "POST" action="{{ route('insertarticle')}}">
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
    		<span>Заголовок</span>	
    		</div>
    		<div class = "col-md-4">
-   			<input type = "text" name = "username" required="">
+   			<input type = "text" name = "title" required="">
    		</div>
    	</div>
 
@@ -32,29 +32,37 @@
          <span>Сторінка</span>   
          </div>
          <div class = "col-md-8">
-            <select name="isadmin">
-            <option value="0">Ні</option>
-            <option value="1">Так</option>
+            <select name="page" required="">
+            <option></option>
+            @foreach ($pages as $p)
+            <option value="{{ $p->id }}">{{ $p->Name }}</option>
+            @endforeach
             </select>
          </div>
       </div>
 
-         <div class = "row">
+ <div class = "row">
          <div class = "col-md-4">
          <span>Тип статті</span>   
          </div>
          <div class = "col-md-8">
-            <select name="hasmaster">
-            <option value="0">Ні</option>
-            <option value="1">Так</option>
+            <select name="typearticle" required="">
+            <option ></option>
+            @foreach ($typesarticle as $ta)
+            <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+            @endforeach
             </select>
          </div>
       </div>
+        
 
 <div class="row">
-      <div class="col-md-12 text-center">
-         <img src="/img/Photo.png" style="height: 140px; border-radius: 5px; margin: 0 auto;">
+        <div class = "col-md-4">
+         <span>Фото</span>   
+         </div>
+      <div class="col-md-8">
          <input type = "text" name="photo" placeholder="Посилання на фото" style = "margin-top: 5px;">
+         <br>
          <input type = "file" name="photofile" style = "margin-top: 10px; font-size: 8pt; margin: 0 auto; line-height: 0px;" accept="image/*">
       </div>
 </div>
@@ -62,10 +70,10 @@
  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додаткові дані</h3></div>
 
       <div class = "row">
-        <div class = "col-md-6">
+        <div class = "col-md-4">
         <span>Текст</span>   
         </div>
-        <div class = "col-md-6">
+        <div class = "col-md-8">
             <textarea name = "text"></textarea>
         </div>
     </div>
@@ -76,14 +84,28 @@
          <span>Елемент тексту</span>   
          </div>
          <div class = "col-md-8">
-            <select name="hasmaster">
-            <option value="0">Ні</option>
-            <option value="1">Так</option>
+            <select name="textelement" required="">
+            <option></option>
+            @foreach ($textelements as $te) 
+            <option value="{{ $te->id }}">{{ $te->Name }}</option>
+            @endforeach
             </select>
          </div>
       </div>
   
-
+ <div class = "row">
+         <div class = "col-md-4">
+         <span>Тип тексту</span>   
+         </div>
+         <div class = "col-md-8">
+            <select name="type" required="">
+            <option ></option>
+            @foreach ($types as $t)
+            <option value="{{ $t->id }}">{{ $t->name }}</option>
+            @endforeach
+            </select>
+         </div>
+      </div>
 
     <div class = "row text-right">
         <button type="submit" name="Save" class="btn">

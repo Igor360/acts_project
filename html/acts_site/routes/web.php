@@ -23,7 +23,7 @@ Route::get('/', function () {
 	$args['NewsMain'] = Articles::getSomeNews(3); 
 	$args['page'] = "home";
     return view('pages.home',$args);
-});
+})->name('main_page');
 
 
 Route::get('/about/department',function() {
@@ -284,3 +284,4 @@ Route::get('/admin/articles/','AdminController@AllArticles')->name('adminarticle
 
 Route::get('/admin/articles/add','AdminController@AddArticle')->name('adminarticleadd');
 
+Route::post('/admin/articles/add','AdminController@insertArticle')->name('insertarticle');

@@ -60,4 +60,27 @@ class Articles extends Model
 		$result = DB::select($query);
 		return $result;
 	}
+
+
+
+	public static function InsertData($title, $img, $isText, $page_id, $type_id)
+    {
+        $AddData = array();
+        if ($title != null)
+            $AddData['title'] = $title;
+
+        if ($img != null)
+            $AddData['img'] =  $img;
+
+        if ($isText != null)
+            $AddData['isText'] = $isText; 
+        
+        if ($page_id != null)
+            $AddData['page_id'] = $page_id;
+
+        if ($type_id != null)
+            $AddData['type_id'] = $type_id;
+
+            DB::table('articles')->insert($AddData);
+    }
 }

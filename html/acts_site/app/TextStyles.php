@@ -21,4 +21,17 @@ class TextStyles extends Model
 	}
 
 
+	public static function InsertData($text_id, $textelement_id)
+    {
+        $AddData = array();
+        if ($text_id != null)
+            $AddData['idtext'] = $text_id;
+
+        if ($textelement_id != null)
+            $AddData['idtextelement'] =  $textelement_id;
+
+            DB::table('textstyle')->insert($AddData);
+    }
+
+
 }

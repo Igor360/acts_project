@@ -11,8 +11,23 @@ use App\Articles as Articles;
 use App\Links as Links;
 
 
+use App\TextElement as TextElement;
+use App\Text as Text;
+use App\TextStyles as TextStyles;
+use App\TextType as TextType;
+use App\Pages as Pages;
+
+
 class AdminController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    protected $guard = 'admin';
     //
 	public function index()
 	{
@@ -174,8 +189,34 @@ class AdminController extends Controller
 	public function AddArticle()
 	{
 		$args =array();
+        $args['pages'] = Pages::get();
+        $args['types'] = TextType::where('id','<',3)->get();
+        $args['typesarticle'] = TextType::where('id','>',2)->get();
+        $args['textelements'] = TextElement::get();
         $args['page'] = 'addarticles';
         return view('admin.addarticle',$args);
 	}
+
+    public function insertArticle(Request $request)
+    {
+        $args = array();
+        $args['message'] = "Дані додано";
+        $args['page'] = 'addarticles';
+
+        $title = $request['title'];
+        $page_id = $request['page'];
+        $img = $request['photo'];
+        $texttype_id = $request['type'];
+        $articletype_id = $request['typearticle'];
+        if ($texttype_id == 1)
+            $isText = 1;
+        else 
+            $isText = 0;
+        Articles::InsertData($title, $img, $isText, $page_id, $articletype_id);
+
+        $text = $request['text'];
+        $textelement_id = $request['textelements'];
+        return view('admin.addarticle',$args);
+    }
 }
 

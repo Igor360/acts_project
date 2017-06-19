@@ -33,15 +33,10 @@ class HomeController extends Controller
     public function index()
     {
         $args =array();
-        if (Auth::check())
-        {
-            $args['teacher'] = Teachers::getTeacher(Auth::id());
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-            if ($args['user']->isadmin)
-                    return redirect()->route('adminhome'); 
-        }
-        else 
-            $args['teacher'] = null;
+        $args['teacher'] = Teachers::getTeacher(Auth::id());
+        $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        if ($args['user']->isadmin)
+            return redirect()->route('adminhome'); 
         $args['page'] = 'home';
         return view('home',$args);
     }
@@ -49,13 +44,8 @@ class HomeController extends Controller
     public function publication()
     {
         $args =array();
-         if (Auth::check())
-        {
-            $args['teacher'] = Teachers::getTeacher(Auth::id());
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        }
-        else 
-            $args['teacher'] = null;
+        $args['teacher'] = Teachers::getTeacher(Auth::id());
+        $args['user'] = User::where('id', Auth::id())->get()[0]; 
         $args['page'] = 'home';
         $args['typework'] = 1;
         $args['user_id'] = Auth::id();
@@ -65,13 +55,8 @@ class HomeController extends Controller
     public function conference()
     {
         $args =array();
-         if (Auth::check())
-        {
-            $args['teacher'] = Teachers::getTeacher(Auth::id());
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        }
-        else 
-            $args['teacher'] = null;
+        $args['teacher'] = Teachers::getTeacher(Auth::id());
+        $args['user'] = User::where('id', Auth::id())->get()[0]; 
         $args['page'] = 'home';
         $args['typework'] = 2;
         $args['user_id'] = Auth::id();
@@ -82,8 +67,7 @@ class HomeController extends Controller
     {
         $args =array();
         $args['page'] = 'user';
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        $args['user'] = User::where('id', Auth::id())->get()[0];  
         return view('auth.changeuserdata',$args);
     }
 

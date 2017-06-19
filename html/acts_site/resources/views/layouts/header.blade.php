@@ -51,10 +51,10 @@ require_once("header_title.php");
                         @endif
          <div class="search-btn">
           <i class="icon-search"></i>
-          <form method="post" class="search-box">
+          <div class="search-box">
            <input type="text" class="form-control input-sm" placeholder="Пошук">
            <button type="submit"><i class="icon-search"></i></button>
-         </form>
+         </div>
        </div><!-- .search-btn -->
      </div><!-- .toolbar -->
    </div><!-- .container -->
