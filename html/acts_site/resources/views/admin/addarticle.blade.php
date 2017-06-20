@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row">
     <div class="col-md-2 sidebar  col-md-offset-1">
@@ -11,7 +12,7 @@
             <div class="col-md-12 panel panel-default">
             <div class = "form-user">
           @if ( $page != null )
-                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додовання статті</h3></div>
+                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додавання статті</h3></div>
 
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
@@ -70,42 +71,24 @@
  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додаткові дані</h3></div>
 
       <div class = "row">
+         <div class = "col-md-4">
+         <span>Описання</span>   
+         </div>
+         <div class = "col-md-8">
+           <textarea id = "description"  name = "description"> </textarea>
+         </div>
+      </div>
+
+      <div class = "row">
         <div class = "col-md-4">
         <span>Текст</span>   
         </div>
         <div class = "col-md-8">
-            <textarea name = "text"></textarea>
+            <textarea id = "idtext"  name = "text"> </textarea>
         </div>
     </div>
-
-
-    <div class = "row">
-         <div class = "col-md-4">
-         <span>Елемент тексту</span>   
-         </div>
-         <div class = "col-md-8">
-            <select name="textelement" required="">
-            <option></option>
-            @foreach ($textelements as $te) 
-            <option value="{{ $te->id }}">{{ $te->Name }}</option>
-            @endforeach
-            </select>
-         </div>
-      </div>
   
- <div class = "row">
-         <div class = "col-md-4">
-         <span>Тип тексту</span>   
-         </div>
-         <div class = "col-md-8">
-            <select name="type" required="">
-            <option ></option>
-            @foreach ($types as $t)
-            <option value="{{ $t->id }}">{{ $t->name }}</option>
-            @endforeach
-            </select>
-         </div>
-      </div>
+
 
     <div class = "row text-right">
         <button type="submit" name="Save" class="btn">
@@ -114,11 +97,7 @@
         </button>
     </div>
     </form>
-
-
-
-
-                @else
+               @else
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>
                 @endif
             </div>
@@ -126,4 +105,24 @@
         </div>
     </div>
 </div>
+
+
+    </div>
+
+    <!-- Scripts -->
+
+        <script src="{{ asset('/bootstrap/js/jquery.js') }}" type="text/javascript" charset="utf-8" ></script>
+        {{-- JS Bootstrap --}}
+        <script src="{{ asset('/bootstrap/js/bootstrap.js') }}" type="text/javascript" charset="utf-8" ></script>
+ <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
+ <script>
+      CKEDITOR.replace("idtext",{
+       language: 'uk',
+       uiColor: '#f0f0f0',
+     });
+         CKEDITOR.replace("description",{
+       language: 'uk',
+       uiColor: '#f0f0f0',
+     });
+      </script>
 @endsection

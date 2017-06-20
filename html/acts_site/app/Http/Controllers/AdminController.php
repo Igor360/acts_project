@@ -186,11 +186,19 @@ class AdminController extends Controller
         return view('admin.articles',$args);
 	}
 
+    public function deleteArticles(Request $request)
+    {
+        Articles::where('id', $request['num'])->delete();
+        $args =array();
+        $args['articles'] = Articles::getAll();
+        $args['page'] = 'articles';
+        return view('admin.articles',$args);
+    }
+
 	public function AddArticle()
 	{
 		$args =array();
         $args['pages'] = Pages::get();
-        $args['types'] = TextType::where('id','<',3)->get();
         $args['typesarticle'] = TextType::where('id','>',2)->get();
         $args['textelements'] = TextElement::get();
         $args['page'] = 'addarticles';
@@ -200,23 +208,82 @@ class AdminController extends Controller
     public function insertArticle(Request $request)
     {
         $args = array();
+        $args['pages'] = Pages::get();
+        $args['typesarticle'] = TextType::where('id','>',2)->get();
+        $args['textelements'] = TextElement::get();
         $args['message'] = "Дані додано";
         $args['page'] = 'addarticles';
 
         $title = $request['title'];
+        $description = $request['description'];
         $page_id = $request['page'];
         $img = $request['photo'];
-        $texttype_id = $request['type'];
+        $text = $request['text'];
         $articletype_id = $request['typearticle'];
-        if ($texttype_id == 1)
+        if (count($text) > 0)
             $isText = 1;
         else 
             $isText = 0;
         Articles::InsertData($title, $img, $isText, $page_id, $articletype_id);
-
-        $text = $request['text'];
-        $textelement_id = $request['textelements'];
+        $article_id = Articles::where('title',$title)->get()[0]->id;
+        if (count($text) > 0)
+            Text::InsertData($text, $article_id, 1);
+        Text::InsertData($description, $article_id, 2);
         return view('admin.addarticle',$args);
+    }
+
+
+
+    public function changeArticle($id)
+    {
+        $args =array();
+        $args['pages'] = Pages::get();
+        $args['types'] = TextType::where('id','<',3)->get();
+        $args['typesarticle'] = TextType::where('id','>',2)->get();
+        $args['textelements'] = TextElement::get();
+        $args['text'] = Text::where('article_id', $id)->where('type_id', 1 )->get();
+        $args['description'] = Text::where('article_id', $id)->where('type_id', 2 )->get();
+        $args['article'] = Articles::where('id',$id)->get()[0];
+        $args['page'] = 'articles';
+        $args['article_id'] = $id;
+        return view('admin.changearticle',$args);
+    }
+
+    public function updateArticle(Request $request)
+    {
+        $args =array();
+        $args['articles'] = Articles::getAll();
+        $args['page'] = 'articles';
+
+        
+        $article_id = $request['article'];
+        $title = $request['title'];
+        $page_id = $request['page'];
+        $img = $request['photo'];
+        $text = $request['text'];
+        $description = $request['description'];
+        if (count($text) > 0)
+            $isText = 1;
+        else 
+            $isText = 0;
+        Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
+        $texts = Text::where('article_id', $article_id)->where('type_id',1)->get();
+        if (count($texts) > 0)
+        {
+            if (count($text) > 0)
+             Text::UpdateData($texts[0]->id,$text);
+        }
+        else
+          if (count($text) > 0)
+            Text::InsertData($text, $article_id, 1);
+        $descriptions = Text::where('article_id', $article_id)->where('type_id',2)->get();
+        if (count($descriptions) > 0)
+        {
+            Text::UpdateData($descriptions[0]->id, $description);
+        }
+        else         
+            Text::InsertData($description, $article_id, 2);
+        return redirect()->route('adminarticles');
     }
 }
 

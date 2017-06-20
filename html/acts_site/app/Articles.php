@@ -83,4 +83,22 @@ class Articles extends Model
 
             DB::table('articles')->insert($AddData);
     }
+
+    	public static function UpdateData($id, $title, $img, $isText, $page_id)
+    {
+        $AddData = array();
+        if ($title != null)
+            $AddData['title'] = $title;
+
+        if ($img != null)
+            $AddData['img'] =  $img;
+
+        if ($isText != null)
+            $AddData['isText'] = $isText; 
+        
+        if ($page_id != null)
+            $AddData['page_id'] = $page_id;
+
+            Articles::where('id',$id)->update($AddData);
+    }
 }

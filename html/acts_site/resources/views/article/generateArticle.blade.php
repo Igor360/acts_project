@@ -14,14 +14,13 @@
              foreach (AddTextStyles($article->id) as $text)
              {
               echo $text->text;
-              echo "<br><br>";
              }
         ?>
       <br>
 
-      @if ($article->isText)
-  			<p class="text-right"><a class="social-url" href = ""><button type = "button" class = "btn btn-default">Детальнiше</button></a></p>
-     @endif
+     <!-- @if ($article->isText and $page != 'more')
+  			<p class="text-right"><a class="social-url" href = "/read/{{$article->id}}"><button type = "button" class = "btn btn-default">Детальнiше</button></a></p> 
+     @endif-->
     </section>    <br>  
   @endforeach
 @else

@@ -27,13 +27,13 @@
                 @foreach ($articles as $article) 
                 <tr>
                 <td>
-                    <form method = "POST" action="">
+                    <form method = "POST" action="{{ route('deletearticle') }}">
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="numpublication" value="">
+                        <button type="submit" class="btn" name="num" value="{{ $article->id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/home/changepublications//"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/admin/articles/change/{{$article->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $article->title }}</td>
                 <td>{{ $article->page }}</td>

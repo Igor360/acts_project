@@ -198,7 +198,7 @@
          <span>Професійні інтереси</span>   
          </div>
          <div class = "col-md-8">
-            <textarea name = "profint"></textarea>
+            <textarea name = "profint" id = "profint"></textarea>
          </div>
       </div>
 
@@ -207,7 +207,7 @@
          <span>Дисципліни</span>   
          </div>
          <div class = "col-md-8">
-            <textarea name = "disciplines"></textarea>
+            <textarea name = "disciplines" id = "disciplines"></textarea>
          </div>
       </div>
 
@@ -271,4 +271,19 @@
         </div>
     </div>
 </div>
+
+ <script src="{{ asset('/bootstrap/js/jquery.js') }}" type="text/javascript" charset="utf-8" ></script>
+        {{-- JS Bootstrap --}}
+        <script src="{{ asset('/bootstrap/js/bootstrap.js') }}" type="text/javascript" charset="utf-8" ></script>
+ <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
+ <script>
+      CKEDITOR.replace("profint",{
+       language: 'uk',
+       uiColor: '#f0f0f0', 
+     });
+       CKEDITOR.replace("disciplines",{
+       language: 'uk',
+       uiColor: '#f0f0f0',
+     });
+      </script>
 @endsection

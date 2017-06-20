@@ -16,6 +16,7 @@ use App\User as User;
 use App\MasterWorks as MasterWorks;
 
 
+Route::get('/elfinder/ckeditor/','Barryvdh\Elfinder\ElfinderController@showPopup');
 
 Route::get('/', function () {
 	$args = array();
@@ -285,3 +286,24 @@ Route::get('/admin/articles/','AdminController@AllArticles')->name('adminarticle
 Route::get('/admin/articles/add','AdminController@AddArticle')->name('adminarticleadd');
 
 Route::post('/admin/articles/add','AdminController@insertArticle')->name('insertarticle');
+
+Route::post('/admin/articles/delete','AdminController@deleteArticles')->name('deletearticle');
+
+Route::get('/admin/articles/change/{id}','AdminController@changeArticle');
+
+Route::post('/admin/articles/change/update','AdminController@updateArticle')->name('updatearticle');
+
+
+
+
+
+
+
+
+
+ 
+Route::get('files', 'FilesController@index');
+Route::get('files/get/{filename}', [
+	'as' => 'getentry', 'uses' => 'FilesController@get']);
+Route::post('files/add',[ 
+        'as' => 'addentry', 'uses' => 'FilesController@add']);

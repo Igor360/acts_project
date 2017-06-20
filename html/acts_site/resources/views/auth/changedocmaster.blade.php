@@ -39,8 +39,8 @@
         <div class = "col-md-4">
         <span>Описання</span>  
         </div>
-        <div class = "col-md-4">
-            <input type = "text" name = "description">
+        <div class = "col-md-8">
+            <textarea name = "description" id = "description"></textarea>
         </div>
     </div>
 
@@ -48,8 +48,8 @@
         <div class = "col-md-4">
         <span>Повне описання</span>  
         </div>
-        <div class = "col-md-4">
-            <textarea name = "maintext"></textarea>
+        <div class = "col-md-8">
+            <textarea name = "maintext" id = "maintext"></textarea>
         </div>
     </div>
 
@@ -70,7 +70,20 @@
     </div>
 </div>
 
-
+ <script src="{{ asset('/bootstrap/js/jquery.js') }}" type="text/javascript" charset="utf-8" ></script>
+        {{-- JS Bootstrap --}}
+        <script src="{{ asset('/bootstrap/js/bootstrap.js') }}" type="text/javascript" charset="utf-8" ></script>
+ <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
+ <script>
+      CKEDITOR.replace("description",{
+       language: 'uk',
+       uiColor: '#f0f0f0', 
+     });
+       CKEDITOR.replace("maintext",{
+       language: 'uk',
+       uiColor: '#f0f0f0',
+     });
+      </script>
 
 @endsection
 
