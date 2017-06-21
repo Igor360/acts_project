@@ -84,6 +84,20 @@
              </textarea>
         </div>
     </div>
+
+
+  <div class = "row">
+        <div class = "col-md-4">
+        <span>Додатковий текст</span>   
+        </div>
+        <div class = "col-md-8">
+            <input type="radio" name = "isText" value="1" {{ $article->isText == 1
+            ? 'checked = "checked"' : '' }}>Є<br>
+            <input type="radio" name = "isText" value="0" {{ $article->isText == 0
+            ? 'checked = "checked"' : '' }}>Нема
+        </div>
+    </div>
+
     <input type="hidden" name="article" value="{{ $article_id }}">
 
     <div class = "row text-right">
@@ -97,11 +111,12 @@
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>
                 @endif
             </div>
+            <span>*Якщо ви хочете бачити кнопку "Детальніше" то поставте галочку навпроти пункту "Додатковий текст"<br> Під додатковим текстом розуміється пункт "Текст"</span>   
             </div>
+
         </div>
     </div>
 </div>
-
 
     </div>
 

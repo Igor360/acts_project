@@ -262,19 +262,15 @@ class AdminController extends Controller
         $img = $request['photo'];
         $text = $request['text'];
         $description = $request['description'];
-        if (count($text) > 0)
-            $isText = 1;
-        else 
-            $isText = 0;
+        $isText = $request['isText'];
         Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
         $texts = Text::where('article_id', $article_id)->where('type_id',1)->get();
+        echo var_dump($texts);
         if (count($texts) > 0)
         {
-            if (count($text) > 0)
-             Text::UpdateData($texts[0]->id,$text);
+            Text::UpdateData($texts[0]->id,$text);
         }
         else
-          if (count($text) > 0)
             Text::InsertData($text, $article_id, 1);
         $descriptions = Text::where('article_id', $article_id)->where('type_id',2)->get();
         if (count($descriptions) > 0)

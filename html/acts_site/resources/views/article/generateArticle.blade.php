@@ -1,6 +1,4 @@
-<?php 
-  require_once('generateText.php');
-?>
+<?php   use App\Text as Text; ?>
 @if ($Articles != null)
 	@foreach ($Articles as $article) 
 	   <section class = "article_block">
@@ -11,16 +9,22 @@
   			<img class="presentation" data-wow-duration="2s" src="{{$article->img}}" alt="" height="300px" width="200px" align="center"><br>
       @endif
           <?php
-             foreach (AddTextStyles($article->id) as $text)
+
+            if($page == "more")
+              $texts = Text::where('article_id', $article->id)->where('type_id',2)->get();
+            else
+              $texts =Text::where('article_id', $article->id)->get();
+
+             foreach ($texts as $text)
              {
-              echo $text->text;
+              echo "<p>".$text->text."</p>";
              }
         ?>
       <br>
 
-     <!-- @if ($article->isText and $page != 'more')
+  @if ($article->isText and $page != 'more')
   			<p class="text-right"><a class="social-url" href = "/read/{{$article->id}}"><button type = "button" class = "btn btn-default">Детальнiше</button></a></p> 
-     @endif-->
+     @endif
     </section>    <br>  
   @endforeach
 @else

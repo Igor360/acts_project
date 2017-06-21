@@ -15,11 +15,6 @@ use Illuminate\Http\Response;
 
 class FilesController extends Controller
 {
-    //
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function index()
 	{
@@ -47,7 +42,7 @@ class FilesController extends Controller
 	public function get($filename){
 	
 		$entry = Files::where('filename', '=', $filename)->firstOrFail();
-		$file = Storage::disk('local')->get($entry->filename);
+		$file = Storage::disk('documents')->get($entry->filename);
  
 		return (new Response($file, 200))
               ->header('Content-Type', $entry->mime);

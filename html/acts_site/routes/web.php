@@ -13,10 +13,12 @@
 Use App\Articles as Articles;
 use App\Teachers as Teachers;
 use App\User as User;
+use App\MasterFiles as MasterFiles;
+
 use App\MasterWorks as MasterWorks;
 
 
-Route::get('/elfinder/ckeditor/','Barryvdh\Elfinder\ElfinderController@showPopup');
+
 
 Route::get('/', function () {
 	$args = array();
@@ -160,7 +162,7 @@ Route::get('/sport',function() {
 Route::get('/read/{article_number?}', function ($article_number = null){
 	$args = array();
 	if ($article_number != null)
-		$args['Articles'] = Articles::getOneNews($article_number); 
+		$args['Articles'] = Articles::where('id', $article_number)->get(); 
 	$args['page'] = "more";
     return view('pages.page',$args);
 });
@@ -210,11 +212,14 @@ Route::get('/masterdocs/more/{id?}', function ($id = null){
 	$args['page'] = 'about';
 	$args['namepage'] = "Допоміжний персонал";
 	$args['doc'] = MasterWorks::where('id', $id)->get()[0];
+	$args['files'] = MasterFiles::getFiles($id);
     return view('pages.masterdocs',$args);
 });
 
 
 Auth::routes();
+
+# user page routes
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -258,17 +263,25 @@ Route::post('/home/changeconference/{id?}/','HomeController@updateConference')->
 
 Route::get('/home/changeconference/{id?}/','HomeController@changeoneConference');
 
+
 Route::get('/home/masterdocs','HomeController@changeMasterDocs')->name('masterdocs');
 
 Route::post('/home/masterdocs/add/','HomeController@addMasterDocs')->name('addmasterdocs');
 
-
 Route::post('/home/masterdocs/delete/','HomeController@deleteMasterDocs')->name('deletemasterdoc');
 
-Route::get('/home/masterdocs/change/{id?}','HomeController@changeoneMasterDoc');
+Route::get('/home/masterdocs/change/{id?}','HomeController@changeoneMasterDoc')->name('changemasterdata');
 
 Route::post('/home/masterdocs/change/update','HomeController@updateMasterDoc')->name('updatemasterdoc');
 
+Route::post('/home/masterdocs/change/delete','HomeController@deleteMasterFile')->name('deletemasterfile');
+
+Route::post('/home/masterdocs/change/addfiles','HomeController@addMasterFile')->name('addmasterfile');
+
+
+
+
+# admin page routes
 Route::get('/admin/','AdminController@index')->name('adminhome');
 
 Route::get('/admin/add/','AdminController@Adduser')->name('adminadd');
@@ -293,8 +306,7 @@ Route::get('/admin/articles/change/{id}','AdminController@changeArticle');
 
 Route::post('/admin/articles/change/update','AdminController@updateArticle')->name('updatearticle');
 
-
-
+Route::get('files/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
 
 
 
@@ -302,8 +314,10 @@ Route::post('/admin/articles/change/update','AdminController@updateArticle')->na
 
 
  
-Route::get('files', 'FilesController@index');
-Route::get('files/get/{filename}', [
-	'as' => 'getentry', 'uses' => 'FilesController@get']);
-Route::post('files/add',[ 
-        'as' => 'addentry', 'uses' => 'FilesController@add']);
+//Route::get('files', 'FilesController@index');
+
+//Route::post('files/add',[ 
+  //      'as' => 'addentry', 'uses' => 'FilesController@add']);
+
+
+//Route::get('/elfinder/ckeditor/','Barryvdh\Elfinder\ElfinderController@showPopup');

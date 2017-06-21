@@ -16,28 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `migrations`
+-- Table structure for table `masterfiles`
 --
 
-DROP TABLE IF EXISTS `migrations`;
+DROP TABLE IF EXISTS `masterfiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `masterfiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idmasterworks` int(11) DEFAULT NULL,
+  `idfile` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_masterworks_idx` (`idmasterworks`),
+  KEY `id_file_idx` (`idfile`),
+  CONSTRAINT `id_masterworks` FOREIGN KEY (`idmasterworks`) REFERENCES `masterworks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `id_file` FOREIGN KEY (`idfile`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `migrations`
+-- Dumping data for table `masterfiles`
 --
 
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (3,'2014_10_12_1200000_create_users_table',1),(4,'2014_10_12_130000_create_password_resets_table',1);
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+LOCK TABLES `masterfiles` WRITE;
+/*!40000 ALTER TABLE `masterfiles` DISABLE KEYS */;
+INSERT INTO `masterfiles` VALUES (4,41,11),(15,41,22),(17,41,24);
+/*!40000 ALTER TABLE `masterfiles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

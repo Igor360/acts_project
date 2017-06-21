@@ -5,13 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth as Auth; 
 use Illuminate\Http\Request;
 
+
+
 use App\Teachers as Teachers;
 use App\Positions as Positions;
 use App\User as User;
 use App\Links as Links;
 use App\Works as Works;
+use App\Files;
+use App\MasterFiles;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response;
 
 use App\MasterWorks as MasterWorks;
+
+use App\Http\Controllers\Input;
 
 class HomeController extends Controller
 {
@@ -330,6 +340,10 @@ public function updateConference(Request $request)
             $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
             $args['user'] = User::where('id', Auth::id())->get()[0]; 
         }
+
+        $work = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->id; 
+        $files = $request['filefield'];
+        HomeController::UploadFiles($files,$work);
         return view('auth.changemasterdocs',$args);
     }
 
@@ -352,11 +366,11 @@ public function updateConference(Request $request)
     {
         $args =array();
         $args['id'] = $id;
-        $id = Auth::id();
         $args['page'] = 'master';
+        $args['files'] = MasterFiles::getFiles($id);
          if (Auth::check())
         {
-            $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
+            $args['work'] = MasterWorks::where('id', $id)->get()->first();
             $args['user'] = User::where('id', Auth::id())->get()[0]; 
         }
         return view('auth.changedocmaster',$args);
@@ -366,19 +380,56 @@ public function updateConference(Request $request)
     {
         $args =array();
         $args['page'] = 'master';
-        $id = $request['page'];
+        $id = $request['id_mw'];
         $name = $request['name'];
         $date = $request['datepublication'];
         $description = $request['description'];
         $maintext = $request['maintext'];
         MasterWorks::UpdateData($id, $name, $description,$maintext, $date);
-        if (Auth::check())
-        {
-            $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        }
         return redirect()->route('masterdocs');
     }
 
 
+    public function deleteMasterFile(Request $request)
+    {
+        $args =array();
+        $args['page'] = 'master';
+        $id_file = $request['num'];
+        $id = $request['id_mw']; 
+        Files::where('id',$id_file)->delete();
+        $args['files'] = MasterFiles::getFiles($id);
+        return redirect()->route('changemasterdata',$id);
+    }
+
+    public function addMasterFile(Request $request)
+    {
+        $args =array();
+        $args['page'] = 'master';
+        $id = $request['id_mw']; 
+        $files = $request['filefield'];
+        HomeController::UploadFiles($files,$id);
+        return redirect()->route('changemasterdata',$id);
+    }
+
+    public static  function UploadFiles($files,$work_id)
+    {
+    foreach ($files as $file) {
+          
+        $extension = $file->getClientOriginalExtension();
+        Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
+        $entry = new Files();
+        $entry->mime = $file->getClientMimeType();
+        $entry->originalname = $file->getClientOriginalName();
+        $entry->filename = $file->getFilename().'.'.$extension;
+        $id = Auth::id();
+        $entry->user_id = $id;
+        $entry->size = filesize($file);
+        $entry->save();
+        MasterFiles::InsertData($work_id, $entry->id);
+    }
+
+    }
+
 }
+
+

@@ -87,7 +87,6 @@
             <textarea id = "idtext"  name = "text"> </textarea>
         </div>
     </div>
-  
 
 
     <div class = "row text-right">

@@ -34,7 +34,7 @@ CREATE TABLE `masterworks` (
   KEY `user_id_idx` (`user_id`),
   KEY `user_id_itdx` (`user_id`),
   CONSTRAINT `user_id__` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `masterworks` (
 
 LOCK TABLES `masterworks` WRITE;
 /*!40000 ALTER TABLE `masterworks` DISABLE KEYS */;
-INSERT INTO `masterworks` VALUES (1,'df','2323','2321','0003-02-23',16,'2017-06-18 18:56:41');
+INSERT INTO `masterworks` VALUES (41,'dds','<p>sdffdfsd</p>','<p>sdafaff</p>','2017-06-07',16,'2017-06-21 18:57:15');
 /*!40000 ALTER TABLE `masterworks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-19  1:22:52
+-- Dump completed on 2017-06-22  2:15:27

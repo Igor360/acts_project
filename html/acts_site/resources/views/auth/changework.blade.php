@@ -60,7 +60,7 @@
             <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </button>
     </div>
-    </form>   
+    </form>  
     </div>
                 @else
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>

@@ -26,7 +26,7 @@
                 @foreach ($works as $work)
                 <tr>
                 <td>
-                    <form method = "POST" action="{{ route('deletemasterdoc') }}">
+                    <form method = "POST" action="{{ route('deletemasterdoc') }}" >
                     {{ csrf_field() }}
                         <button type="submit" class="btn" name="num" value="{{ $work->id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -44,7 +44,7 @@
 
                  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Додати етюд</h3></div>
                  <div class="form-user">
-                       <form method = "POST" action="{{ route('addmasterdocs') }}">
+            <form method = "POST" action="{{ route('addmasterdocs') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
     <div class = "row">
         <div class = "col-md-4">
@@ -82,12 +82,21 @@
         </div>
     </div>
 
+     <div class = "row">
+        <div class = "col-md-4">
+        <span>Давання файлов</span>  
+        </div>
+        <div class = "col-md-8">
+            <input type="file" name="filefield[]" multiple="true">        
+        </div>
+    </div>
+       
     <input type="hidden" name="page" value="next">
     <div class = "row text-right">
-        <button type="submit" name="Next" class="btn">
-            Додати
+            <button type="submit" name="Next" class="btn">
+          Додати
             <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
+            </button>
     </div>
     </form>   
     </div>

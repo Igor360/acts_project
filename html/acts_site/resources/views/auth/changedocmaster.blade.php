@@ -22,7 +22,7 @@
         <span>ФІО магістра</span> 
         </div>
         <div class = "col-md-8">
-            <input type = "text" name = "name">
+            <input type = "text" name = "name" value="{{ $work->name }}">
         </div>
     </div>
 
@@ -31,7 +31,7 @@
         <span>Дата публікації</span>   
         </div>
         <div class = "col-md-8">
-            <input type = "date" name = "datepublication">
+            <input type = "date" name = "datepublication" value="{{ $work->datepublish }}">
         </div>
     </div>
 
@@ -40,7 +40,7 @@
         <span>Описання</span>  
         </div>
         <div class = "col-md-8">
-            <textarea name = "description" id = "description"></textarea>
+            <textarea name = "description" id = "description">{{ $work->description }}</textarea>
         </div>
     </div>
 
@@ -49,11 +49,11 @@
         <span>Повне описання</span>  
         </div>
         <div class = "col-md-8">
-            <textarea name = "maintext" id = "maintext"></textarea>
+            <textarea name = "maintext" id = "maintext">{{ $work->mainText }}</textarea>
         </div>
     </div>
 
-    <input type="hidden" name="page" value="{{$id}}">
+    <input type="hidden" name="id_mw" value="{{ $id }}">
     <div class = "row text-right">
         <button type="submit" name="Next" class="btn">
             Змінити
@@ -62,6 +62,49 @@
     </div>
     </form>   
     </div>
+
+        <table class="table">
+                <caption style="text-align: center;">Етюди</caption>
+                <thead>
+                <tr>
+                <th></th>
+                <th>Файл</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($files as $file)
+                <tr>
+                <td>
+                    <form method = "POST" action="{{ route('deletemasterfile') }}" >
+                    {{ csrf_field() }}
+                      <input type="hidden" name="id_mw" value="{{$id}}">
+                        <button type="submit" class="btn" name="num" value="{{ $file->id }}">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
+                <td><a href="{{ route('getfile', $file->filename) }}">{{ $file->originalname }}</a></td>
+                </tr>
+                @endforeach
+                </tbody>
+                </table>
+
+            <form method = "POST" action="{{ route('addmasterfile') }}" enctype="multipart/form-data">  
+            {{ csrf_field() }}  
+             <input type="hidden" name="id_mw" value="{{ $id }}">
+     <div class = "form-user">
+        <div class = "col-md-4">
+        <span>Давання файлов</span>  
+        </div>
+        <div class = "col-md-8">
+            <input type="file" name="filefield[]" multiple="true">    
+        </div>
+          <div class = "row text-right">
+      <input type="submit" name="add" value="Додати" class = "btn">  
+     </div> 
+    </div>
+   
+    </form>
                 @else
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>
                 @endif
@@ -69,6 +112,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 
  <script src="{{ asset('/bootstrap/js/jquery.js') }}" type="text/javascript" charset="utf-8" ></script>
         {{-- JS Bootstrap --}}

@@ -21,7 +21,6 @@ class MasterWorks extends Model
     			'datepublish' => $datepublish,
     			'user_id' => $user_id,
     			 );
-    		echo var_dump($AddData);
     		DB::table('masterworks')->insert($AddData);
     }
 

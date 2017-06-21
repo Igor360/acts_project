@@ -35,7 +35,7 @@ CREATE TABLE `positions` (
 
 LOCK TABLES `positions` WRITE;
 /*!40000 ALTER TABLE `positions` DISABLE KEYS */;
-INSERT INTO `positions` VALUES (0,'none'),(1,'ЗАВІДУВАЧ КАФЕДРИ'),(2,'ПЕРШИЙ ЗАСТУПНИК'),(3,'ЗАСТУПНИК З НАУКОВОЇ РОБОТИ'),(4,'ЗАСТУПНИК З НАВЧАЛЬНО-МЕТОДИЧНОЇ РОБОТИ ');
+INSERT INTO `positions` VALUES (0,'none'),(1,'ЗАВІДУВАЧ КАФЕДРИ'),(2,'ПЕРШИЙ ЗАСТУПНИК'),(3,'ЗАСТУПНИК З НАУКОВОЇ РОБОТИ'),(4,'ЗАСТУПНИК З НАВЧАЛЬНО-МЕТОДИЧНОЇ РОБОТИ '),(5,'ЗАСТУПНИК ПО РОБОТІ З МАГІСТРАМИ');
 /*!40000 ALTER TABLE `positions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-19  1:22:53
+-- Dump completed on 2017-06-22  2:15:28

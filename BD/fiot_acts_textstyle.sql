@@ -31,7 +31,7 @@ CREATE TABLE `textstyle` (
   KEY `id_text_element_idx` (`idtextelement`),
   CONSTRAINT `id_text` FOREIGN KEY (`idtext`) REFERENCES `text` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `id_text_element` FOREIGN KEY (`idtextelement`) REFERENCES `textelements` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,6 @@ CREATE TABLE `textstyle` (
 
 LOCK TABLES `textstyle` WRITE;
 /*!40000 ALTER TABLE `textstyle` DISABLE KEYS */;
-INSERT INTO `textstyle` VALUES (6,4,1),(6,6,2),(9,3,3),(10,1,4),(11,1,5),(13,2,6),(14,1,7),(15,2,8),(16,1,9),(18,6,10),(21,3,11),(23,3,12),(25,3,13),(27,3,14),(29,3,15),(32,1,16),(34,4,17),(35,3,18),(36,4,19),(37,3,20),(38,4,21),(40,4,22),(41,3,23),(43,3,24),(47,4,25),(49,4,26),(52,4,27),(53,1,28),(54,4,29),(55,3,30),(56,4,31),(57,3,32),(58,4,33),(59,3,34),(61,3,35),(63,3,36),(69,2,37),(71,2,38),(73,3,39),(75,3,40),(82,3,41),(85,3,42),(31,7,43),(12,3,44),(12,4,47);
 /*!40000 ALTER TABLE `textstyle` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-19  1:22:52
+-- Dump completed on 2017-06-22  2:15:27

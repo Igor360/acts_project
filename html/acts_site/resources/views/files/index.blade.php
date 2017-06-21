@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
- 
-   
-<div class="row" style="margin-top: 100px;">
+   <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Додати етюди</h3></div>
+
+           <div class="row" style="margin-top: 100px;">
     <form action="{{route('addentry', [])}}" method="post" enctype="multipart/form-data">
        {{ csrf_field() }}
         <input type="file" name="filefield">
@@ -24,6 +26,12 @@
             </div>
  @endforeach
  </ul>
- </div>
+ </div> 
+
+        </div>
+    </div>
+
+   
+
  
 @endsection
