@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
   `isinsystem` tinyint(1) NOT NULL DEFAULT '0',
@@ -33,8 +33,9 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `hasmasters` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +44,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'user','mail@mail.ru','$2y$10$xHsJcOTUwyg4I2jX6tqft.oPQdA15/GjkRyKe4uvMVVlGBA1aBETa',0,0,'LqxOqlhW4ETYdSLkiPN5R4IQZkryZbwKOd7BFMN6W2sZwa8ljB461R7CIRGr','2017-06-17 09:33:03','2017-06-18 17:19:26',0),(2,'admin','admin@acts.ua','$2y$10$KZizJI0nlHqRdj8X0zhQPeSUwRLtPWo1PunOoFwUmWBXD0q.3TQ62',1,0,'HYQ3EN8vSJYwEvO4WF8MbkuETrhJpuPvSmAq2Ncp8FWqDvJw8VBy1gmmUcZc','2017-06-18 10:12:24','2017-06-18 11:36:12',0),(13,'try','person5@mail.ru','$2y$10$1Z4PDPebYqOWR6u3mtZvFu1W6Diovea8ejrJRFOGluYwVSKLJs7XW',0,0,'Vb1zSDgcJYV1HN4SgQDwbe3UI0DvXdPXYBiQtlt92BAGC4b2tu9KD8C5mdtN',NULL,'2017-06-19 05:34:36',0),(16,'erre','person2@mail.ru','$2y$10$EFvwyVDxbp9X9DV1jRnbpOa1hMkSktIioCvPYwaLq3mmzh2PrYhSi',0,0,'XFEol8n2KUoSqG2lKpsyl8nDqp1zANoRPAlUsudwFiathrGtMOFpagLcpsOr',NULL,'2017-06-19 05:38:39',1);
+INSERT INTO `users` VALUES (1,'user','mail@mail.ru','$2y$10$xHsJcOTUwyg4I2jX6tqft.oPQdA15/GjkRyKe4uvMVVlGBA1aBETa',0,0,'bJtNcc9KOTTm8KF0cg6ONGZR3Bh6CxzHAQjoom32fldu7ka6R4Ii75jbnrW1','2017-06-17 09:33:03','2017-06-22 15:21:30',0),(2,'admin','admin@acts.ua','$2y$10$KZizJI0nlHqRdj8X0zhQPeSUwRLtPWo1PunOoFwUmWBXD0q.3TQ62',1,0,'G66DH0Y46UwRUEnzHSRtlGCMWEFRspv7pqG8Jkkk2S5I8noA96xD9xO4bO2J','2017-06-18 10:12:24','2017-06-18 11:36:12',0),(13,'try','person5@mail.ru','$2y$10$1Z4PDPebYqOWR6u3mtZvFu1W6Diovea8ejrJRFOGluYwVSKLJs7XW',0,0,'Vb1zSDgcJYV1HN4SgQDwbe3UI0DvXdPXYBiQtlt92BAGC4b2tu9KD8C5mdtN',NULL,'2017-06-19 05:34:36',0),(16,'repnikova','person2@mail.ru','$2y$10$EFvwyVDxbp9X9DV1jRnbpOa1hMkSktIioCvPYwaLq3mmzh2PrYhSi',0,0,'Wr3NT7RgpgKUzxhQ5s0An6WCm0c7A7uHx03nowcUS0gZ84RLffcQV4ExCuVe',NULL,'2017-06-22 13:10:01',1),(21,'author','person8@mail.ru','$2y$10$xdouT/BxCNzQzER/PvAM7ODd0b8k3z4Q9dMUO0/jnU9XQN5fbz.B6',0,0,NULL,NULL,'2017-06-22 15:34:32',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-22  2:15:27
+-- Dump completed on 2017-06-25  0:18:22

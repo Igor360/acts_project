@@ -18,7 +18,7 @@
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
 @endif
-          	  	<form method = "POST" action="{{ route('changeuserdata')}}">
+          	  	<form method = "POST" action="{{ route('changeuserdata')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
@@ -130,6 +130,7 @@
          </div>
          <div class = "col-md-8">
             <select name="position">
+            <option></option>
             @foreach ($positions as $position)
                 <option value="{{ $position->id }}">{{ $position->name }}</option>
             @endforeach

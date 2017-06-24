@@ -31,7 +31,7 @@ class Articles extends Model
 	public static function getNews()
 	{
 		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
-					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.id);";
+					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC;";
 		$result = DB::select($query);
 		return $result;
 	}
@@ -39,7 +39,7 @@ class Articles extends Model
 	public static function getSomeNews($num)
 	{
 		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
-					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.id) LIMIT 0,{$num};";
+					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC LIMIT 0,{$num};";
 		$result = DB::select($query);
 		return $result;
 	}
@@ -65,26 +65,29 @@ class Articles extends Model
 
 	public static function InsertData($title, $img, $isText, $page_id, $type_id)
     {
-        $AddData = array();
+        $article = new Articles();
         if ($title != null)
-            $AddData['title'] = $title;
+            $article->title = $title;
 
         if ($img != null)
-            $AddData['img'] =  $img;
+            $article->img =  $img;
 
         if ($isText != null)
-            $AddData['isText'] = $isText; 
+            $article->isText = $isText; 
         
         if ($page_id != null)
-            $AddData['page_id'] = $page_id;
+            $article->page_id = $page_id;
 
         if ($type_id != null)
-            $AddData['type_id'] = $type_id;
+            $article->type_id = $type_id;
 
-            DB::table('articles')->insert($AddData);
+            $article->save();
+
+        return $article;
+
     }
 
-    	public static function UpdateData($id, $title, $img, $isText, $page_id)
+   public static function UpdateData($id, $title, $img, $isText, $page_id)
     {
         $AddData = array();
         if ($title != null)

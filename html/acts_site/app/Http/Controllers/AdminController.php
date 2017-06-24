@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response;
+
 use Auth;
 use App\Teachers as Teachers;
 use App\User as User;
 use App\Positions as Positions;
 use App\Articles as Articles;
 use App\Links as Links;
-
+use App\Files;
+use App\ArticleFiles;
 
 use App\TextElement as TextElement;
 use App\Text as Text;
@@ -17,6 +22,8 @@ use App\TextStyles as TextStyles;
 use App\TextType as TextType;
 use App\Pages as Pages;
 
+
+require_once ('AddImageToDB.php');
 
 class AdminController extends Controller
 {
@@ -86,6 +93,19 @@ class AdminController extends Controller
         $department = $request['department'];
         $isteacher = $request['isteacher'];
 
+
+        $photo_file = $request['photofile'];
+        
+        if (AddImage($photo_file, $user_id))
+        {
+            $photo_file = Files::where('user_id' , $user_id)
+                    ->where('mime','image/jpeg')
+                    ->orWhere('mime','image/png')->get()->first();
+            if ($photo_file != null)
+                $photo = route('getimage', $photo_file->filename);
+            
+        }
+
         Teachers::InsertData($firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
 
         $AnotherSite = $request['anothersite'];
@@ -137,6 +157,17 @@ class AdminController extends Controller
         $isteacher = $request['isteacher'];
 
         $id_teacher = Teachers::where('user_id',$user_id)->get()[0]->id;
+
+        $photo_file = $request['photofile'];
+        
+        if (AddImage($photo_file, $user_id))
+        {
+            $photo_file = Files::where('user_id' , $user_id)
+                    ->where('mime','image/jpeg')
+                    ->orWhere('mime','image/png')->get()->first();
+            $photo = route('getimage', $photo_file->filename);
+            
+        }
 
         Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
 
@@ -224,8 +255,19 @@ class AdminController extends Controller
             $isText = 1;
         else 
             $isText = 0;
-        Articles::InsertData($title, $img, $isText, $page_id, $articletype_id);
-        $article_id = Articles::where('title',$title)->get()[0]->id;
+
+        $photo_file = $request['photofile'];
+        if ($photo_file != null)
+        {
+            $add_articledoc = AddArticleDocs($photo_file, Auth::id());
+            if ($add_articledoc != null)
+              $img = route('getdocarticle', $add_articledoc->filename);
+        }
+        $article_id = Articles::InsertData($title, $img, $isText, $page_id, $articletype_id)->id;
+        if (isset($add_articledoc))
+            ArticleFiles::InsertData($article_id,$add_articledoc->id);
+        $files = $request['filesfield'];
+        AdminController::UploadFiles($files,$article_id);
         if (count($text) > 0)
             Text::InsertData($text, $article_id, 1);
         Text::InsertData($description, $article_id, 2);
@@ -246,6 +288,7 @@ class AdminController extends Controller
         $args['article'] = Articles::where('id',$id)->get()[0];
         $args['page'] = 'articles';
         $args['article_id'] = $id;
+        $args['files'] = ArticleFiles::getFiles($id,Articles::where('id',$id)->get()[0]->img);
         return view('admin.changearticle',$args);
     }
 
@@ -263,9 +306,19 @@ class AdminController extends Controller
         $text = $request['text'];
         $description = $request['description'];
         $isText = $request['isText'];
+
+        $photo_file = $request['photofile'];
+        if($photo_file != null)
+        {
+            $add_articledoc = AddArticleDocs($photo_file, Auth::id());
+            if ($add_articledoc != null)
+              $img = route('getdocarticle', $add_articledoc->filename);
+            isArticlePhoto($article_id);
+            ArticleFiles::InsertData($article_id,$add_articledoc->id);
+        }
         Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
         $texts = Text::where('article_id', $article_id)->where('type_id',1)->get();
-        echo var_dump($texts);
+
         if (count($texts) > 0)
         {
             Text::UpdateData($texts[0]->id,$text);
@@ -281,5 +334,43 @@ class AdminController extends Controller
             Text::InsertData($description, $article_id, 2);
         return redirect()->route('adminarticles');
     }
+
+
+    public function deleteArticleFile(Request $request)
+    {
+        $id_file = $request['num'];
+        $id = $request['id_a']; 
+        Files::where('id',$id_file)->delete();
+        return redirect()->route('changearticledata',$id);
+    }
+
+    public function addArticleFiles(Request $request)
+    {
+        $id = $request['id_a']; 
+        $files = $request['filesfield'];
+        AdminController::UploadFiles($files,$id);
+        return redirect()->route('changearticledata',$id);
+    }
+
+
+    public static  function UploadFiles($files,$article_id)
+    {
+    foreach ($files as $file) {
+          
+        $extension = $file->getClientOriginalExtension();
+        Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
+        $entry = new Files();
+        $entry->mime = $file->getClientMimeType();
+        $entry->originalname = $file->getClientOriginalName();
+        $entry->filename = $file->getFilename().'.'.$extension;
+        $id = Auth::id();
+        $entry->user_id = $id;
+        $entry->size = filesize($file);
+        $entry->save();
+        ArticleFiles::InsertData($article_id, $entry->id);
+    }
+
+    }
+
 }
 

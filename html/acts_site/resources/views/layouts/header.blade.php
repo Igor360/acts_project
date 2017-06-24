@@ -16,7 +16,9 @@ require_once("header_title.php");
   <link rel="stylesheet" media="screen" href="{{ asset ('masterslider/style/masterslider.css') }}"  type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/normalise.css') }}" type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/home_page_style.css') }}" type="text/css" >
-    <link rel="stylesheet" media="all" href="{{ asset ('css/teacher.css') }}">
+  @if ($page == "teachstaff") 
+  <link rel="stylesheet" media="all" href="{{ asset ('css/teacher.css') }}"> 
+  @endif
   <link rel="shortcut icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset ('img/icon.ico') }}">
@@ -63,7 +65,7 @@ require_once("header_title.php");
  <div class="container-fluid">
    <nav class="main-navigation @if ($page == "home") home-nav @endif">
     <ul class="menu">
-      <li class="menu-item-has-children  @if ($page == "home" or $page == "about") current-menu-item @endif">
+      <li class="menu-item-has-children  @if ($page == "home" or $page == "about" or $page == 'teachstaff') current-menu-item @endif">
       <a class="menu_name">Про АУТС</a>
         <ul class="sub-menu"> 
          <li><a href="/about/department/">Про кафедру</a></li>

@@ -35,7 +35,7 @@
                     <a class="btn" href="/home/masterdocs/change/{{$work->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $work->name }}</td>
-                <td>{{ $work->description }}</td>
+                <td>{!! $work->description !!}</td>
                 <td>{{ $work->datepublish }}</td>
                 </tr>
                 @endforeach
@@ -111,16 +111,47 @@
  <script src="{{ asset('/bootstrap/js/jquery.js') }}" type="text/javascript" charset="utf-8" ></script>
         {{-- JS Bootstrap --}}
         <script src="{{ asset('/bootstrap/js/bootstrap.js') }}" type="text/javascript" charset="utf-8" ></script>
- <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
+      <script src="{{ asset ('js/tinymce/tinymce.min.js') }}"  type="text/javascript" charset="utf-8" ></script>
  <script>
-      CKEDITOR.replace("description",{
-       language: 'uk',
-       uiColor: '#f0f0f0', 
-     });
-       CKEDITOR.replace("maintext",{
-       language: 'uk',
-       uiColor: '#f0f0f0',
-     });
+tinymce.init({
+    selector: '#description',
+  height: 300,
+  theme: 'modern',
+  plugins: [
+    'advlist autolink lists link image charmap preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars',
+    'insertdatetime nonbreaking save table contextmenu directionality',
+    'textcolor colorpicker textpattern imagetools'
+  ],
+  toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  toolbar2: 'forecolor backcolor',
+  image_advtab: true,
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tinymce.com/css/codepen.min.css'
+  ],
+  language: 'uk',
+ });
+   tinymce.init({
+    selector: '#maintext',
+  height: 300,
+  theme: 'modern',
+  plugins: [
+    'advlist autolink lists link image charmap preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars',
+    'insertdatetime nonbreaking save table contextmenu directionality',
+    'textcolor colorpicker textpattern imagetools'
+  ],
+  toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  toolbar2: 'forecolor backcolor',
+  image_advtab: true,
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tinymce.com/css/codepen.min.css'
+  ],
+  language: 'uk',
+ });
+      </script>
       </script>
 
 @endsection

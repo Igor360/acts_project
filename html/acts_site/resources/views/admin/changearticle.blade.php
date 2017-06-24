@@ -19,7 +19,7 @@
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
 @endif
-  <form method = "POST" action="{{ route('updatearticle')}}">
+  <form method = "POST" action="{{ route('updatearticle')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
@@ -112,6 +112,49 @@
                 @endif
             </div>
             <span>*Якщо ви хочете бачити кнопку "Детальніше" то поставте галочку навпроти пункту "Додатковий текст"<br> Під додатковим текстом розуміється пункт "Текст"</span>   
+
+             <table class="table">
+                <caption style="text-align: center;">Етюди</caption>
+                <thead>
+                <tr>
+                <th></th>
+                <th>Файл</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($files as $file)
+                <tr>
+                <td>
+                    <form method = "POST" action="{{ route ('deletearticlefile') }}" >
+                    {{ csrf_field() }}
+                      <input type="hidden" name="id_a" value="{{$article_id}}">
+                        <button type="submit" class="btn" name="num" value="{{ $file->file_id }}">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
+                <td><a href="{{ route('getfile', $file->filename) }}">{{ $file->originalname }}</a></td>
+                </tr>
+                @endforeach
+                </tbody>
+                </table>
+
+            <form method = "POST" action="{{ route ('addarticlefiles') }}" enctype="multipart/form-data">  
+            {{ csrf_field() }}  
+             <input type="hidden" name="id_a" value="{{ $article_id }}">
+     <div class = "form-user">
+        <div class = "col-md-4">
+        <span>Давання файлов</span>  
+        </div>
+        <div class = "col-md-8">
+            <input type="file" name="filesfield[]" multiple="true">    
+        </div>
+          <div class = "row text-right">
+      <input type="submit" name="add" value="Додати" class = "btn">  
+     </div> 
+    </div>
+   
+    </form>
             </div>
 
         </div>

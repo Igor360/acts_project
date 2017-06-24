@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth as Auth;
 use Illuminate\Http\Request;
 
 
-
 use App\Teachers as Teachers;
 use App\Positions as Positions;
 use App\User as User;
@@ -22,6 +21,8 @@ use Illuminate\Http\Response;
 use App\MasterWorks as MasterWorks;
 
 use App\Http\Controllers\Input;
+
+require_once ('AddImageToDB.php');
 
 class HomeController extends Controller
 {
@@ -127,7 +128,17 @@ class HomeController extends Controller
         $profinterests = $request['profint'];
         $disciplines = $request['disciplines'];
         $department = $request['department'];
-               echo $id;
+
+        $photo_file = $request['photofile'];
+        
+        if (AddImage($photo_file, Auth::id()))
+        {
+            $photo_file = Files::where('user_id' , Auth::id())
+                    ->where('mime','image/jpeg')
+                    ->orWhere('mime','image/png')->get()->first();
+            $photo = route('getimage', $photo_file->filename);
+            
+        }
         Teachers::UpdateData($id, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position);
 
         $args =array();

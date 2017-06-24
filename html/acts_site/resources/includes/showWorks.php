@@ -57,7 +57,7 @@ function ShowWork($typework_id, $user_id)
 
 	$SortedWorks = GetWorks($typework_id,$user_id);
 	echo "<div class=\"row\">";
-    	
+    if (count($SortedWorks) > 0)	
     foreach ($SortedWorks as $Work) {
     echo "<h4 class=\"text-uppercase text-center\">{$Work['Type']}</h4>";
     echo "<h5 class=\"text-center\">{$Work['StartYear']} ";
@@ -69,6 +69,9 @@ function ShowWork($typework_id, $user_id)
     	echo "  <tr><td><a href = \"{$text->link}\">{$text->title}</a></td></tr>";
     echo "</tbody></table>";
 }
+else
+	echo "<span class=\" c__block-title col-xs-12\" style=\"text-align: left; font-size:16pt;\">Дані відсутні</span>";
+
 
 echo "</div>";
 }

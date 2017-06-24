@@ -135,7 +135,7 @@ class Teachers extends Model
 		$query = "SELECT t.id,t.FirstName,t.MiddleName,t.LastName,t.Profession,
 					t.Photo,p.name AS position, t.isteacher
                     FROM fiot_acts.teachers AS t JOIN fiot_acts.positions AS p
-					WHERE p.id = t.position_id AND t.isteacher = ${isteacher} order by (p.id);";
+					WHERE p.id = t.position_id AND t.isteacher = ${isteacher} ORDER BY (p.id);";
 		$result = DB::select($query);
 		if (count($result) > 0)
 			return $result;

@@ -178,7 +178,7 @@ Route::get('/archive/news/', function (){
 
 
 Route::get('/teachstaff/', function (){
-	$args['page'] = 'about';
+	$args['page'] = 'teachstaff';
 	$args['namepage'] = "Педагогічний склад";
 	$args['persons'] = Teachers:: getTeachersForPage(1);
     return view('pages.teachstaff',$args);
@@ -302,14 +302,22 @@ Route::post('/admin/articles/add','AdminController@insertArticle')->name('insert
 
 Route::post('/admin/articles/delete','AdminController@deleteArticles')->name('deletearticle');
 
-Route::get('/admin/articles/change/{id}','AdminController@changeArticle');
+Route::get('/admin/articles/change/{id}','AdminController@changeArticle')->name('changearticledata');
 
 Route::post('/admin/articles/change/update','AdminController@updateArticle')->name('updatearticle');
 
+Route::post('/admin/articles/change/delete','AdminController@deleteArticleFile')->name('deletearticlefile');
+
+Route::post('/admin/articles/change/addfiles','AdminController@addArticleFiles')->name('addarticlefiles');
+
+
+#files routes
+
 Route::get('files/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
 
+Route::get('files/get/image/{filename}', ['as' => 'getimage', 'uses' => 'FilesController@getImage']);
 
-
+Route::get('files/getarticle/doc/{filename}', ['as' => 'getdocarticle', 'uses' => 'FilesController@getArticleDoc']);
 
 
 

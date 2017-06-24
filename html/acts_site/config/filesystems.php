@@ -61,6 +61,11 @@ return [
             'url' => env('APP_URL').'/storage',
         ],
 
+        'documents_article' => [
+            'driver' => 'local',
+            'root' => storage_path('app/documents_article'),
+            'url' => env('APP_URL').'/storage',
+        ],
 
         's3' => [
             'driver' => 's3',

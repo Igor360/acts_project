@@ -17,7 +17,7 @@
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
 @endif
-  <form method = "POST" action="{{ route('insertarticle')}}">
+  <form method = "POST" action="{{ route('insertarticle')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
@@ -88,6 +88,14 @@
         </div>
     </div>
 
+ <div class = "row">
+        <div class = "col-md-4">
+        <span>Давання файлов</span>  
+        </div>
+        <div class = "col-md-8">
+            <input type="file" name="filesfield[]" multiple="true">        
+        </div>
+    </div>
 
     <div class = "row text-right">
         <button type="submit" name="Save" class="btn">

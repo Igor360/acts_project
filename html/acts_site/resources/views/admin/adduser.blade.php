@@ -16,7 +16,7 @@
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
 @endif
-          	  	<form method = "POST" action="{{ route('adminadduser')}}">
+          	  	<form method = "POST" action="{{ route('adminadduser')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">

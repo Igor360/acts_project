@@ -47,4 +47,24 @@ class FilesController extends Controller
 		return (new Response($file, 200))
               ->header('Content-Type', $entry->mime);
 	}
+
+	public function getImage($filename)
+	{
+		$entry = Files::where('filename', '=', $filename)->firstOrFail();
+		$file = Storage::disk('public')->get($entry->filename);
+ 
+		return (new Response($file, 200))
+              ->header('Content-Type', $entry->mime);
+
+	}
+
+	public function getArticleDoc($filename)
+	{
+		$entry = Files::where('filename', '=', $filename)->firstOrFail();
+		$file = Storage::disk('documents_article')->get($entry->filename);
+ 
+		return (new Response($file, 200))
+              ->header('Content-Type', $entry->mime);
+
+	}
 }

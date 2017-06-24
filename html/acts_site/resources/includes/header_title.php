@@ -14,6 +14,11 @@ if (isset($page))
 			echo "<title>Студентське життя</title>";
 			break;
 
+		case 'teachstaff':
+			echo "<title>Педагогічний склад</title>";
+			break;
+
+
 		case 'diplomWorks':
 			echo "<title>Дипломні роботи</title>";
 			break;
