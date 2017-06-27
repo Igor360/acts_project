@@ -10,315 +10,192 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Use App\Articles as Articles;
-use App\Teachers as Teachers;
-use App\User as User;
-use App\MasterFiles as MasterFiles;
-
-use App\MasterWorks as MasterWorks;
 
 
 
 
-Route::get('/', function () {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('home'); 
-	$args['NewsMain'] = Articles::getSomeNews(3); 
-	$args['page'] = "home";
-    return view('pages.home',$args);
-})->name('main_page');
+
+Route::get('/', [ 'as' => 'main_page', 'uses' => 'HomeController@index']);
 
 
-Route::get('/about/department',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('about_page'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
+Route:: group([ 'prefix' => 'about'], function (){
+
+Route::get('/department', 'HomeController@department_page');
+
+Route::get('/history','HomeController@history_page');
+
+Route::get('/studlife','HomeController@studLife_page');
+
+Route::get('/diplom','HomeController@diplom_page');
+
+Route::get('/work','HomeController@employment_page');
+
+Route::get('/practice','HomeController@practice_page');
+
 });
 
-Route::get('/about/history',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('history_page'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
+Route::group(['prefix' => 'incoming'], function(){ 
+
+Route::get('/1kurs','HomeController@incoming_1kurs_page');
+
+Route::get('/5kurs','HomeController@incoming_5kurs_page');
+
+Route::get('/offDoc','HomeController@incoming_offDoc_page');
+
+Route::get('/studyACTS','HomeController@incoming_learnToActs_page');
+
+Route::get('/actual_info','HomeController@incoming_actualInfo_page');
+
+Route::get('/contacts','HomeController@incoming_contacts_page');
+
 });
 
+Route::get('/forstudents','HomeController@forStudents_page');
 
+Route::get('/aspirantura','HomeController@aspirantura_page');
 
+Route::get('/development','HomeController@development_page');
 
-Route::get('/about/studlife',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('studLife'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
-});
+Route::get('/science','HomeController@science_page');
 
+Route::get('/sport','HomeController@sport_page');
 
-Route::get('/about/diplom',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('diplomWorks'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
-});
+Route::get('/read/{article_number?}','HomeController@read_page');
 
+Route::get('/archive/news/', 'HomeController@news_archive_page');
 
-Route::get('/about/work',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('employment'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
-});
+Route::get('/teachstaff/', 'HomeController@teachstaff_page');
 
+Route::get('/teachstaff/more/{id?}', 'HomeController@teachstaffmore_page');
 
-Route::get('/about/practice',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('practice'); 
-	$args['page'] = "about";
-    return view('pages.page',$args);
-});
+Route::get('/otherpersonal/', 'HomeController@otherpersonal_page');
 
-Route::get('/incoming/1kurs',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_1kurs'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
+Route::get('/masterdocs/{id?}', 'HomeController@masterdocs_page');
 
-Route::get('/incoming/5kurs',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_5kurs'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
+Route::get('/masterdocs/more/{id?}', "HomeController@masterdocs_more_page");
 
-Route::get('/incoming/offDoc',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_offDoc'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
-
-Route::get('/incoming/studyACTS',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_learnToActs'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
-
-Route::get('/incoming/actual_info',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_actualInfo'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
-
-Route::get('/incoming/contacts',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('incoming_contacts'); 
-	$args['page'] = "incoming";
-    return view('pages.page',$args);
-});
-
-
-
-Route::get('/forstudents',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('forStudents'); 
-	$args['page'] = "students";
-    return view('pages.page',$args);
-});
-
-Route::get('/aspirantura',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('aspirantura'); 
-	$args['page'] = "aspirantura";
-    return view('pages.page',$args);
-});
-
-Route::get('/development',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('development'); 
-	$args['page'] = "development";
-    return view('pages.page',$args);
-});
-
-Route::get('/science',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('science'); 
-	$args['page'] = "science";
-    return view('pages.page',$args);
-});
-
-
-Route::get('/sport',function() {
-	$args = array();
-	$args['Articles'] = Articles::getpageArticles('sport'); 
-	$args['page'] = "sport";
-    return view('pages.page',$args);
-});
-
-
-
-Route::get('/read/{article_number?}', function ($article_number = null){
-	$args = array();
-	if ($article_number != null)
-		$args['Articles'] = Articles::where('id', $article_number)->get(); 
-	$args['page'] = "more";
-    return view('pages.page',$args);
-});
-
-
-Route::get('/archive/news/', function (){
-	$args = array();
-	$args['NewsMain'] = Articles::getNews(); 
-	$args['page'] = 'news_archive';
-    return view('pages.page',$args);
-});
-
-
-
-Route::get('/teachstaff/', function (){
-	$args['page'] = 'teachstaff';
-	$args['namepage'] = "Педагогічний склад";
-	$args['persons'] = Teachers:: getTeachersForPage(1);
-    return view('pages.teachstaff',$args);
-});
-
-Route::get('/teachstaff/more/{id?}', function ($id = null){
-	$args['page'] = 'about';
-	$args['namepage'] = "Педагогічний склад";
-	$args['teacher'] = Teachers::getTeacherData($id);
-	$args['user_id'] = Teachers::where('id',$id)->get()[0]->user_id;
-    $args['user'] = User::where('id',$args['user_id'])->get()[0];
-    return view('pages.teachstaffmore',$args);
-});
-
-
-Route::get('/otherpersonal/', function (){
-	$args['page'] = 'about';
-	$args['namepage'] = "Допоміжний персонал";
-	$args['persons'] = Teachers:: getTeachersForPage(0);
-    return view('pages.teachstaff',$args);
-});
-
-Route::get('/masterdocs/{id?}', function ($id = null){
-	$args['page'] = 'about';
-	$args['namepage'] = "Допоміжний персонал";
-	$args['docs'] = MasterWorks::where('user_id', $id)->get();
-    return view('pages.masterdocs',$args);
-});
-
-Route::get('/masterdocs/more/{id?}', function ($id = null){
-	$args['page'] = 'about';
-	$args['namepage'] = "Допоміжний персонал";
-	$args['doc'] = MasterWorks::where('id', $id)->get()[0];
-	$args['files'] = MasterFiles::getFiles($id);
-    return view('pages.masterdocs',$args);
-});
-
+Route::get('/search/',['as' => 'search_article', 'uses' => 'HomeController@search_article_page']);
 
 Auth::routes();
 
 # user page routes
+Route::group(['prefix' => 'user'], function (){
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'UsersController@index')->name('home');
 
-Route::get('/home/publication/', 'HomeController@publication');
+Route::get('/publication/', 'UsersController@publication');
 
-Route::get('/home/conference/', 'HomeController@conference');
+Route::get('/conference/', 'UsersController@conference');
 
-Route::get('/home/changeuser','HomeController@changeUserData');
+Route::get('/changeuser','UsersController@changeUserData');
 
-Route::post('/home/changeuser','HomeController@updateUserData')->name('changeuser');
+Route::post('/changeuser','UsersController@updateUserData')->name('changeuser');
 
-Route::get('/home/changeteacher','HomeController@changeTeacherData');
+Route::get('/changeteacher','UsersController@changeTeacherData');
 
-Route::post('/home/changeteacher','HomeController@updateTeacherData')->name('changeteacher');
+Route::post('/changeteacher','UsersController@updateTeacherData')->name('changeteacher');
 
-Route::get('/home/changelink','HomeController@changeLinks');
+Route::get('/changelink','UsersController@changeLinks');
 
-Route::post('/home/changelink','HomeController@updateLinks')->name('changelinks');
+Route::post('/changelink','UsersController@updateLinks')->name('changelinks');
 
-Route::get('/home/changepublications','HomeController@changePublications');
+Route::group(['prefix' => 'changepublications'], function(){
 
+	Route::get('/','UsersController@changePublications');
 
-Route::post('/home/changepublications/add','HomeController@addPublications')->name('addpublication');
+	Route::post('/add','UsersController@addPublications')->name('addpublication');
 
-Route::post('/home/changepublications/delete','HomeController@deletePublication')->name('deletepublication');
+	Route::post('/delete','UsersController@deletePublication')->name('deletepublication');
 
-Route::post('/home/changepublications/{id?}/','HomeController@updatePublication')->name('updatepublication');
+	Route::post('/{id?}/','UsersController@updatePublication')->name('updatepublication');
 
-Route::get('/home/changepublications/{id?}/','HomeController@changePublication');
+	Route::get('/{id?}/','UsersController@changePublication');
 
+});
 
+Route::group(['prefix' => 'changeconference'], function(){
 
+	Route::get('/','UsersController@changeConference');
 
-Route::get('/home/changeconference','HomeController@changeConference');
+	Route::post('/add','UsersController@addConference')->name('addconference');
 
-Route::post('/home/changeconference/add','HomeController@addConference')->name('addconference');
+	Route::post('/delete','UsersController@deleteConference')->name('deleteconference');
 
-Route::post('/home/changeconference/delete','HomeController@deleteConference')->name('deleteconference');
+	Route::post('/{id?}/','UsersController@updateConference')->name('updateconference');
 
-Route::post('/home/changeconference/{id?}/','HomeController@updateConference')->name('updateconference');
+	Route::get('/{id?}/','UsersController@changeoneConference');
 
-Route::get('/home/changeconference/{id?}/','HomeController@changeoneConference');
+});
 
+Route::group(['prefix' => 'masterdocs'], function(){
 
-Route::get('/home/masterdocs','HomeController@changeMasterDocs')->name('masterdocs');
+	Route::get('/','UsersController@changeMasterDocs')->name('masterdocs');
 
-Route::post('/home/masterdocs/add/','HomeController@addMasterDocs')->name('addmasterdocs');
+	Route::post('/add/','UsersController@addMasterDocs')->name('addmasterdocs');
 
-Route::post('/home/masterdocs/delete/','HomeController@deleteMasterDocs')->name('deletemasterdoc');
+	Route::post('/delete/','UsersController@deleteMasterDocs')->name('deletemasterdoc');
 
-Route::get('/home/masterdocs/change/{id?}','HomeController@changeoneMasterDoc')->name('changemasterdata');
+	Route::get('/change/{id?}','
+	UsersController@changeoneMasterDoc')->name('changemasterdata');
 
-Route::post('/home/masterdocs/change/update','HomeController@updateMasterDoc')->name('updatemasterdoc');
+	Route::post('/change/update','UsersController@updateMasterDoc')->name('updatemasterdoc');
 
-Route::post('/home/masterdocs/change/delete','HomeController@deleteMasterFile')->name('deletemasterfile');
+	Route::post('/change/delete','UsersController@deleteMasterFile')->name('deletemasterfile');
 
-Route::post('/home/masterdocs/change/addfiles','HomeController@addMasterFile')->name('addmasterfile');
+	Route::post('/change/addfiles','UsersController@addMasterFile')->name('addmasterfile');
 
+});
 
+});
 
 
 # admin page routes
-Route::get('/admin/','AdminController@index')->name('adminhome');
 
-Route::get('/admin/add/','AdminController@Adduser')->name('adminadd');
+Route:: group([ 'prefix' => 'admin'], function (){
 
-Route::post('/admin/add/user','AdminController@insertUser')->name('adminadduser');
+Route::get('/','AdminController@index')->name('adminhome');
 
-Route::post('/admin/delete/','AdminController@deleteUser')->name('deleteuser');
+Route::get('/add/','AdminController@Adduser')->name('adminadd');
 
-Route::get('/admin/user/change/{id?}','AdminController@changeUser')->name('changeuser');
+Route::post('/add/user','AdminController@insertUser')->name('adminadduser');
 
-Route::post('/admin/user/change/{id?}','AdminController@updateUser')->name('changeuserdata');
+Route::post('/delete/','AdminController@deleteUser')->name('deleteuser');
 
-Route::get('/admin/articles/','AdminController@AllArticles')->name('adminarticles');
+Route::get('/user/change/{id?}','AdminController@changeUser')->name('changeuser');
 
-Route::get('/admin/articles/add','AdminController@AddArticle')->name('adminarticleadd');
+Route::post('/user/change/{id?}','AdminController@updateUser')->name('changeuserdata');
 
-Route::post('/admin/articles/add','AdminController@insertArticle')->name('insertarticle');
+Route::group(['prefix' => 'articles'], function(){
 
-Route::post('/admin/articles/delete','AdminController@deleteArticles')->name('deletearticle');
+	Route::get('/','AdminController@AllArticles')->name('adminarticles');
 
-Route::get('/admin/articles/change/{id}','AdminController@changeArticle')->name('changearticledata');
+	Route::get('/add','AdminController@AddArticle')->name('adminarticleadd');	
 
-Route::post('/admin/articles/change/update','AdminController@updateArticle')->name('updatearticle');
+	Route::post('/add','AdminController@insertArticle')->name('insertarticle');
 
-Route::post('/admin/articles/change/delete','AdminController@deleteArticleFile')->name('deletearticlefile');
+	Route::post('/delete','AdminController@deleteArticles')->name('deletearticle');
 
-Route::post('/admin/articles/change/addfiles','AdminController@addArticleFiles')->name('addarticlefiles');
+	Route::get('/change/{id}','AdminController@changeArticle')->name('changearticledata');
 
+	Route::post('/change/update','AdminController@updateArticle')->name('updatearticle');
+
+	Route::post('/change/delete','AdminController@deleteArticleFile')->name('deletearticlefile');
+
+	Route::post('/change/addfiles','AdminController@addArticleFiles')->name('addarticlefiles');
+
+});
+
+});
 
 #files routes
+Route::group(['prefix' => 'files'], function(){
 
-Route::get('files/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
+Route::get('/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
 
-Route::get('files/get/image/{filename}', ['as' => 'getimage', 'uses' => 'FilesController@getImage']);
+Route::get('/get/image/{filename}', ['as' => 'getimage', 'uses' => 'FilesController@getImage']);
 
-Route::get('files/getarticle/doc/{filename}', ['as' => 'getdocarticle', 'uses' => 'FilesController@getArticleDoc']);
-
+Route::get('/getarticle/doc/{filename}', ['as' => 'getdocarticle', 'uses' => 'FilesController@getArticleDoc']);
+});
 
 
  

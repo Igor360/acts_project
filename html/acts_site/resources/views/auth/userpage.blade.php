@@ -27,10 +27,10 @@
 <div class="row buttons">
     <div class="container nav-teacher-page">
      <div class="col-md-6">
-      <p class="button"><a class="btn btn-lg btn-primary blue" href="/home/publication/">Публікації</a></p>   
+      <p class="button"><a class="btn btn-lg btn-primary blue" href="/user/publication/">Публікації</a></p>   
      </div>
      <div class="col-md-6">
-            <p class="button"><a class="btn btn-lg btn-primary blue" href="/home/conference/">Конференції</a></p> 
+            <p class="button"><a class="btn btn-lg btn-primary blue" href="/user/conference/">Конференції</a></p> 
      </div>
      </div>
     </div>

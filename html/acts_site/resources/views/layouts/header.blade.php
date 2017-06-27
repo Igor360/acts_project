@@ -16,7 +16,7 @@ require_once("header_title.php");
   <link rel="stylesheet" media="screen" href="{{ asset ('masterslider/style/masterslider.css') }}"  type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/normalise.css') }}" type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/home_page_style.css') }}" type="text/css" >
-  @if ($page == "teachstaff") 
+  @if ($page == "teachstaff" or $page == 'otherpersonal') 
   <link rel="stylesheet" media="all" href="{{ asset ('css/teacher.css') }}"> 
   @endif
   <link rel="shortcut icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
@@ -45,7 +45,7 @@ require_once("header_title.php");
           @if (Auth::guest())
                           <a href="{{ route('login') }}" class="btn btn-sm btn-default btn-icon-left"><i class="fa fa-sign-in"></i> Вхід</a>
                         @else
-                          <a href="/home/" class="btn btn-sm btn-default btn-icon-left"><i class="icon-head"></i> {{ Auth::user()->username }}</a>
+                          <a href="/user/" class="btn btn-sm btn-default btn-icon-left"><i class="icon-head"></i> {{ Auth::user()->username }}</a>
                           <a href="{{ route('logout') }}" class="btn btn-sm btn-default btn-icon-left" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>Вихід</a>
                           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                  {{ csrf_field() }}
@@ -54,8 +54,10 @@ require_once("header_title.php");
          <div class="search-btn">
           <i class="icon-search"></i>
           <div class="search-box">
-           <input type="text" class="form-control input-sm" placeholder="Пошук">
+            <form action="{{ route('search_article') }}" method="GET">
+           <input type="text" class="form-control input-sm" placeholder="Пошук" name = 'search_data'>
            <button type="submit"><i class="icon-search"></i></button>
+           </form>
          </div>
        </div><!-- .search-btn -->
      </div><!-- .toolbar -->

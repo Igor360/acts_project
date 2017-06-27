@@ -12,7 +12,7 @@
             <div class="panel panel-default">
           @if ( $page != null )
                 <div class="panel-heading">
-                <a href="/home/masterdocs/" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+                <a href="/user/masterdocs/" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
                 <h3 class="page-header" style="margin-top: 10px !important;">Редагування</h3></div>
                  <div class="form-user">
                        <form method = "POST" action="{{ route('updatemasterdoc') }}">

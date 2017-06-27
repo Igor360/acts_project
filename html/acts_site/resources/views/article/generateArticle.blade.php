@@ -17,7 +17,7 @@ use App\ArticleFiles;
             if($page != "more")
               $texts = Text::where('article_id', $article->id)->where('type_id',2)->get();
             else
-              $texts = Text::where('article_id', $article->id)->get();
+              $texts = Text::where('article_id', $article->id)->orderBy('type_id', 'desc')->get();
 
              foreach ($texts as $text)
              {

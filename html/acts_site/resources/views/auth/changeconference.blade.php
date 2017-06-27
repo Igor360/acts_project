@@ -33,7 +33,7 @@
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/home/changeconference/{{$conference->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/changeconference/{{$conference->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $conference->type }}</td>
                 <td>{{ $conference->datePublish }}</td>

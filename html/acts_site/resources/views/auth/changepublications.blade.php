@@ -34,7 +34,7 @@
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/home/changepublications/{{$publication->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/changepublications/{{$publication->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $publication->type }}</td>
                 <td>{{ $publication->datePublish }}</td>

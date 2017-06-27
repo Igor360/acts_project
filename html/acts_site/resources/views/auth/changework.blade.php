@@ -12,7 +12,7 @@
             <div class="panel panel-default">
           @if ( $page != null )
                 <div class="panel-heading">
-                <a href="{{ $page == 'publications' ? '/home/changepublications/' : '/home/changeconference/'}}" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+                <a href="{{ $page == 'publications' ? '/user/changepublications/' : '/user/changeconference/'}}" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
                 <h3 class="page-header" style="margin-top: 10px !important;">Редагування</h3></div>
                  <div class="form-user">
                        <form method = "POST" action="{{ $page == "publications" ? route('updatepublication') : route('updateconference') }}">

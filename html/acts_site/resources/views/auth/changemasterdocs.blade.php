@@ -32,7 +32,7 @@
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/home/masterdocs/change/{{$work->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/masterdocs/change/{{$work->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $work->name }}</td>
                 <td>{!! $work->description !!}</td>

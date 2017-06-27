@@ -62,6 +62,17 @@ class Articles extends Model
 	}
 
 
+	public static function searchArticle($query_str)
+	{
+		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type, t.text, a.img, a.isText
+					FROM fiot_acts.articles AS a  JOIN fiot_acts.pages AS p JOIN fiot_acts.texttype AS tt
+					JOIN fiot_acts.text as t 
+					WHERE a.page_id = p.id AND a.type_id = tt.id and t.article_id = a.id and t.type_id !=1 and (match(a.title) against('{$query_str}') or match(t.text) against('{$query_str}'));";
+		$result = DB::select($query);
+		return $result;
+	}
+
+
 
 	public static function InsertData($title, $img, $isText, $page_id, $type_id)
     {
