@@ -23,6 +23,7 @@ require_once("header_title.php");
   <link rel="icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset ('img/icon.ico') }}">
   <link rel="stylesheet" media="all" href="{{ asset ('css/animate.css') }}">
+  <link rel="stylesheet" media="all" href="{{ asset ('css/csspin-balls.css') }}"  type="text/css">
   <script src="{{ asset ('js/modernizr.custom.js') }}"></script>
   <script src="{{ asset ('js/detectizr.min.js') }}"></script>
 </head>
@@ -42,11 +43,13 @@ require_once("header_title.php");
         <div class="nav-toggle"><span></span></div>
 
         <div class="toolbar">
+        <a href="/lang/en/" class="btn-default btn-sm" style="margin-right: 8px;">en</a>
+        <a href="/lang/ua/" class="btn-default btn-sm">ua</a>
           @if (Auth::guest())
-                          <a href="{{ route('login') }}" class="btn btn-sm btn-default btn-icon-left"><i class="fa fa-sign-in"></i> Вхід</a>
+                          <a href="{{ route('login') }}" class="btn btn-sm btn-default btn-icon-left"><i class="fa fa-sign-in"></i>@lang('header.login')</a>
                         @else
                           <a href="/user/" class="btn btn-sm btn-default btn-icon-left"><i class="icon-head"></i> {{ Auth::user()->username }}</a>
-                          <a href="{{ route('logout') }}" class="btn btn-sm btn-default btn-icon-left" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>Вихід</a>
+                          <a href="{{ route('logout') }}" class="btn btn-sm btn-default btn-icon-left" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>@lang('header.logout')</a>
                           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                  {{ csrf_field() }}
                           </form>
@@ -55,7 +58,7 @@ require_once("header_title.php");
           <i class="icon-search"></i>
           <div class="search-box">
             <form action="{{ route('search_article') }}" method="GET">
-           <input type="text" class="form-control input-sm" placeholder="Пошук" name = 'search_data'>
+           <input type="text" class="form-control input-sm" placeholder="@lang('header.search_input')" name = 'search_data'>
            <button type="submit"><i class="icon-search"></i></button>
            </form>
          </div>
@@ -68,43 +71,43 @@ require_once("header_title.php");
    <nav class="main-navigation @if ($page == "home") home-nav @endif">
     <ul class="menu">
       <li class="menu-item-has-children  @if ($page == "home" or $page == "about" or $page == 'teachstaff') current-menu-item @endif">
-      <a class="menu_name">Про АУТС</a>
+      <a class="menu_name">@lang('header.about')</a>
         <ul class="sub-menu"> 
-         <li><a href="/about/department/">Про кафедру</a></li>
-         <li><a href="/about/history/">Історія кафедри</a></li>
-         <li><a href="/teachstaff/">Педагогічний склад</a></li>
-         <li><a href="/otherpersonal/">Допоміжний персонал</a></li>
-         <li><a href="/about/studlife/">Студентське життя</a></li>
-         <li><a href="/about/diplom/">Дипломні роботи</a></li>
-         <li><a href="/about/work/">Працевлаштування</a></li>
-         <li><a href="/about/practice/">Практика</a></li>              
+         <li><a href="/about/department/">@lang('header.aboutdepartment')</a></li>
+         <li><a href="/about/history/">@lang('header.historydepartment')</a></li>
+         <li><a href="/teachstaff/">@lang('header.teachstaff')</a></li>
+         <li><a href="/otherpersonal/">@lang('header.otherpersonal')</a></li>
+         <li><a href="/about/studlife/">@lang('header.studLife')</a></li>
+         <li><a href="/about/diplom/">@lang('header.diplomworks')</a></li>
+         <li><a href="/about/work/">@lang('header.work')</a></li>
+         <li><a href="/about/practice/">@lang('header.practice')</a></li>              
        </ul>
      </li>
      <li class="menu-item-has-children @if ($page == "incoming")  current-menu-item @endif">
-      <a class="menu_name">Вступнику</a>
+      <a class="menu_name">@lang('header.incoming')</a>
       <ul class="sub-menu">
-        <li><a href="/incoming/1kurs/">Вступ на 1 курс</a></li>
-        <li><a href="/incoming/5kurs/">Вступ на 5 курс (магістратура)</a></li>
-        <li><a href="/incoming/offDoc/">Офіційні документи</a></li>
-        <li><a href="/incoming/studyACTS/">Навчання на АУТС</a></li>
-        <li><a href="/incoming/actual_info/">Актуальна інформація для вступника 2017</a></li>
-        <li><a href="/incoming/contacts/">Як нас знайти</a></li>
+        <li><a href="/incoming/1kurs/">@lang('header.incoming_first_kurs')</a></li>
+        <li><a href="/incoming/5kurs/">@lang('header.incoming_fifth_kurs')</a></li>
+        <li><a href="/incoming/offDoc/">@lang('header.incoming_offDoc')</a></li>
+        <li><a href="/incoming/studyACTS/">@lang('header.incoming_studyACTS')</a></li>
+        <li><a href="/incoming/actual_info/">@lang('header.incoming_actual_info')</a></li>
+        <li><a href="/incoming/contacts/">@lang('header.incoming_contacts')</a></li>
       </ul>
     </li>
     <li @if ($page == "students")  class = "current-menu-item" @endif>
-      <a href="/forstudents/">Студентам</a>
+      <a href="/forstudents/">@lang('header.forStudents')</a>
     </li>
     <li   @if ($page == "aspirantura")  class = "current-menu-item" @endif>
-      <a href="/aspirantura/">Аспірантам</a>
+      <a href="/aspirantura/">@lang('header.aspirantura')</a>
     </li>
     <li @if ($page == "development")  class = "current-menu-item" @endif>
-      <a href="/development/">Розробки</a>
+      <a href="/development/">@lang('header.development')</a>
     </li>
     <li @if ($page == "science")  class = "current-menu-item" @endif>
-      <a href="/science/">Наука</a>
+      <a href="/science/">@lang('header.science')</a>
     </li>
     <li @if ($page == "sport")  class = "current-menu-item" @endif>
-      <a href="/sport/">Спорт</a>
+      <a href="/sport/">@lang('header.sport')</a>
     </li>
   </ul><!-- .menu -->
 </nav><!-- .main-navigation -->

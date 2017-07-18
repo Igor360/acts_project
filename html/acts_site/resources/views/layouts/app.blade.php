@@ -19,9 +19,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+<div class = "app-background"></div> 
     <div id="app">
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
+        <div class = "bg-navbar">
+            <div class="container" >
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
@@ -33,7 +35,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/') }}" >
                         <img src="{{ asset ('img/logo.png') }}" style = "height: 80px; margin-top: -30px;">
                     </a>
                 </div>
@@ -42,21 +44,27 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         &nbsp;
-                    </ul>
-
+                    </ul> 
+                    
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                     <li>   
+                      <a href="/lang/en/" class="btn-default btn-sm" style="margin-right: 8px;">en</a>
+                      </li>
+                    <li>
+                    <a href="/lang/ua/" class="btn-default btn-sm">ua</a>
+                       </li>
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}" class="btn btn-sm btn-default btn-icon-left"><i class="fa fa-sign-in"></i> Вхід</a></li>
+                            <li><a href="{{ route('login') }}" class="btn-sm btn-default btn-icon-left"><i class="fa fa-sign-in"></i> @lang('header.login')</a></li>
                         @else
                             <li>
-                            <a href="#" class="btn btn-sm btn-default btn-icon-left" data-toggle="modal" data-target="#loginModal"><i class="icon-head"></i> 
+                            <a href="#" class="btn-sm btn-default btn-icon-left" data-toggle="modal" data-target="#loginModal"><i class="icon-head"></i> 
                                     {{ Auth::user()->username }}</a>
                                 </li>
                                     <li>
-                                    <a href="{{ route('logout') }}" class="btn btn-sm btn-default btn-icon-left" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>
-                                            Вихід
+                                    <a href="{{ route('logout') }}" class="btn-sm btn-default btn-icon-left" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i>
+                                           @lang('header.logout')
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -66,6 +74,7 @@
                         @endif
                     </ul>
                 </div>
+            </div>
             </div>
         </nav>
 
@@ -77,5 +86,20 @@
 
     <!-- Scripts -->
  <!--   <script src="{{ asset('js/app.js') }}"></script> -->
+   <script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script> 
+   <script src="{{ asset('js/jquery.particleground.js') }}"></script> 
+    <script src="{{ asset('js/jquery.tablesorter.min.js') }}"></script> 
+ <script type="text/javascript">
+     $(document).ready(function() 
+    { 
+        $(".table").tablesorter(); 
+    } 
+);   
+    $('.app-background').particleground({
+        parallax : false,
+        maxSpeedX : 0.2,
+        maxSpeedY : 0.2
+    });
+ </script>
 </body>
 </html>

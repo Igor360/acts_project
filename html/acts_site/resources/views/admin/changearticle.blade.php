@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
     <div class="col-md-2 sidebar  col-md-offset-1">
-                <h3 class="page-header" align="center">#АУТС</h3>
+                <h3 class="page-header" align="center">@lang('admin.sidebar_title')</h3>
      @include('admin.sidebar')  
   </div>
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +14,7 @@
           @if ( $page != null )
                 <div class="panel-heading">
       <a href="/admin/articles/" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-      <h3 class="page-header" style="margin-top: 10px !important; color: black;">Редагування статті</h3></div>
+      <h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_chang_article')</h3></div>
 
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
@@ -23,7 +23,7 @@
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>Заголовок</span>	
+   		<span>@lang('article.add_article_form.title')</span>	
    		</div>
    		<div class = "col-md-4">
    			<input type = "text" name = "title" value="{{ $article->title}}">
@@ -32,11 +32,16 @@
 
    	  <div class = "row">
          <div class = "col-md-4">
-         <span>Сторінка</span>   
+         <span>@lang('article.add_article_form.page')</span>   
          </div>
          <div class = "col-md-8">
             <select name="page">
-            <option></option>
+            @foreach ($pages as $p)
+             @if($p->id == $article->page_id)
+              <option selected disabled>{{ $p->Name }}</option>
+              @break
+             @endif
+            @endforeach
             @foreach ($pages as $p)
             <option value="{{ $p->id }}">{{ $p->Name }}</option>
             @endforeach
@@ -47,21 +52,21 @@
 
 <div class="row">
         <div class = "col-md-4">
-         <span>Фото</span>   
+         <span>@lang('article.add_article_form.photo')</span>   
          </div>
       <div class="col-md-8">
-         <input type = "text" name="photo" placeholder="Посилання на фото" style = "margin-top: 5px;">
+         <input type = "text" name="photo" placeholder="@lang('article.add_article_form.photo_link')" style = "margin-top: 5px;">
          <br>
          <input type = "file" name="photofile" style = "margin-top: 10px; font-size: 8pt; margin: 0 auto; line-height: 0px;" accept="image/*">
       </div>
 </div>
  
- <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додаткові дані</h3></div>
+ <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_other_data')</h3></div>
 
 
       <div class = "row">
         <div class = "col-md-4">
-        <span>Описання</span>   
+        <span>@lang('article.add_article_form.description')</span>   
         </div>
         <div class = "col-md-8">
             <textarea id = "description"  name = "description">
@@ -74,7 +79,7 @@
 
       <div class = "row">
         <div class = "col-md-4">
-        <span>Текст</span>   
+        <span>@lang('article.add_article_form.text')</span>   
         </div>
         <div class = "col-md-8">
             <textarea id = "idtext"  name = "text">
@@ -88,13 +93,13 @@
 
   <div class = "row">
         <div class = "col-md-4">
-        <span>Додатковий текст</span>   
+        <span>@lang('article.add_article_form.is_other_text')</span>   
         </div>
         <div class = "col-md-8">
             <input type="radio" name = "isText" value="1" {{ $article->isText == 1
-            ? 'checked = "checked"' : '' }}>Є<br>
+            ? 'checked = "checked"' : '' }}>@lang('article.is_other_text_check.is')<br>
             <input type="radio" name = "isText" value="0" {{ $article->isText == 0
-            ? 'checked = "checked"' : '' }}>Нема
+            ? 'checked = "checked"' : '' }}>@lang('article.is_other_text_check.none')
         </div>
     </div>
 
@@ -102,23 +107,23 @@
 
     <div class = "row text-right">
         <button type="submit" name="Save" class="btn">
-            Зберегти
+            @lang('admin.save_btn')
             <i class="fa fa-sign-in" aria-hidden="true"></i>
         </button>
     </div>
     </form>
                @else
-                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>
+                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('messages.no_data')</h3></div>
                 @endif
             </div>
-            <span>*Якщо ви хочете бачити кнопку "Детальніше" то поставте галочку навпроти пункту "Додатковий текст"<br> Під додатковим текстом розуміється пункт "Текст"</span>   
+            <span>@lang('admin.message_article')</span>   
 
              <table class="table">
-                <caption style="text-align: center;">Етюди</caption>
+                <caption style="text-align: center;">@lang('admin.article_files_table.title')</caption>
                 <thead>
                 <tr>
                 <th></th>
-                <th>Файл</th>
+                <th>@lang('admin.article_files_table.files')</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -144,13 +149,13 @@
              <input type="hidden" name="id_a" value="{{ $article_id }}">
      <div class = "form-user">
         <div class = "col-md-4">
-        <span>Давання файлов</span>  
+        <span>@lang('article.add_article_form.add_files')</span>  
         </div>
         <div class = "col-md-8">
             <input type="file" name="filesfield[]" multiple="true">    
         </div>
           <div class = "row text-right">
-      <input type="submit" name="add" value="Додати" class = "btn">  
+      <input type="submit" name="add" value="@lang('admin.add_btn')" class = "btn">  
      </div> 
     </div>
    

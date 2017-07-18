@@ -11,7 +11,7 @@
 @include('article.generateArticle')
      <!-- Section news -->
      <section class = "article_block bounceInUp wow col-xs-12" data-wow-duration="0.5s" data-wow-delay="0.2s" data-wow-offset = "100">
-       <h2 class="c__block-title" style="text-align: left;">Новини</h2>
+       <h2 class="c__block-title" align="center">@lang('article.news')</h2>
        <div class="news">
 @if ($NewsMain != null)
   @foreach ($NewsMain as $news) 
@@ -30,7 +30,7 @@
 @endif
 
 </div>
-<a href="/archive/news" class="c__button btn" style="margin-left: 40.2%; margin-top: 2.5%; padding-top: 0px;">Архів</a>
+<a href="/archive/news" class="c__button btn" style="margin-left: 40.2%; margin-top: 2.5%; padding-top: 0px;">@lang('article.news_archivebtn')</a>
 </section>
 <!-- End news -->
 </div>

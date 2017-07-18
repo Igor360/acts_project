@@ -5,13 +5,20 @@
  <div class = "container" id="main">
   <div class = "row">
    <div class = "col-sm-12 col-md-12 col-xs-12 main">
-@if ( isset($Articles))
-  @include('article.generateArticle')
+@if (isset($Articles))
+	@if ($Articles != null)
+  		@include('article.generateArticle')
+	@else
+		<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')
+		</h2><hr>
+	@endif
 @elseif ($page == "news_archive")
   @include('article.generateNews')
 @else
-<h2 class="c__block-title col-xs-12" style="text-align: left;">Дані відсутні</h2><hr>
-@endif   
+<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')
+</h2><hr>
+@endif
+  
 
 
 

@@ -7,6 +7,10 @@ use App\Teachers as Teachers;
 use App\User as User;
 use App\MasterFiles as MasterFiles;
 
+use App;
+use Session;
+use Config;
+
 use App\MasterWorks as MasterWorks;
 
 use Illuminate\Http\Request;
@@ -14,6 +18,15 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     //
+	public function changelocation ($locale)
+	{
+  		if (in_array($locale, Config::get('app.locales'))) 
+  		{   													# Проверяем, что у пользователя выбран доступный язык 
+    		Session::put('locale', $locale);                    # И устанавливаем его в сессии под именем locale
+   		}
+  		return redirect()->back();
+	}	
+
 
     public function index () 
     {
@@ -173,7 +186,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['page'] = 'teachstaff';
-		$args['namepage'] = "Педагогічний склад";
+		$args['namepage'] =__('teachstaff.teachstaff_page');
 		$args['persons'] = Teachers:: getTeachersForPage(1);
    		return view('pages.teachstaff',$args);
 	}
@@ -182,10 +195,13 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['page'] = 'about';
-		$args['namepage'] = "Педагогічний склад";
 		$args['teacher'] = Teachers::getTeacherData($id);
-		$args['user_id'] = Teachers::where('id',$id)->get()[0]->user_id;
-    	$args['user'] = User::where('id',$args['user_id'])->get()[0];
+		$teacher = Teachers::where('id', $id)->get()->first();
+    		if ($teacher != null)
+    		{
+    			$user_id = $teacher->user_id;
+    			$args['user'] = User::where('id',$user_id)->get()->first();
+    		}
     	return view('pages.teachstaffmore',$args);
 	}
 
@@ -193,7 +209,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['page'] = 'otherpersonal';
-		$args['namepage'] = "Допоміжний персонал";
+		$args['namepage'] = __('teachstaff.otherpersonal_page');
 		$args['persons'] = Teachers:: getTeachersForPage(0);
     	return view('pages.teachstaff',$args);
 	}

@@ -5,14 +5,14 @@
 <div class="container">
     <div class="row">
     <div class="col-md-2 sidebar  col-md-offset-1">
-                <h3 class="page-header" align="center">#АУТС</h3>
+                <h3 class="page-header" align="center">@lang('admin.sidebar_title')</h3>
      @include('admin.sidebar')  
   </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="col-md-12 panel panel-default">
             <div class = "form-user">
           @if ( $page != null )
-                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додавання статті</h3></div>
+                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_article_main')</h3></div>
 
 @if (isset ($message))
 <div class="row" style="text-align: center;">{{ $message }}</div>
@@ -21,7 +21,7 @@
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>Заголовок</span>	
+   		<span>@lang('article.add_article_form.title')</span>	
    		</div>
    		<div class = "col-md-4">
    			<input type = "text" name = "title" required="">
@@ -30,7 +30,7 @@
 
    	  <div class = "row">
          <div class = "col-md-4">
-         <span>Сторінка</span>   
+         <span>@lang('article.add_article_form.page')</span>   
          </div>
          <div class = "col-md-8">
             <select name="page" required="">
@@ -44,7 +44,7 @@
 
  <div class = "row">
          <div class = "col-md-4">
-         <span>Тип статті</span>   
+         <span>@lang('article.add_article_form.type_article')</span>   
          </div>
          <div class = "col-md-8">
             <select name="typearticle" required="">
@@ -59,20 +59,20 @@
 
 <div class="row">
         <div class = "col-md-4">
-         <span>Фото</span>   
+         <span>@lang('article.add_article_form.photo')</span>   
          </div>
       <div class="col-md-8">
-         <input type = "text" name="photo" placeholder="Посилання на фото" style = "margin-top: 5px;">
+         <input type = "text" name="photo" placeholder="@lang('article.add_article_form.photo_link')" style = "margin-top: 5px;">
          <br>
          <input type = "file" name="photofile" style = "margin-top: 10px; font-size: 8pt; margin: 0 auto; line-height: 0px;" accept="image/*">
       </div>
 </div>
  
- <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">Додаткові дані</h3></div>
+ <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_other_data')</h3></div>
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>Описання</span>   
+         <span>@lang('article.add_article_form.description')</span>   
          </div>
          <div class = "col-md-8">
            <textarea id = "description"  name = "description"> </textarea>
@@ -81,7 +81,7 @@
 
       <div class = "row">
         <div class = "col-md-4">
-        <span>Текст</span>   
+        <span>@lang('article.add_article_form.text')</span>   
         </div>
         <div class = "col-md-8">
             <textarea id = "idtext"  name = "text"> </textarea>
@@ -90,7 +90,7 @@
 
  <div class = "row">
         <div class = "col-md-4">
-        <span>Давання файлов</span>  
+        <span>@lang('article.add_article_form.add_files')</span>  
         </div>
         <div class = "col-md-8">
             <input type="file" name="filesfield[]" multiple="true">        
@@ -99,13 +99,13 @@
 
     <div class = "row text-right">
         <button type="submit" name="Save" class="btn">
-            Зберегти
+            @lang('admin.save_btn')
             <i class="fa fa-sign-in" aria-hidden="true"></i>
         </button>
     </div>
     </form>
                @else
-                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">Дані відсутні</h3></div>
+                <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('messages.no_data')</h3></div>
                 @endif
             </div>
             </div>
@@ -124,11 +124,31 @@
  <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
  <script>
       CKEDITOR.replace("idtext",{
-       language: 'uk',
+       language: '<?php 
+  switch (\App::getLocale()) {
+    case 'en':
+     echo 'en';
+      break;
+    
+    default:
+     echo 'uk';
+      break;
+    } 
+    ?>',
        uiColor: '#f0f0f0',
      });
          CKEDITOR.replace("description",{
-       language: 'uk',
+       language: '<?php 
+  switch (\App::getLocale()) {
+    case 'en':
+     echo 'en';
+      break;
+    
+    default:
+     echo 'uk';
+      break;
+    } 
+    ?>',
        uiColor: '#f0f0f0',
      });
       </script>

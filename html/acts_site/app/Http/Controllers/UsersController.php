@@ -43,64 +43,61 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $args =array();
-        $args['teacher'] = Teachers::getTeacher(Auth::id());
-        $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        $args = array();
+        $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
+        $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
         if ($args['user']->isadmin)
             return redirect()->route('adminhome'); 
         $args['page'] = 'home';
-        return view('auth.home',$args);
+        return view('user.main',$args);
     }
 
     public function publication()
     {
         $args =array();
-        $args['teacher'] = Teachers::getTeacher(Auth::id());
-        $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
+        $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
         $args['page'] = 'home';
         $args['typework'] = 1;
-        $args['user_id'] = Auth::id();
-        return view('auth.home',$args);
+        $args['user_id'] = Auth::user()->getId();
+        return view('user.home',$args);
     }
 
     public function conference()
     {
         $args =array();
-        $args['teacher'] = Teachers::getTeacher(Auth::id());
-        $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
+        $args['user'] = User::where('id',  Auth::user()->getId())->get()->first(); 
         $args['page'] = 'home';
         $args['typework'] = 2;
-        $args['user_id'] = Auth::id();
-        return view('auth.home',$args);
+        $args['user_id'] =  Auth::user()->getId();
+        return view('user.home',$args);
     }
 
-    public function changeUserData()
+    public function changeUserData($message = null)
     {
         $args =array();
+        $args['message'] = $message;
         $args['page'] = 'user';
-        $args['user'] = User::where('id', Auth::id())->get()[0];  
-        return view('auth.changeuserdata',$args);
+        $args['user'] = User::where('id',  Auth::user()->getId())->get()->first();  
+        return view('user.changeuserdata',$args);
     }
 
     public function updateUserData(Request $request)
     {
-        $args =array();
-        $args['page'] = 'user';
-        $id = Auth::id();
+        $id =  Auth::user()->getId();
         $password = $request['password'];
         $password2 = $request['password2'];
         $username = $request['username'];
         $email = $request['email'];
         if ($password2 != $password)
         {
-            $args['password_error'] = "Паролі не співпадають";
-            return view('auth.changeuserdata',$args);
+            $message = "Паролі не співпадають";
+            return redirect()->route('updateuserdata',$message);
         }        
-        User::UpdateData($id,$username,$password,$email);
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0];
-        $args['message'] = "Дані змінено";
-        return view('auth.changeuserdata',$args);
+        User::UpdateData($id,$username,$password,$email);       
+        $message = "Дані змінено";
+        return redirect()->route('updateuserdata',$message);
     }
 
     public function changeTeacherData()
@@ -108,13 +105,16 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'teacher';
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        {
+            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
+            $args['teacher'] = Teachers::where('user_id',  Auth::user()->getId())->get()->first();
+        }
         $args['positions'] = Positions::getAll();
-        return view('auth.changeteacherdata',$args);
+        return view('user.changeteacherdata',$args);
     }
     public function updateTeacherData(Request $request)
     {
-        $id = Teachers::getTeacher(Auth::id())->id;
+        $id = Teachers::getTeacher( Auth::user()->getId())->id;
         $firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
@@ -131,9 +131,9 @@ class UsersController extends Controller
 
         $photo_file = $request['photofile'];
         
-        if (AddImage($photo_file, Auth::id()))
+        if (AddImage($photo_file, Auth::user()->getId()))
         {
-            $photo_file = Files::where('user_id' , Auth::id())
+            $photo_file = Files::where('user_id', Auth::user()->getId())
                     ->where('mime','image/jpeg')
                     ->orWhere('mime','image/png')->get()->first();
             $photo = route('getimage', $photo_file->filename);
@@ -143,11 +143,11 @@ class UsersController extends Controller
 
         $args =array();
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
         $args['page'] = 'teacher';
         $args['positions'] = Positions::getAll();
         $args['message'] = "Дані змінено";
-        return view('auth.changeteacherdata',$args);
+        return view('user.changeteacherdata',$args);
     }
 
 
@@ -156,23 +156,26 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'links';
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        return view('auth.changelinks',$args);
+        {
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+            $args['links'] = Links::where('user_id', Auth::user()->getId())->get()->first();
+        }
+        return view('user.changelinks',$args);
     }
 
     public function updateLinks(Request $request)
     {
         $args =array();
-        $id = Auth::id();
+        $id = Auth::user()->getId();
         $AnotherSite = $request['anothersite'];
         $Intellect = $request['intellect'];
         $TimeTable = $request['timetable'];
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
         Links::UpdateData($id, $AnotherSite, $Intellect, $TimeTable);
         $args['message'] = 'Дані змінено';
         $args['page'] = 'links';
-        return view('auth.changelinks',$args);
+        return view('user.changelinks',$args);
     }
 
     public function changePublications()
@@ -180,39 +183,27 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'publications';
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $args['publications'] = Works::where('user_id', Auth::id())->where('typework_id', 1)->get();
-        return view('auth.changepublications',$args);
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+        $args['publications'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 1)->get();
+        return view('user.changepublications',$args);
     }
-
 
     public function addPublications(Request $request)
     {
-        $args =array();
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $title = $request['name'];
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $id = Auth::id();
+        $id = Auth::user()->getId();
         Works::InsertData($type,$date,$title,$link,$id, 1);
-        $args['page'] = 'publications';
-        $args['publications'] = Works::where('user_id', $id)->where('typework_id', 1)->get();
-        return view('auth.changepublications',$args);
+        return redirect()->route('changepublications_user');
     }
-
 
     public function deletePublication(Request $request)
     {
-        $args =array();
         $id_publication = $request['numpublication'];
         Works::where('id',$id_publication)->delete();
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $args['page'] = 'publications';
-        $args['publications'] = Works::where('user_id', Auth::id())->where('typework_id', 1)->get();
-        return view('auth.changepublications',$args);
+        return redirect()->route('changepublications_user');
     }
 
 
@@ -220,28 +211,20 @@ class UsersController extends Controller
     {
         $args =array();
         $args['id_publication'] = $id;
-        $id = Auth::id();
         $args['page'] = 'publications';
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $args['publications'] = Works::where('user_id', $id)->where('typework_id', 1)->get();
-        return view('auth.changework',$args);
+        $args['work'] = Works::where('id', $id)->where('typework_id', 1)->get()->first();
+        return view('user.changework',$args);
     }
 
 public function updatePublication(Request $request)
     {
-        $args =array();
-        $args['page'] = 'publications';
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $id = $request['page'];
         $title = $request['name'];
-         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
         Works::UpdateData($id,$type,$date,$title,$link);
-        $args['publications'] = Works::where('user_id', Auth::id())->where('typework_id', 1)->get();
-        return view('auth.changepublications',$args);
+        return redirect()->route('changepublications_user');
     }
 
 
@@ -253,38 +236,29 @@ public function updatePublication(Request $request)
         $args =array();
         $args['page'] = 'conference';
          if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-         $args['conferences'] = Works::where('user_id', Auth::id())->where('typework_id', 2)->get();
-        return view('auth.changeconference',$args);
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+         $args['conferences'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 2)->get();
+        return view('user.changeconference',$args);
     }
 
     public function addConference(Request $request)
     {
-        $args =array();
+     
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $title = $request['name'];
-        $id = Auth::id();
-         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+        $id = Auth::user()->getId();
         Works::InsertData($type,$date,$title,$link,$id, 2);
-        $args['page'] = 'conference';
-        $args['conferences'] = Works::where('user_id', $id)->where('typework_id', 2)->get();
-        return view('auth.changeconference',$args);
+        return redirect()->route('changeconference_user');
     }
 
 
     public function deleteConference(Request $request)
     {
-        $args =array();
         $id_publication = $request['numconference'];
         Works::where('id',$id_publication)->delete();
-        $args['page'] = 'conference';
-         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $args['conferences'] = Works::where('user_id', Auth::id())->where('typework_id', 2)->get();
-        return view('auth.changeconference',$args);
+        return redirect()->route('changeconference_user');
     }
 
 
@@ -292,37 +266,20 @@ public function updatePublication(Request $request)
     {
         $args =array();
         $args['id_publication'] = $id;
-        $id = Auth::id();
         $args['page'] = 'conference';
-         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        $args['conferences'] = Works::where('user_id', $id)->where('typework_id', 2)->get();
-        return view('auth.changework',$args);
+        $args['work'] = Works::where('id', $id)->where('typework_id', 2)->get()->first();
+        return view('user.changework',$args);
     }
 
 public function updateConference(Request $request)
     {
-        $args =array();
-        $args['page'] = 'conference';
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $id = $request['page'];
         $title = $request['name'];
-         if (Auth::check())
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
         Works::UpdateData($id,$type,$date,$title,$link);
-        $args['conferences'] = Works::where('user_id', Auth::id())->where('typework_id', 2)->get();
-        return view('auth.changeconference',$args);
-    }
-
-
-
-
-
-
-
-
+        return redirect()->route('changeconference_user');    }
 
     public function changeMasterDocs(Request $request)
     {
@@ -330,47 +287,32 @@ public function updateConference(Request $request)
         $args['page'] = 'master';
         if (Auth::check())
         {
-            $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['works'] = MasterWorks::where('user_id', Auth::user()->getId())->get();
+            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
         }
-        return view('auth.changemasterdocs',$args);
+        return view('user.changemasterdocs',$args);
     }
 
      public function addMasterDocs(Request $request)
     {
-        $args =array();
-        $args['page'] = 'master';
         $name = $request['name'];
         $date = $request['datepublication'];
         $description = $request['description'];
         $maintext = $request['maintext'];
-        $id = Auth::id();
+        $id = Auth::user()->getId();
         MasterWorks::InsertData($name, $description,$maintext, $date, $id);
-        if (Auth::check())
-        {
-            $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        }
-
         $work = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->id; 
         $files = $request['filefield'];
         HomeController::UploadFiles($files,$work);
-        return view('auth.changemasterdocs',$args);
+        return redirect()->route('masterdocs');
     }
 
 
     public function deleteMasterDocs(Request $request)
     {
-        $args =array();
         $id = $request['num'];
         MasterWorks::where('id',$id)->delete();
-        $args['page'] = 'master';
-         if (Auth::check())
-        {
-            $args['works'] = MasterWorks::where('user_id', Auth::id())->get();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
-        }
-        return view('auth.changemasterdocs',$args);
+        return redirect()->route('masterdocs');
     }
 
      public function changeoneMasterDoc(Request $request,$id = null)
@@ -382,15 +324,13 @@ public function updateConference(Request $request)
          if (Auth::check())
         {
             $args['work'] = MasterWorks::where('id', $id)->get()->first();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
         }
-        return view('auth.changedocmaster',$args);
+        return view('user.changedocmaster',$args);
     }
     
     public function updateMasterDoc(Request $request)
     {
-        $args =array();
-        $args['page'] = 'master';
         $id = $request['id_mw'];
         $name = $request['name'];
         $date = $request['datepublication'];
@@ -403,8 +343,6 @@ public function updateConference(Request $request)
 
     public function deleteMasterFile(Request $request)
     {
-        $args =array();
-        $args['page'] = 'master';
         $id_file = $request['num'];
         $id = $request['id_mw']; 
         Files::where('id',$id_file)->delete();
@@ -414,8 +352,6 @@ public function updateConference(Request $request)
 
     public function addMasterFile(Request $request)
     {
-        $args =array();
-        $args['page'] = 'master';
         $id = $request['id_mw']; 
         $files = $request['filefield'];
         HomeController::UploadFiles($files,$id);
@@ -424,7 +360,7 @@ public function updateConference(Request $request)
 
     public static  function UploadFiles($files,$work_id)
     {
-    foreach ($files as $file) {
+     foreach ($files as $file) {
           
         $extension = $file->getClientOriginalExtension();
         Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
@@ -437,7 +373,7 @@ public function updateConference(Request $request)
         $entry->size = filesize($file);
         $entry->save();
         MasterFiles::InsertData($work_id, $entry->id);
-    }
+     }
 
     }
 

@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: fiot_acts
 -- ------------------------------------------------------
--- Server version	5.6.36
+-- Server version	5.7.18-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +28,7 @@ CREATE TABLE `works` (
   `datePublish` date DEFAULT NULL,
   `title` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_id` int(10) NOT NULL,
+  `user_id` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `typework_id` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28  1:06:39
+-- Dump completed on 2017-07-15 19:24:26

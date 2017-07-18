@@ -29,7 +29,8 @@
   background-color: #3f4fe8;
 }
 
-.nav-toggle span:before, .nav-toggle span:after {
+.nav-toggle span:before, 
+.nav-toggle span:after {
   position: absolute;
   content: "";
   width: 36px;
@@ -221,7 +222,7 @@
     display: table-cell;
     position: relative;
     top: .70em;
-    width: 45%;
+    width: 50%;
   }
   .c__button{
     display: block;
@@ -1183,13 +1184,14 @@
   margin: 15px 0;
   color: black;
 }
-.c__block-title:after,.c__block-title:before
+.c__block-title:after,
+.c__block-title:before
 {
   content: "";
   display: table-cell;
   position: relative;
   top: .70em;
-  width: 45%;
+  width: 50%;
 }
 .presentation{
   display: block;
@@ -1459,4 +1461,8 @@
 
 .menu_name:hover{
   cursor: pointer;
+}
+
+.text-skyblue{
+      text-shadow: 0px 0px 5px #063cc7;
 }

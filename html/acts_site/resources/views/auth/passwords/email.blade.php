@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Скидання паролю</div>
+                <div class="panel-heading">@lang('auth.resetpassword')</div>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Відправити посилання 
+                                    @lang('auth.send_mail_btn')
                                 </button>
                             </div>
                         </div>

@@ -17,7 +17,7 @@ class ArticleFiles extends Model
         $path_to_image = explode('/', $articles_image);
         $image = $path_to_image[count($path_to_image)-1];
 		$query = "SELECT a.id, a.title, a.img, a.isText, f.filename, f.mime,  f.originalname, f.id as file_id
-                    FROM fiot_acts.articles AS a JOIN fiot_acts.articlefiles AS af JOIN fiot_acts.files AS f
+                    FROM articles AS a JOIN articlefiles AS af JOIN files AS f
                     WHERE af.idfile = f.id AND af.idarticle = a.id AND a.id = {$article_id} AND f.filename != '{$image}';";
 		$result = DB::select($query);
 		return $result;
@@ -27,7 +27,7 @@ class ArticleFiles extends Model
     public static function getImages($article_id)
     {
         $query = "SELECT a.id, a.title, a.img, a.isText, f.filename, f.mime,  f.originalname, f.id as file_id
-                    FROM fiot_acts.articles AS a JOIN fiot_acts.articlefiles AS af JOIN fiot_acts.files AS f
+                    FROM articles AS a JOIN articlefiles AS af JOIN files AS f
                     WHERE af.idfile = f.id AND af.idarticle = a.id AND a.id = {$article_id} AND (f.mime = 'image/jpg' OR f.mime =  'image/png' OR f.mime = 'image/jpeg');";
         $result = DB::select($query);
         return $result;

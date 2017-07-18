@@ -2,7 +2,7 @@
 
  <footer class="footer">
           <div class="footer__header">
-            <h1 class="footer_h1">Наші партнери</h1>
+            <h1 class="footer_h1">@lang('footer.our_partners')</h1>
             <div class="prtners" style="border-bottom: none;">
               <a href="http://microsoft.com">
                 <img src="http://orig14.deviantart.net/7dc4/f/2012/237/3/1/microsoft_new_logo___2012___png_by_bymemristor-d5cck4d.png" alt="">
@@ -20,7 +20,7 @@
           </div>
           <div class="footer__contacts">
             <p>
-              &copy; ACTS | +380 (44) 204 86 10 | +380 (44) 204 92 85 | kafedra@acts.kpi.ua 
+               @lang('footer.department') | @lang('footer.number_1')  | @lang('footer.number_2')  | @lang('footer.email')  
             </p>
           </div>
 </footer>

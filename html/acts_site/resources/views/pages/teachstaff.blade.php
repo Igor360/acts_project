@@ -33,7 +33,7 @@ else
   echo          "<h4 class= \"teacher_name\">".$person->LastName." ".$person->FirstName." ".$person->MiddleName. "</h4><br/>";
   echo           "<p class=  \"teachDescr\">".$person->position." ".$person->Profession."</p>";
   if ($person->isteacher)
-  	echo           "<a class = \"teacherbtn\" href=\"/teachstaff/more/{$person->id}\">Детальныше</a>";
+  	echo           "<a class = \"teacherbtn\" href=\"/teachstaff/more/{$person->id}\">".__('article.article_morebtn')."</a>";
   echo       "</div>";
   echo     "</div>"; 
 $rowcol +=1;
@@ -42,7 +42,7 @@ $rowcol +=1;
 ?>
          
 @else
-<h2 class="c__block-title col-xs-12" style="text-align: left;">Дані відсутні</h2><hr>
+<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
 @endif
 
 </div>

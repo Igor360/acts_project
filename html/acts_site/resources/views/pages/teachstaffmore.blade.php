@@ -5,11 +5,11 @@
  <div class = "container" id="main">
   <div class = "row">
    <div class = "col-sm-12 col-md-12 col-xs-12 main">
-@if ( isset($teacher))
-
+@if ( isset($teacher) and isset($user))
+ @if ($teacher != null and $user != null)
  <div class="col-lg-5 col-md-5 col-xs-5">
         <div class = "teacher_image">
-          <img src = "{{ $teacher->Photo }}" style="width:88%; border-radius: 5px;">
+          <img src = "{{ $teacher->Photo }}" style="width:88%; border-radius: 5px; box-shadow: inset 0px 0px 20px black;">
           <div class = "image-logo"><img src="/img/logo.png"></div>
         </div>
       </div>
@@ -18,41 +18,43 @@
         <p>{{ $teacher->position }} {{ $teacher->Profession}}</p>
         <div class="line"></div>
         <div class = "row" style = "padding: 15px; margin-top:0px;">
-        <a href="{{ $teacher->Intellect}}" class ="Intellectbtn ">Intellect</a>
-          <a href="{{ $teacher->AnotherSite}}" class ="Web-sitebtn">Web-site</a>
-          <a href="{{ $teacher->TimeTable}}" class ="TimeTablebtn">Розклад</a>
+        <a href="{{ $teacher->Intellect}}" class ="Intellectbtn ">@lang('teachstaff.intellect')</a>
+          <a href="{{ $teacher->AnotherSite}}" class ="Web-sitebtn">@lang('teachstaff.website')</a>
+          <a href="{{ $teacher->TimeTable}}" class ="TimeTablebtn">@lang('teachstaff.timetable')</a>
          @if ($user->hasmasters)
-          <a href="/masterdocs/{{$user_id}}" class ="Mastersbtn">Етюди</a>
+          <a href="/masterdocs/{{$user->id}}" class ="Mastersbtn">@lang('teachstaff.sketches')</a>
         @endif
         </div>
         <div class="line"></div>
         <div style = "margin-top:10px;">
-          <p><b>Дисципліни:</b></p>
+          <p><b>@lang('teachstaff.disciplines'):</b></p>
               {!! $teacher->Discipline !!}
           <div class = "line-bottom-mini"></div>
-          <p><b>Сфера наукових інтересів:</b></p>
+          <p><b>@lang('teachstaff.ProfessionInt'):</b></p>
             {!! $teacher->ProfInterest !!}
           <div class = "line-bottom-mini"></div>
-          <p>Час та місце проведення консультацій: {{ $teacher->TimeDay}} {{ $teacher->Room }}</p>
+          <p>@lang('teachstaff.Consultations'): {{ $teacher->TimeDay}} {{ $teacher->Room }}</p>
           <div class = "line-bottom-mini"></div>
-          <p><b>Публікації:</b></p>
+          <p><b>@lang('teachstaff.Publications'):</b></p>
        		<?php 
 require_once('showWorks.php');
-ShowWork(1,$user_id);
+ShowWork(1,$user->id);
 			?>
  <div class = "line-bottom-mini"></div>
-          <p><b>Конференції:</b></p>
+          <p><b>@lang('teachstaff.Conference'):</b></p>
        		<?php 
 require_once('showWorks.php');
-ShowWork(2,$user_id);
+ShowWork(2,$user->id);
 			?>
 
 		<div class = "line-bottom-mini"></div>
         </div>
       </div>
-
+ @else
+  <h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
+ @endif
 @else
-<h2 class="c__block-title col-xs-12" style="text-align: left;">Дані відсутні</h2><hr>
+<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
 @endif   
 
 
@@ -110,7 +112,7 @@ ShowWork(2,$user_id);
  width: 59.5%;
  margin-left: 14%;
  margin-right: 14%;
- margin-top: -50px;
+ margin-top: -10px;
 
 }
 .line{

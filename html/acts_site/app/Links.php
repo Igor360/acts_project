@@ -43,7 +43,8 @@ class Links extends Model
         if ($timetable != null)
             $AddData['TimeTable'] = $timetable;
 
-        DB::table('links')->insert($AddData);
+        DB::connection('mysql2')->table('links')->insert($AddData);
+        DB::connection('mysql')->table('links')->insert($AddData);
     }
 
 }

@@ -48,7 +48,6 @@ class Works extends Model
 			$changedata['typework_id'] = $typework_id;
 
 		Works::where('id',$id)->update($changedata);
-		return True;
 	} 
 
 
@@ -56,28 +55,29 @@ class Works extends Model
     // 
 	public static function getYearWorks($typework_id, $user_id)
 	{
-		$query = "SELECT DISTINCT year(w.datePublish) AS year FROM fiot_acts.works AS w WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY (w.DatePublish);";
+		$query = "SELECT DISTINCT year(w.datePublish) AS year FROM works AS w 
+			WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(year);";
 		$result = DB::select($query);
 		return $result;
 	}
 
 	public static function getTypesWorks($typework_id, $user_id)
 	{
-		$query = "SELECT DISTINCT  w.type FROM fiot_acts.works AS w WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(w.type);";
+		$query = "SELECT DISTINCT  w.type FROM works AS w WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(w.type);";
 		$result = DB::select($query);
 		return $result;
 	} 
 
 	public static function getPeriodWorks($year_start, $year_end,$typework_id, $user_id, $type)
 	{
-		$query = "SELECT * FROM fiot_acts.works AS w WHERE w.typework_id = {$typework_id} and w.user_id = ${user_id} and year(w.datePublish) >= ${year_start} AND year(w.datePublish) <= ${year_end} AND w.type = '${type}' order by(w.datePublish);";
+		$query = "SELECT * FROM works AS w WHERE w.typework_id = {$typework_id} and w.user_id = ${user_id} and year(w.datePublish) >= ${year_start} AND year(w.datePublish) <= ${year_end} AND w.type = '${type}' order by(w.datePublish);";
 		$result = DB::select($query);
 		return $result;
 	}
 
 	public static function getOneYearWorks($year,$typework_id, $user_id, $type)
 	{
-		$query = "SELECT * FROM fiot_acts.works AS w WHERE w.typework_id = ${typework_id} and w.user_id = ${user_id} and year(w.datePublish) <= ${year} AND w.type = '${type}' order by(w.datePublish);";
+		$query = "SELECT * FROM works AS w WHERE w.typework_id = ${typework_id} and w.user_id = ${user_id} and year(w.datePublish) <= ${year} AND w.type = '${type}' order by(w.datePublish);";
 		$result = DB::select($query);
 		return $result;
 	}

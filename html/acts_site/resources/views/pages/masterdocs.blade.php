@@ -11,7 +11,7 @@
  		 <h2 class="c__block-title col-xs-12" style="text-align: left;">{{ $doc->name }}</h2>
          {!! $doc->description !!}
       <br>
-  		<p class="text-right"><a class="social-url" href = "/masterdocs/more/{{$doc->id}}/"><button type = "button" class = "btn btn-default">Детальнiше</button></a></p>
+  		<p class="text-right"><a class="social-url" href = "/masterdocs/more/{{$doc->id}}/"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p>
     </section>    <br>  
   @endforeach
 @elseif (isset($doc))
@@ -23,14 +23,14 @@
       {!! $doc->mainText !!}
        
                 <hr>
-                <span><b>Файли:</b><br></span>
+                <span><b>@lang('article.files'):</b><br></span>
                 @foreach ($files as $file)
                 <a href="{{ route('getfile', $file->filename) }}">{{ $file->originalname }}</a><br>
                 @endforeach
                
     </section>
 @else
-<h2 class="c__block-title col-xs-12" style="text-align: left;">Дані відсутні</h2><hr>
+<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
 @endif   
 </div>
 </div>

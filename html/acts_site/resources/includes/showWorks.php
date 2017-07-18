@@ -10,6 +10,7 @@ $years = Works::getYearWorks($typework_id, $user_id);
 $types = Works::getTypesWorks($typework_id, $user_id);
 $lenth = count($years);
 $ListWorks = array();
+if ($years != null)
 if ($lenth % 2 == 0)
 	{
 		foreach ($types as $type)
@@ -70,7 +71,7 @@ function ShowWork($typework_id, $user_id)
     echo "</tbody></table>";
 }
 else
-	echo "<span class=\" c__block-title col-xs-12\" style=\"text-align: left; font-size:16pt;\">Дані відсутні</span>";
+	echo "<span class=\" c__block-title col-xs-12\" style=\"text-align: left; font-size:16pt;\">".__('teachstaff.message_no_data')."</span>";
 
 
 echo "</div>";

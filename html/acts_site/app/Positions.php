@@ -11,7 +11,7 @@ class Positions extends Model
 
     public static function getAll()
     {
-    	$query = "SELECT * From fiot_acts.positions as p;";
+    	$query = "SELECT * From positions as p;";
 		$result = DB::select($query);
 		return $result;
     }

@@ -19,8 +19,8 @@ class Articles extends Model
     // метод для отримання статей для певної сторінки
 	public static function getPageArticles($page)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name, tt.name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
-					INNER JOIN fiot_acts.texttype AS tt
+		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name, tt.name FROM articles AS a INNER JOIN pages AS p 
+					INNER JOIN texttype AS tt
 					WHERE a.page_id = p.id  AND p.name = \"{$page}\" 
 					AND tt.id = a.type_id AND tt.name = \"article\"  ORDER BY(a.id);";
 		$result = DB::select($query);
@@ -30,7 +30,7 @@ class Articles extends Model
 
 	public static function getNews()
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
+		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC;";
 		$result = DB::select($query);
 		return $result;
@@ -38,7 +38,7 @@ class Articles extends Model
 
 	public static function getSomeNews($num)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
+		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC LIMIT 0,{$num};";
 		$result = DB::select($query);
 		return $result;
@@ -46,7 +46,7 @@ class Articles extends Model
 
 	public static function getOneNews($news_id)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM fiot_acts.articles AS a INNER JOIN fiot_acts.pages AS p 
+		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" AND a.id = {$news_id};";
 		$result = DB::select($query);
 		return $result;
@@ -55,8 +55,8 @@ class Articles extends Model
 
 	public static function getAll()
 	{
-		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM fiot_acts.articles AS a  JOIN fiot_acts.pages AS p JOIN fiot_acts.texttype AS tt
-			WHERE a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id);";
+		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM articles AS a  JOIN pages AS p JOIN texttype AS tt
+			WHERE a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,200;";
 		$result = DB::select($query);
 		return $result;
 	}
@@ -65,9 +65,38 @@ class Articles extends Model
 	public static function searchArticle($query_str)
 	{
 		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type, t.text, a.img, a.isText
-					FROM fiot_acts.articles AS a  JOIN fiot_acts.pages AS p JOIN fiot_acts.texttype AS tt
-					JOIN fiot_acts.text as t 
+					FROM articles AS a  JOIN pages AS p JOIN texttype AS tt	JOIN text as t 
 					WHERE a.page_id = p.id AND a.type_id = tt.id and t.article_id = a.id and t.type_id !=1 and (match(a.title) against('{$query_str}') or match(t.text) against('{$query_str}'));";
+		$result = DB::select($query);
+		return $result;
+	}
+
+	public static function getArticles (Array $search_data)
+	{
+		$query= "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM articles AS a  JOIN pages AS p JOIN texttype AS tt
+			WHERE ";
+
+			$keys = array_keys($search_data);
+			foreach ($search_data as $key => $value) {
+				switch ($key) {
+					case 'type':
+						$query .= " a.type_id = ${value} "; 
+						break;
+					
+					case 'title':
+						$query .= " match(a.title) against('${value}') ";
+						break;
+
+					case 'page':
+						$query .= " a.page_id = ${value} ";
+						break;	
+
+					default:
+						break;
+				}
+				$query .= "AND"; 
+			}
+		$query .= " a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,100;";
 		$result = DB::select($query);
 		return $result;
 	}

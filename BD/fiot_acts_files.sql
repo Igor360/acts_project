@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: fiot_acts
 -- ------------------------------------------------------
--- Server version	5.6.36
+-- Server version	5.7.18-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,13 +28,13 @@ CREATE TABLE `files` (
   `mime` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `size` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `originalname` mediumtext COLLATE utf8_unicode_ci,
-  `user_id` int(11) NOT NULL,
+  `user_id` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_user_idx` (`user_id`),
   CONSTRAINT `id_user_` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28  1:06:35
+-- Dump completed on 2017-07-15 19:24:23

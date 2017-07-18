@@ -2,7 +2,8 @@
 use App\Text as Text; 
 use App\ArticleFiles;
 ?>
-@if ($Articles != null)
+@if (isset($Articles))
+@if (count($Articles) > 0)
 	@foreach ($Articles as $article) 
 	   <section class = "article_block">
   	 @if ($article != "NULL")
@@ -40,12 +41,15 @@ use App\ArticleFiles;
         ?>
       <br>
      </div>
-  @if ($article->isText and $page != 'more')
-  			<p class="text-right"><a class="social-url" href = "/read/{{$article->id}}"><button type = "button" class = "btn btn-default">Детальнiше</button></a></p> 
+     @if ($article->isText and $page != 'more')
+  			<p class="text-right"><a class="social-url" href = "/read/{{$article->id}}"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p> 
      @endif
 
     </section>    <br>  
   @endforeach
 @else
-	<h2 class="c__block-title col-xs-12" style="text-align: left;">Дані відсутні</h2><hr>
+	<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
+@endif
+@else
+<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')</h2><hr>
 @endif

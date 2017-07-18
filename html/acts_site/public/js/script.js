@@ -170,3 +170,10 @@ jQuery(document).ready(function($) {
 	}
 
 	});
+
+window.addEventListener("load", showPage, false);
+
+
+function showPage(){
+	document.body.classList.remove('cp-spiner');
+}

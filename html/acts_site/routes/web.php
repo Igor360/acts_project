@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,41 +13,39 @@
 */
 
 
-
-
+Route::get('/lang/{locale}/',['middleware' => 'lang',  'uses' => 'HomeController@changelocation']);
 
 Route::get('/', [ 'as' => 'main_page', 'uses' => 'HomeController@index']);
 
-
 Route:: group([ 'prefix' => 'about'], function (){
 
-Route::get('/department', 'HomeController@department_page');
+ Route::get('/department', 'HomeController@department_page');
 
-Route::get('/history','HomeController@history_page');
+ Route::get('/history','HomeController@history_page');
 
-Route::get('/studlife','HomeController@studLife_page');
+ Route::get('/studlife','HomeController@studLife_page');
 
-Route::get('/diplom','HomeController@diplom_page');
+ Route::get('/diplom','HomeController@diplom_page');
 
-Route::get('/work','HomeController@employment_page');
+ Route::get('/work','HomeController@employment_page');
 
-Route::get('/practice','HomeController@practice_page');
+ Route::get('/practice','HomeController@practice_page');
 
 });
 
 Route::group(['prefix' => 'incoming'], function(){ 
 
-Route::get('/1kurs','HomeController@incoming_1kurs_page');
+ Route::get('/1kurs','HomeController@incoming_1kurs_page');
 
-Route::get('/5kurs','HomeController@incoming_5kurs_page');
+ Route::get('/5kurs','HomeController@incoming_5kurs_page');
 
-Route::get('/offDoc','HomeController@incoming_offDoc_page');
+ Route::get('/offDoc','HomeController@incoming_offDoc_page');
 
-Route::get('/studyACTS','HomeController@incoming_learnToActs_page');
+ Route::get('/studyACTS','HomeController@incoming_learnToActs_page');
+  
+ Route::get('/actual_info','HomeController@incoming_actualInfo_page');
 
-Route::get('/actual_info','HomeController@incoming_actualInfo_page');
-
-Route::get('/contacts','HomeController@incoming_contacts_page');
+ Route::get('/contacts','HomeController@incoming_contacts_page');
 
 });
 
@@ -76,32 +75,33 @@ Route::get('/masterdocs/more/{id?}', "HomeController@masterdocs_more_page");
 
 Route::get('/search/',['as' => 'search_article', 'uses' => 'HomeController@search_article_page']);
 
+
 Auth::routes();
 
 # user page routes
 Route::group(['prefix' => 'user'], function (){
 
-Route::get('/', 'UsersController@index')->name('home');
+ Route::get('/', 'UsersController@index')->name('home');
 
-Route::get('/publication/', 'UsersController@publication');
+ Route::get('/publication/', 'UsersController@publication');
 
-Route::get('/conference/', 'UsersController@conference');
+ Route::get('/conference/', 'UsersController@conference');
 
-Route::get('/changeuser','UsersController@changeUserData');
+ Route::get('/changeuser/{message?}/','UsersController@changeUserData')->name('updateuserdata');
 
-Route::post('/changeuser','UsersController@updateUserData')->name('changeuser');
+ Route::post('/changeuser/update/','UsersController@updateUserData')->name('changeuser');
 
-Route::get('/changeteacher','UsersController@changeTeacherData');
+ Route::get('/changeteacher','UsersController@changeTeacherData');
 
-Route::post('/changeteacher','UsersController@updateTeacherData')->name('changeteacher');
+ Route::post('/changeteacher','UsersController@updateTeacherData')->name('changeteacher');
 
-Route::get('/changelink','UsersController@changeLinks');
+ Route::get('/changelink','UsersController@changeLinks');
 
-Route::post('/changelink','UsersController@updateLinks')->name('changelinks');
+ Route::post('/changelink','UsersController@updateLinks')->name('changelinks');
 
-Route::group(['prefix' => 'changepublications'], function(){
+ Route::group(['prefix' => 'changepublications'], function(){
 
-	Route::get('/','UsersController@changePublications');
+	Route::get('/','UsersController@changePublications')->name('changepublications_user');
 
 	Route::post('/add','UsersController@addPublications')->name('addpublication');
 
@@ -115,7 +115,7 @@ Route::group(['prefix' => 'changepublications'], function(){
 
 Route::group(['prefix' => 'changeconference'], function(){
 
-	Route::get('/','UsersController@changeConference');
+	Route::get('/','UsersController@changeConference')->name('changeconference_user');
 
 	Route::post('/add','UsersController@addConference')->name('addconference');
 
@@ -135,8 +135,7 @@ Route::group(['prefix' => 'masterdocs'], function(){
 
 	Route::post('/delete/','UsersController@deleteMasterDocs')->name('deletemasterdoc');
 
-	Route::get('/change/{id?}','
-	UsersController@changeoneMasterDoc')->name('changemasterdata');
+	Route::get('/change/{id?}','UsersController@changeoneMasterDoc')->name('changemasterdata');
 
 	Route::post('/change/update','UsersController@updateMasterDoc')->name('updatemasterdoc');
 
@@ -153,19 +152,19 @@ Route::group(['prefix' => 'masterdocs'], function(){
 
 Route:: group([ 'prefix' => 'admin'], function (){
 
-Route::get('/','AdminController@index')->name('adminhome');
+ Route::get('/','AdminController@index')->name('adminhome');
 
-Route::get('/add/','AdminController@Adduser')->name('adminadd');
+ Route::get('/add/','AdminController@Adduser')->name('adminadd');
 
-Route::post('/add/user','AdminController@insertUser')->name('adminadduser');
+ Route::post('/add/user','AdminController@insertUser')->name('adminadduser');
 
-Route::post('/delete/','AdminController@deleteUser')->name('deleteuser');
+ Route::post('/delete/','AdminController@deleteUser')->name('deleteuser');
 
-Route::get('/user/change/{id?}','AdminController@changeUser')->name('changeuser');
+ Route::get('/user/change/{id?}','AdminController@changeUser')->name('changeuser_admin');
 
-Route::post('/user/change/{id?}','AdminController@updateUser')->name('changeuserdata');
-
-Route::group(['prefix' => 'articles'], function(){
+ Route::post('/user/change/{id?}','AdminController@updateUser')->name('changeuserdata_admin');
+ 
+ Route::group(['prefix' => 'articles'], function(){
 
 	Route::get('/','AdminController@AllArticles')->name('adminarticles');
 
@@ -183,18 +182,18 @@ Route::group(['prefix' => 'articles'], function(){
 
 	Route::post('/change/addfiles','AdminController@addArticleFiles')->name('addarticlefiles');
 
-});
+ });
 
 });
 
 #files routes
 Route::group(['prefix' => 'files'], function(){
 
-Route::get('/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
+ Route::get('/get/{filename}', ['as' => 'getfile', 'uses' => 'FilesController@get']);
 
-Route::get('/get/image/{filename}', ['as' => 'getimage', 'uses' => 'FilesController@getImage']);
+ Route::get('/get/image/{filename}', ['as' => 'getimage', 'uses' => 'FilesController@getImage']);
 
-Route::get('/getarticle/doc/{filename}', ['as' => 'getdocarticle', 'uses' => 'FilesController@getArticleDoc']);
+ Route::get('/getarticle/doc/{filename}', ['as' => 'getdocarticle', 'uses' => 'FilesController@getArticleDoc']);
 });
 
 

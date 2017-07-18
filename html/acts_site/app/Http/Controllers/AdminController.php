@@ -16,6 +16,7 @@ use App\Links as Links;
 use App\Files;
 use App\ArticleFiles;
 
+
 use App\TextElement as TextElement;
 use App\Text as Text;
 use App\TextStyles as TextStyles;
@@ -36,18 +37,17 @@ class AdminController extends Controller
 
     protected $guard = 'admin';
     //
-	public function index()
+	public function index(Request $request)
 	{
 		$args =array();
+        $args['page'] = 'home';
         if (Auth::check())
         {
-            $args['users'] = User::get();
             $args['user'] = User::where('id', Auth::id())->get()[0]; 
-
+            $args['users'] = User::getUsers();
+            if(isset($request['search_title']))
+             $args['users'] = User::findData($request['search_title']);         
         }
-        else 
-            $args['teachers'] = null;
-        $args['page'] = 'home';
         return view('admin.adminhome',$args);
 	}
 
@@ -74,9 +74,7 @@ class AdminController extends Controller
             $args['password_error'] = "Паролі не співпадають";
             return view('admin.adduser',$args);
         }        
-		User::InsertData($username, $password, $email, $isadmin, $hasmasters);
-
-		$user_id = User::where('email',$email)->get()[0]->id;
+		$user_id = User::InsertData($username, $password, $email, $isadmin, $hasmasters);
 
 		$firstname = $request['firstname'];
         $middlename = $request['middlename'];
@@ -176,10 +174,6 @@ class AdminController extends Controller
         $TimeTable = $request['timetable'];
 
         Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
-
-        $args['page'] = "Add";
-        $args['positions'] = Positions::getAll();
-		$args['message'] = "Дані змінено!";
 		return redirect()->route('adminhome');
 	}
 
@@ -206,24 +200,40 @@ class AdminController extends Controller
     	$args['positions'] = Positions::getAll();
     	$args['page'] = 'home';
     	$args['userid'] = $id;
+        $args['teacher'] = Teachers::where('user_id', $id)->get()->first();
+        $args['user'] = User::where('id', $id)->get()->first();
+        $args['links'] = Links::where('user_id', $id)->get()->first();
         return view('admin.changedata',$args);
     }
 
-	public function AllArticles()
+	public function AllArticles(Request $request)
 	{
 		$args =array();
-		$args['articles'] = Articles::getAll();
+    
+        $search_query = array();
+        if (isset($request['seach_title']))
+            if ($request['seach_title'] != null)
+                $search_query['title'] = $request['seach_title'];
+        if (isset($request['page']))
+            $search_query['page'] = $request['page'];
+        if (isset($request['type']))
+            $search_query['type'] = $request['type'];
+
+        if (count($search_query) > 0)
+            $args ['articles'] = Articles::getArticles($search_query);
+            else
+                  $args['articles'] = Articles::getAll();
+		
         $args['page'] = 'articles';
-        return view('admin.articles',$args);
+        $args['pages'] = Pages::get();
+        $args['types_article'] = TextType::where('id', '>', 2 )->get();
+        return view('admin.articles',$args); 
 	}
 
     public function deleteArticles(Request $request)
     {
         Articles::where('id', $request['num'])->delete();
-        $args =array();
-        $args['articles'] = Articles::getAll();
-        $args['page'] = 'articles';
-        return view('admin.articles',$args);
+        return redirect()->route('adminarticles');
     }
 
 	public function AddArticle()
@@ -231,7 +241,6 @@ class AdminController extends Controller
 		$args =array();
         $args['pages'] = Pages::get();
         $args['typesarticle'] = TextType::where('id','>',2)->get();
-        $args['textelements'] = TextElement::get();
         $args['page'] = 'addarticles';
         return view('admin.addarticle',$args);
 	}
@@ -282,7 +291,6 @@ class AdminController extends Controller
         $args['pages'] = Pages::get();
         $args['types'] = TextType::where('id','<',3)->get();
         $args['typesarticle'] = TextType::where('id','>',2)->get();
-        $args['textelements'] = TextElement::get();
         $args['text'] = Text::where('article_id', $id)->where('type_id', 1 )->get();
         $args['description'] = Text::where('article_id', $id)->where('type_id', 2 )->get();
         $args['article'] = Articles::where('id',$id)->get()[0];
