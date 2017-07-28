@@ -27,9 +27,11 @@
    		</div>
    	</div>
 
-@if (isset ($password_error))
-<div class="row" style="text-align: center;">{{ $password_error }}</div>
-@endif
+    @if ($errors->has('username'))
+      <span class="help-block">
+       <strong>{{ $errors->first('username') }}</strong>
+      </span>
+     @endif
 
    	<div class = "row">
    		<div class = "col-md-4">
@@ -45,9 +47,15 @@
    		<span>@lang('auth.repeat_password')</span>	
    		</div>
    		<div class = "col-md-8">
-   			<input type = "password" name = "password2" required="">
+   			<input type = "password" name = "password_confirmation" required="">
    		</div>
    	</div>
+
+    @if ($errors->has('password'))
+      <span class="help-block">
+       <strong>{{ $errors->first('password') }}</strong>
+      </span>
+     @endif
 
    	<div class = "row">
    		<div class = "col-md-4">
@@ -58,14 +66,19 @@
    		</div>
    	</div>
 
+    @if ($errors->has('email'))
+      <span class="help-block">
+       <strong>{{ $errors->first('email') }}</strong>
+      </span>
+     @endif
+
    	  <div class = "row">
          <div class = "col-md-4">
          <span>@lang('auth.is_admin.question')</span>   
          </div>
          <div class = "col-md-8">
             <select name="isadmin">
-            <option selected disabled></option>
-            <option value="0">@lang('auth.is_admin.no')</option>
+            <option value="0" selected>@lang('auth.is_admin.no')</option>
             <option value="1">@lang('auth.is_admin.yes')</option>
             </select>
          </div>

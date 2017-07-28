@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Database\QueryException;
 
 class MasterFiles extends Model
 {
@@ -15,7 +15,13 @@ class MasterFiles extends Model
 	{
 		$query = "SELECT f.originalname, f.id, f.size, f.filename FROM masterworks AS 		mw JOIN masterfiles AS mf JOIN files AS f   
 					WHERE mw.user_id =  f.user_id AND mw.id = mf.idmasterworks AND f.id = mf.idfile AND mw.id = {$masterwork_id};";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 

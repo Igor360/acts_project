@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth as Auth;
 use Illuminate\Http\Request;
 
 
+use Validator;
+
 use App\Teachers as Teachers;
 use App\Positions as Positions;
 use App\User as User;
@@ -21,6 +23,7 @@ use Illuminate\Http\Response;
 use App\MasterWorks as MasterWorks;
 
 use App\Http\Controllers\Input;
+
 
 require_once ('AddImageToDB.php');
 
@@ -87,14 +90,22 @@ class UsersController extends Controller
     {
         $id =  Auth::user()->getId();
         $password = $request['password'];
-        $password2 = $request['password2'];
         $username = $request['username'];
-        $email = $request['email'];
-        if ($password2 != $password)
-        {
-            $message = "Паролі не співпадають";
-            return redirect()->route('updateuserdata',$message);
-        }        
+        $email = $request['email'];     
+
+        $Rules = array();
+        if ($password != null) 
+            $Rules['password'] = 'required|string|min:6|confirmed';    
+        if ($username != null) 
+            $Rules['username'] = 'required|string|max:255|unique:users'; 
+        if ($email != null)
+            $Rules['email'] = 'required|string|email|max:255|unique:users';
+        if (count($Rules) > 0)
+         {   
+           $Validator = Validator::make($request->all(), $Rules);
+           if ($Validator->fails())
+            return redirect()->back()->withErrors($Validator->errors());
+         }
         User::UpdateData($id,$username,$password,$email);       
         $message = "Дані змінено";
         return redirect()->route('updateuserdata',$message);

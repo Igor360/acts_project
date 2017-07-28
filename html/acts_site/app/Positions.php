@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
+
 class Positions extends Model
 {
     //
@@ -12,7 +14,13 @@ class Positions extends Model
     public static function getAll()
     {
     	$query = "SELECT * From positions as p;";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
     }
 

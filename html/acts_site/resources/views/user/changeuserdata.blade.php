@@ -28,9 +28,11 @@
    		</div>
    	</div>
 
-@if (isset ($password_error))
-<div class="row" style="text-align: center;">{{ $password_error }}</div>
-@endif
+    @if ($errors->has('username'))
+      <span class="help-block">
+       <strong>{{ $errors->first('username') }}</strong>
+      </span>
+     @endif
 
    	<div class = "row">
    		<div class = "col-md-4">
@@ -46,9 +48,16 @@
    		<span>@lang('auth.repeat_password')</span>	
    		</div>
    		<div class = "col-md-8">
-   			<input type = "password" name = "password2">
+   			<input type = "password" name = "password_confirmation">
    		</div>
    	</div>
+
+    
+     @if ($errors->has('password'))
+      <span class="help-block">
+       <strong>{{ $errors->first('password') }}</strong>
+      </span>
+     @endif
 
    	<div class = "row">
    		<div class = "col-md-4">
@@ -58,6 +67,13 @@
    			<input type = "email" name = "email" placeholder="{{ $user->email }}">
    		</div>
    	</div>
+
+    @if ($errors->has('email'))
+      <span class="help-block">
+       <strong>{{ $errors->first('email') }}</strong>
+      </span>
+     @endif
+
    	<input type="hidden" name="page" value="next">
    	<div class = "row text-right">
    		<button type="submit" name="Next" class="btn">

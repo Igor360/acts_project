@@ -52,6 +52,7 @@ return [
                    'yes' => 'Yes',
                    'no' => 'No',
     ],
+    'chat' => 'Chat',
 ];
 
 

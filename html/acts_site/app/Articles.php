@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Model;
 
 class Articles extends Model
@@ -23,7 +23,13 @@ class Articles extends Model
 					INNER JOIN texttype AS tt
 					WHERE a.page_id = p.id  AND p.name = \"{$page}\" 
 					AND tt.id = a.type_id AND tt.name = \"article\"  ORDER BY(a.id);";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -32,7 +38,13 @@ class Articles extends Model
 	{
 		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC;";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -40,7 +52,13 @@ class Articles extends Model
 	{
 		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC LIMIT 0,{$num};";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -48,7 +66,13 @@ class Articles extends Model
 	{
 		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
 					WHERE a.page_id = p.id  AND p.name = \"news\" AND a.id = {$news_id};";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -57,7 +81,13 @@ class Articles extends Model
 	{
 		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM articles AS a  JOIN pages AS p JOIN texttype AS tt
 			WHERE a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,200;";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -67,7 +97,13 @@ class Articles extends Model
 		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type, t.text, a.img, a.isText
 					FROM articles AS a  JOIN pages AS p JOIN texttype AS tt	JOIN text as t 
 					WHERE a.page_id = p.id AND a.type_id = tt.id and t.article_id = a.id and t.type_id !=1 and (match(a.title) against('{$query_str}') or match(t.text) against('{$query_str}'));";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -97,7 +133,13 @@ class Articles extends Model
 				$query .= "AND"; 
 			}
 		$query .= " a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,100;";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class Works extends Model
@@ -57,28 +58,52 @@ class Works extends Model
 	{
 		$query = "SELECT DISTINCT year(w.datePublish) AS year FROM works AS w 
 			WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(year);";
-		$result = DB::select($query);
+		 try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
 	public static function getTypesWorks($typework_id, $user_id)
 	{
 		$query = "SELECT DISTINCT  w.type FROM works AS w WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(w.type);";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	} 
 
 	public static function getPeriodWorks($year_start, $year_end,$typework_id, $user_id, $type)
 	{
 		$query = "SELECT * FROM works AS w WHERE w.typework_id = {$typework_id} and w.user_id = ${user_id} and year(w.datePublish) >= ${year_start} AND year(w.datePublish) <= ${year_end} AND w.type = '${type}' order by(w.datePublish);";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
 	public static function getOneYearWorks($year,$typework_id, $user_id, $type)
 	{
 		$query = "SELECT * FROM works AS w WHERE w.typework_id = ${typework_id} and w.user_id = ${user_id} and year(w.datePublish) <= ${year} AND w.type = '${type}' order by(w.datePublish);";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 

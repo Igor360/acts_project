@@ -1,5 +1,3 @@
- 
-
  <footer class="footer">
           <div class="footer__header">
             <h1 class="footer_h1">@lang('footer.our_partners')</h1>

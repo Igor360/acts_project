@@ -1,5 +1,4 @@
  <ul class="nav nav-sidebar"> 
-
         <li {{ $page == "home"? 'class = sidebar-select' : "" }}><a class="btn-icon-left" href="/admin/"><i class="fa fa-home"></i> @lang('admin.sidebar_main')</a></li>
         <li {{ $page == "Add"? 'class = sidebar-select' : "" }}><a class="btn-icon-left" href="/admin/add/"><i class="fa fa-plus"></i> @lang('admin.sidebar_add_user')</a></li>
         <li {{ $page == "articles"? 'class = sidebar-select' : "" }}><a class="btn-icon-left" href="/admin/articles/"><i class="fa fa-newspaper-o"></i>

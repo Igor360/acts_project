@@ -35,8 +35,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}" >
-                        <img src="{{ asset ('img/logo.png') }}" style = "height: 80px; margin-top: -30px;">
+                    <a class="navbar-brand btn-white" href="{{ url('/') }}" >
+                        <img src="{{ asset ('img/logo_white_1.png') }}" style = "height: 80px; margin-top: -30px;">
                     </a>
                 </div>
 

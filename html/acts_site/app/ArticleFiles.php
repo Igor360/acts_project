@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class ArticleFiles extends Model
@@ -19,7 +19,13 @@ class ArticleFiles extends Model
 		$query = "SELECT a.id, a.title, a.img, a.isText, f.filename, f.mime,  f.originalname, f.id as file_id
                     FROM articles AS a JOIN articlefiles AS af JOIN files AS f
                     WHERE af.idfile = f.id AND af.idarticle = a.id AND a.id = {$article_id} AND f.filename != '{$image}';";
-		$result = DB::select($query);
+		try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
 		return $result;
 	}
 
@@ -29,7 +35,13 @@ class ArticleFiles extends Model
         $query = "SELECT a.id, a.title, a.img, a.isText, f.filename, f.mime,  f.originalname, f.id as file_id
                     FROM articles AS a JOIN articlefiles AS af JOIN files AS f
                     WHERE af.idfile = f.id AND af.idarticle = a.id AND a.id = {$article_id} AND (f.mime = 'image/jpg' OR f.mime =  'image/png' OR f.mime = 'image/jpeg');";
-        $result = DB::select($query);
+        try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
         return $result;
     }
 

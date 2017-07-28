@@ -70,5 +70,5 @@ ShowWork($typework,$user_id);
         </div>
     </div>
 </div>
-
+@include('auth.chat')
 @endsection

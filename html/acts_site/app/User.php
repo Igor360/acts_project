@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
 
 use Auth;
 
@@ -32,20 +33,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function getId()
-    {
-        if (Auth::check())
-        {
-         $user = Auth::user();
-         $query = "SELECT u.id FROM users AS u
-                    WHERE u.username = '{$user->username}' AND u.email = '{$user->email}';";
-         $result = DB::select($query);
-         return $result[0]->id;
-        }
-        return null;
-    }
 
-        public static function UpdateData($id, $username, $password, $email,  $isadmin = null, $hasmasters = null)
+    public static function UpdateData($id, $username, $password, $email,  $isadmin = null, $hasmasters = null)
     {
         $changedata =  array();
         if ($username != null)
@@ -69,7 +58,7 @@ class User extends Authenticatable
     } 
 
 
-        public static function InsertData($username, $password, $email, $isadmin, $hasmasters)
+    public static function InsertData($username, $password, $email, $isadmin, $hasmasters)
     {
         $AddData = array();
         $AddData['id'] =  uniqid();
@@ -98,7 +87,13 @@ class User extends Authenticatable
         $query = "SELECT u.id, u.hasmasters, u.isadmin, u.username, u.email, u.password, u.updated_at, t.id AS teacherid
                     FROM users AS u join teachers as t
                     WHERE u.id = t.user_id; ";
-        $result = DB::select($query);
+        try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
         return $result;
     }
 
@@ -108,8 +103,34 @@ class User extends Authenticatable
         $query = "SELECT u.id, u.hasmasters, u.isadmin, u.username, u.email, u.password, u.updated_at, t.id AS teacherid
                     FROM users AS u join teachers as t
                     WHERE u.id = t.user_id AND MATCH(u.email,u.username) AGAINST('${query_str}');";
-        $result = DB::select($query);
+        try {
+         $result = DB::select($query);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
         return $result;
+    }
+
+
+    public function getId()
+    {
+        if (Auth::check())
+        {
+         $user = Auth::user();
+         $query = "SELECT u.id FROM users AS u
+                    WHERE u.username = '{$user->username}' AND u.email = '{$user->email}';";
+         try {
+          $result = DB::select($query);
+         }
+         catch(QueryException $e)
+         {
+            return null;
+         }
+         return $result[0]->id;
+        }
+        return null;
     }
 
 }

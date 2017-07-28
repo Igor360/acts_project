@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
 
+use App\Http\Requests\UserDataRequest;
+
 use Auth;
 use App\Teachers as Teachers;
 use App\User as User;
@@ -25,6 +27,7 @@ use App\Pages as Pages;
 
 
 require_once ('AddImageToDB.php');
+require_once ('Validators.php');
 
 class AdminController extends Controller
 {
@@ -43,7 +46,7 @@ class AdminController extends Controller
         $args['page'] = 'home';
         if (Auth::check())
         {
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['user'] = User::where('id',  Auth::user()->getId())->get()[0]; 
             $args['users'] = User::getUsers();
             if(isset($request['search_title']))
              $args['users'] = User::findData($request['search_title']);         
@@ -60,7 +63,7 @@ class AdminController extends Controller
         return view('admin.adduser',$args);
 	}
 
-	public function insertUser(Request $request)
+	public function insertUser(UserDataRequest $request)
 	{
 		$args = array();
 		$password = $request['password'];
@@ -68,15 +71,11 @@ class AdminController extends Controller
         $username = $request['username'];
         $email = $request['email'];
         $isadmin = $request['isadmin'];
-        $hasmasters = $request['hasmaster']; 
-        if ($password2 != $password)
-        {
-            $args['password_error'] = "Паролі не співпадають";
-            return view('admin.adduser',$args);
-        }        
-		$user_id = User::InsertData($username, $password, $email, $isadmin, $hasmasters);
+        $hasmasters = $request['hasmaster'];     
 
-		$firstname = $request['firstname'];
+		$user_id = User::InsertData($username, $password, $email, $isadmin, $hasmasters);
+		
+        $firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
         $photo = $request['photo'];
@@ -90,8 +89,6 @@ class AdminController extends Controller
         $disciplines = $request['disciplines'];
         $department = $request['department'];
         $isteacher = $request['isteacher'];
-
-
         $photo_file = $request['photofile'];
         
         if (AddImage($photo_file, $user_id))
@@ -124,21 +121,12 @@ class AdminController extends Controller
 		$user_id = $request['id_user'];
 		$args = array();
 		$password = $request['password'];
-        $password2 = $request['password2'];
         $username = $request['username'];
         $email = $request['email'];
         $isadmin = $request['isadmin'];
         $hasmasters = $request['hasmaster']; 
-        if ($password != null and $password2 != nnull)
-        if ($password2 != $password)
-        {
-            $args['password_error'] = "Паролі не співпадають";
-            return view('admin.changedata',$args);
-        }        
+        UserDataValidator($password, $username, $email, $isadmin, $hasmasters);
 		User::UpdateData($user_id, $username, $password, $email, $isadmin, $hasmasters);
-
-	
-
 		$firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
@@ -153,26 +141,27 @@ class AdminController extends Controller
         $disciplines = $request['disciplines'];
         $department = $request['department'];
         $isteacher = $request['isteacher'];
+        TeacherDataValidator($firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher);
 
         $id_teacher = Teachers::where('user_id',$user_id)->get()[0]->id;
-
         $photo_file = $request['photofile'];
-        
         if (AddImage($photo_file, $user_id))
         {
             $photo_file = Files::where('user_id' , $user_id)
                     ->where('mime','image/jpeg')
                     ->orWhere('mime','image/png')->get()->first();
-            $photo = route('getimage', $photo_file->filename);
-            
+            $photo = route('getimage', $photo_file->filename);            
         }
-
         Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
 
         $AnotherSite = $request['anothersite'];
         $Intellect = $request['intellect'];
         $TimeTable = $request['timetable'];
-
+        LinksValidator([
+            'anothersite' => $anothersite,
+            'intellect' => $Intellect,
+            'timetable' => $TimeTable
+            ]);
         Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
 		return redirect()->route('adminhome');
 	}
@@ -187,7 +176,7 @@ class AdminController extends Controller
         if (Auth::check())
         {
             $args['users'] = User::get();
-            $args['user'] = User::where('id', Auth::id())->get()[0]; 
+            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
 
         }
         $args['page'] = 'home';
@@ -268,7 +257,7 @@ class AdminController extends Controller
         $photo_file = $request['photofile'];
         if ($photo_file != null)
         {
-            $add_articledoc = AddArticleDocs($photo_file, Auth::id());
+            $add_articledoc = AddArticleDocs($photo_file, Auth::user()->getId());
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
         }
@@ -318,7 +307,7 @@ class AdminController extends Controller
         $photo_file = $request['photofile'];
         if($photo_file != null)
         {
-            $add_articledoc = AddArticleDocs($photo_file, Auth::id());
+            $add_articledoc = AddArticleDocs($photo_file, Auth::user()->getId());
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
             isArticlePhoto($article_id);
@@ -363,8 +352,8 @@ class AdminController extends Controller
 
     public static  function UploadFiles($files,$article_id)
     {
-    foreach ($files as $file) {
-          
+     foreach ($files as $file) 
+     {
         $extension = $file->getClientOriginalExtension();
         Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
         $entry = new Files();
@@ -376,9 +365,8 @@ class AdminController extends Controller
         $entry->size = filesize($file);
         $entry->save();
         ArticleFiles::InsertData($article_id, $entry->id);
-    }
+     }
 
     }
-
 }
 

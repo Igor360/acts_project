@@ -45,6 +45,7 @@ body{
     box-shadow: 0 1px 1px rgba(0,0,0,.5);
 	color:black !important;
 	z-index: 1000;
+	min-height: 600px !important;
 }
 .nav-sidebar a
 {
@@ -163,8 +164,14 @@ body{
 .btn-white{
 	color: #FFFFFF;
     opacity: 1;
-    background: rgba(255, 255, 255, 0.33);
+   // background: rgba(255, 255, 255, 0.33);
+    background: rgba(105, 146, 255, 0.43) !important;
     border-radius: 10px;
+}
+.btn-white:hover{
+	border-radius: 10px !important;
+    // background: rgba(255, 255, 255, 0.23) !important;
+    background: rgba(105, 146, 255, 0.43) !important;
 }
 
 .app-background{
@@ -173,4 +180,30 @@ body{
 	bottom: 0px;
 	top: 0px;
 	z-index: 0;
+}
+.bg-navbar{
+	background-color: #1f5dff;
+	padding: 5px 0px 5px;
+	// box-shadow: inset 0px 0px 200px 0px #fff !important;
+}
+
+.navbar {
+	border: none !important;
+}
+
+.chatbar{
+	background-color:	#ffffff;
+	position: fixed !important;
+	bottom: 0px;
+	top: 90px;
+	width: 20% !important;
+	padding-top: 20px;
+    border-color: #d3e0e9;
+    margin-bottom: 22px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.5);
+	color:black !important;
+	z-index: 1000;
+	min-height: 600px !important;
 }
