@@ -174,6 +174,7 @@ class HomeController extends Controller
 	    return view('pages.page',$args);
 	}
 
+		// страница з новостями
 	public function news_archive_page()
 	{
 		$args = array();
@@ -196,11 +197,11 @@ class HomeController extends Controller
 		$args = array();
 		$args['page'] = 'about';
 		$args['teacher'] = Teachers::getTeacherData($id);
-		$teacher = Teachers::where('id', $id)->get()->first();
+		$teacher = Teachers::where('teacher_id', $id)->get()->first();
     		if ($teacher != null)
     		{
     			$user_id = $teacher->user_id;
-    			$args['user'] = User::where('id',$user_id)->get()->first();
+    			$args['user'] = User::where('user_id',$user_id)->get()->first();
     		}
     	return view('pages.teachstaffmore',$args);
 	}
@@ -218,7 +219,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['page'] = 'about';
-		$args['docs'] = MasterWorks::where('user_id', $id)->get();
+		$args['docs'] = MasterWorks::where('user_id', $id)->orderBy('masterwork_id','desc')->get();
     	return view('pages.masterdocs',$args);
 	}
 
@@ -226,7 +227,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['page'] = 'about';
-		$args['doc'] = MasterWorks::where('id', $id)->get()[0];
+		$args['doc'] = MasterWorks::where('masterwork_id', $id)->get()->first();
 		$args['files'] = MasterFiles::getFiles($id);
     	return view('pages.masterdocs',$args);
 	}
@@ -235,7 +236,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		if ($article_number != null)
-			$args['Articles'] = Articles::where('id', $article_number)->get(); 
+			$args['Articles'] = Articles::where('article_id', $article_number)->get(); 
 		$args['page'] = "more";
     	return view('pages.page',$args);
 	}
@@ -244,6 +245,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		$args['Articles'] = Articles::searchArticle($request['search_data']); 
+		$args['search_query'] = [ 'search_data' => $request['search_data'] ];
 		$args['page'] = "search";
     	return view('pages.page',$args);
 

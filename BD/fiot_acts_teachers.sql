@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `teachers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `teachers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `teacher_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Дані відсутні',
   `MiddleName` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Дані відсутні',
   `LastName` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Дані відсутні',
@@ -36,17 +36,17 @@ CREATE TABLE `teachers` (
   `Mobile` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Дані відсутні',
   `ProfInterest` longtext COLLATE utf8mb4_unicode_ci,
   `Discipline` longtext COLLATE utf8mb4_unicode_ci,
-  `user_id` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position_id` int(11) NOT NULL DEFAULT '0',
   `updated_at` timestamp NULL DEFAULT NULL,
   `isteacher` tinyint(4) DEFAULT '1',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`teacher_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
   UNIQUE KEY `user_id_UNIQUgE` (`user_id`),
   KEY `position_id_idx` (`position_id`),
-  CONSTRAINT `id_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `position_id` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `id_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `position_id` FOREIGN KEY (`position_id`) REFERENCES `positions` (`position_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +55,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (1,'Олександр','Іванович ','Ролік','ФІОТ АУТС','відповідальний за проектно-конструкторську роботу відповідальний за технічну політику\nі розвиток директор ННЦ \"Неткрекер-КПІ\" д.т.н., професор','http://127.0.0.1:8000/files/get/image/phpE31C.tmp.jpg','Чт, 16-00','526-18','Дані відсутні','Дані відсутні','<ul style=\"margin-bottom: 11px; color: #636b6f; font-family: Raleway, sans-serif; background-color: #ffffff; list-style-type: circle;\">\r\n<li>Системи і мережі передачі даних.</li>\r\n<li>Системи управління ІТ-інфраструктурами.</li>\r\n</ul>','<ul><li>Комп’ютерні мережі.</li> <li>Телекомунікаційні системи та мережі.</li> <li>Проектування та моделювання комп’ютерних мереж.</li> <li>Технології та обладнання комп’ютерних мереж.</li></ul>',1,0,'2017-06-22 15:21:30',1),(10,'Сергій','Федорович','Теленик','ФІОТ АУТС','голова НМК МОН України \"Автоматика та управління\" керівник циклу математичних дисциплін д.т.н., професор','http://acts.kpi.ua/app/uploads/2015/07/%D0%A2%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%BA.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,13,1,'2017-06-19 05:34:37',1),(13,'Наталія','Борисівна','Репнікова','ФІОТ АУТС','секретар НМК МОН України \"Автоматика та управління\" керівник циклу \"Теорія та систкми управління\" к.т.н., доцент','http://acts.kpi.ua/app/uploads/2015/07/%D0%A0%D0%B5%D0%BF%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,16,0,'2017-06-22 13:10:01',1),(16,'Дані відсутні','Дані відсутні','Дані відсутні','ФІОТ АУТС','Дані відсутні','http://127.0.0.1:8000/files/get/image/php5098.tmp.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,21,2,'2017-07-06 12:29:53',0);
+INSERT INTO `teachers` VALUES (1,'Олександр','Іванович ','Ролік','ФІОТ АУТС','відповідальний за проектно-конструкторську роботу відповідальний за технічну політику\nі розвиток директор ННЦ \"Неткрекер-КПІ\" д.т.н., професор','http://127.0.0.1:8000/files/get/image/phpE31C.tmp.jpg','Чт, 16-00','526-18','Дані відсутні','Дані відсутні','<ul>\r\n<li>Системи і мережі передачі даних.</li>\r\n<li>Системи управління ІТ-інфраструктурами.</li>\r\n</ul>','<ul>\r\n<li>Комп&rsquo;ютерні мережі.</li>\r\n<li>Телекомунікаційні системи та мережі.</li>\r\n<li>Проектування та моделювання комп&rsquo;ютерних мереж.</li>\r\n<li>Технології та обладнання комп&rsquo;ютерних мереж.</li>\r\n</ul>','1',0,'2017-08-21 16:17:22',1),(10,'Сергій','Федорович','Теленик','ФІОТ АУТС','голова НМК МОН України \"Автоматика та управління\" керівник циклу математичних дисциплін д.т.н., професор','http://acts.kpi.ua/app/uploads/2015/07/%D0%A2%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%BA.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,'13',1,'2017-06-19 05:34:37',1),(13,'Наталія','Борисівна','Репнікова','ФІОТ АУТС','секретар НМК МОН України \"Автоматика та управління\" керівник циклу \"Теорія та систкми управління\" к.т.н., доцент','http://acts.kpi.ua/app/uploads/2015/07/%D0%A0%D0%B5%D0%BF%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,'16',0,'2017-06-22 13:10:01',1),(16,'Igor','Дані відсутні','Дані відсутні','ФІОТ АУТС','Дані відсутні','http://127.0.0.1:8000/files/get/image/php5098.tmp.jpg','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,'21',2,'2017-08-21 11:03:25',0),(18,'Дані відсутні','Дані відсутні','Дані відсутні','ФІОТ АУТС','Дані відсутні','/img/Photo.png','Дані відсутні','Дані відсутні','Дані відсутні','Дані відсутні',NULL,NULL,'596a8e0034020',0,NULL,1);
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -68,4 +68,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:26
+-- Dump completed on 2017-08-22  0:31:21

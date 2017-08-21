@@ -17,8 +17,7 @@ function AddImage($photo_file, $user_id)
         $entry->mime = $photo_file->getClientMimeType();
         $entry->originalname = $photo_file->getClientOriginalName();
         $entry->filename = $photo_file->getFilename().'.'.$extension;
-        $id = $user_id;
-        $entry->user_id = $id;
+        $entry->user_id = $user_id;
         $entry->size = filesize($photo_file);
         $entry->save();
         return True;
@@ -68,7 +67,7 @@ function isArticlePhoto($article_id)
     {
       if (count($file) > 0)
         Storage::delete($file[0]->filename);
-      Files::where('id', $file[0]->file_id)->delete();
+      Files::where('file_id', $file[0]->file_id)->delete();
       return True;
     }
     return False;

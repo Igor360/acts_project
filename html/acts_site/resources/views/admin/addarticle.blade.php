@@ -15,7 +15,9 @@
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_article_main')</h3></div>
 
 @if (isset ($message))
-<div class="row" style="text-align: center;">{{ $message }}</div>
+<div class="info-message" style="background-color:{{ $message->has_errors ? '#f6979e' : '#ddd' }};">
+ <div class="row"><img src="{{ $message->has_errors ? asset('img/icons/error.png') : asset('img/icons/info.png') }}"> &nbsp{{ $message->text }}</div>
+</div>
 @endif
   <form method = "POST" action="{{ route('insertarticle')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -36,7 +38,7 @@
             <select name="page" required="">
             <option></option>
             @foreach ($pages as $p)
-            <option value="{{ $p->id }}">{{ $p->Name }}</option>
+            <option value="{{ $p->page_id }}">{{ $p->Name }}</option>
             @endforeach
             </select>
          </div>
@@ -50,7 +52,7 @@
             <select name="typearticle" required="">
             <option ></option>
             @foreach ($typesarticle as $ta)
-            <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+            <option value="{{ $ta->texttype_id }}">{{ $ta->name }}</option>
             @endforeach
             </select>
          </div>

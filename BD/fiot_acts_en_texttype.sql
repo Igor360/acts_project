@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `texttype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `texttype` (
-  `id` int(11) NOT NULL,
+  `texttype_id` int(11) NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`texttype_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:23
+-- Dump completed on 2017-08-22  0:31:19

@@ -12,6 +12,12 @@
             <div class="panel panel-default">
           @if ( $page != null )
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_master_work')</h3></div>
+                <form method="GET">
+                    <input name = "search_title" placeholder="@lang('user.search_query')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
+                    <div class="text-right">
+                     <input type="submit" name="seach" class="btn search_btn text-right" value="@lang('admin.search_btn')">
+                    </div>
+                </form>
                 	    <table class="table">
                     <caption style="text-align: center;">@lang('user.master_works.title')</caption>
                 <thead>
@@ -28,11 +34,11 @@
                 <td>
                     <form method = "POST" action="{{ route('deletemasterdoc') }}" >
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="num" value="{{ $work->id }}">
+                        <button type="submit" class="btn" name="num" value="{{ $work->masterwork_id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/user/masterdocs/change/{{$work->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/masterdocs/change/{{$work->masterwork_id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $work->name }}</td>
                 <td>{!! $work->description !!}</td>
@@ -41,6 +47,14 @@
                 @endforeach
                 </tbody>
                 </table>
+
+                <div class = "text-center">
+                  @if(isset($search_query))
+                    {{ $works->appends($search_query)->links() }}
+                  @else
+                    {{ $works->links() }}
+                  @endif
+                </div>
 
                  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_add_master_work')</h3></div>
                  <div class="form-user">

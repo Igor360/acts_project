@@ -11,6 +11,7 @@ class Text extends Model
 
     //
     protected $table = "text";
+    protected $primaryKey = 'text_id';
 
     public function textstyle()
     {
@@ -27,9 +28,15 @@ class Text extends Model
             $AddData['article_id'] =  $article_id;
 
         if ($type_id != null)
-            $AddData['type_id'] = $type_id; 
-
+            $AddData['texttype_id'] = $type_id; 
+        try{
             DB::table('text')->insert($AddData);
+        }
+        catch(QueryException $e)
+        {
+            return False;
+        }
+        return True;
     }
 
 
@@ -38,8 +45,13 @@ class Text extends Model
         $AddData = array();
         if ($text != null)
             $AddData['text'] = $text;
-
-       Text::where('id',$id)->update($AddData);
+        try{
+       Text::where('text_id',$id)->update($AddData);
     }
-    
+    catch(QueryException $e)
+    {
+        return False;
+    }
+    return True;
+    }
 }

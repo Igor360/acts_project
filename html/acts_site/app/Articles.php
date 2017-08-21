@@ -10,6 +10,7 @@ class Articles extends Model
 {
     //
     protected $table = "articles";
+    protected $primaryKey = 'article_id';
 
     public function text()
     {
@@ -19,41 +20,55 @@ class Articles extends Model
     // метод для отримання статей для певної сторінки
 	public static function getPageArticles($page)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name, tt.name FROM articles AS a INNER JOIN pages AS p 
-					INNER JOIN texttype AS tt
-					WHERE a.page_id = p.id  AND p.name = \"{$page}\" 
-					AND tt.id = a.type_id AND tt.name = \"article\"  ORDER BY(a.id);";
-		try {
-         $result = DB::select($query);
-        }
+        try {
+         $result = DB::table('articles')
+                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
+                    ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                        'articles.date', 'articles.isText', 'pages.Name', 'texttype.name')
+                    ->where('pages.Name', '=', $page)
+                    ->where('texttype.name', '=', 'article')
+                    ->orderBy('articles.article_id')
+                    ->paginate(5);
+	    }
         catch(QueryException $e)
         {
             return null;
         }
-		return $result;
+        return $result;
 	}
 
-
+    // достаю новини из бд
 	public static function getNews()
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
-					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC;";
-		try {
-         $result = DB::select($query);
+        try{
+         $result = DB::table('articles')
+                     ->join('pages', 'articles.page_id', '=', 'pages.page_id')
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                        'articles.isText', 'pages.Name')
+                     ->where('pages.Name', '=', 'news')
+                     ->orderBy('articles.date', 'desc')
+                     ->paginate(30);
         }
         catch(QueryException $e)
         {
             return null;
         }
-		return $result;
+        return $result;
 	}
 
+    // достаю певное количество новин из бд
 	public static function getSomeNews($num)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
-					WHERE a.page_id = p.id  AND p.name = \"news\" ORDER BY(a.date) DESC LIMIT 0,{$num};";
 		try {
-         $result = DB::select($query);
+         $result = DB::table('articles')
+                     ->join('pages', 'articles.page_id', '=', 'pages.page_id')
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                        'articles.isText', 'pages.Name')
+                     ->where('pages.Name', '=', 'news')
+                     ->orderBy('articles.date', 'desc')
+                     ->limit($num)
+                     ->get();
         }
         catch(QueryException $e)
         {
@@ -62,12 +77,19 @@ class Articles extends Model
 		return $result;
 	}
 
+
+    // достаю новину по ее индетификатору
 	public static function getOneNews($news_id)
 	{
-		$query = "SELECT a.id, a.title, a.img, a.date, a.isText, p.Name FROM articles AS a INNER JOIN pages AS p 
-					WHERE a.page_id = p.id  AND p.name = \"news\" AND a.id = {$news_id};";
 		try {
-         $result = DB::select($query);
+         $result =  DB::table('articles')
+                     ->join('pages', 'articles.page_id', '=', 'pages.page_id')
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                        'articles.isText', 'pages.Name')
+                     ->where('pages.Name', '=', 'news')
+                     ->where('articles.article_id', '=', $news_id)
+                     ->get()
+                     ->first();
         }
         catch(QueryException $e)
         {
@@ -76,71 +98,86 @@ class Articles extends Model
 		return $result;
 	}
 
-
+    // достаю все статти
 	public static function getAll()
 	{
-		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM articles AS a  JOIN pages AS p JOIN texttype AS tt
-			WHERE a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,200;";
 		try {
-         $result = DB::select($query);
-        }
+         $result = DB::table('articles')
+                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
+                    ->select('articles.article_id', 'articles.title', 'pages.Name as page', 'texttype.name as type')
+                    ->orderBy('articles.article_id')
+                    ->paginate(10);
+	    }
         catch(QueryException $e)
         {
             return null;
         }
-		return $result;
+        return $result;
 	}
 
 
 	public static function searchArticle($query_str)
 	{
-		$query = "SELECT a.id, a.title, p.Name AS page, tt.name AS type, t.text, a.img, a.isText
-					FROM articles AS a  JOIN pages AS p JOIN texttype AS tt	JOIN text as t 
-					WHERE a.page_id = p.id AND a.type_id = tt.id and t.article_id = a.id and t.type_id !=1 and (match(a.title) against('{$query_str}') or match(t.text) against('{$query_str}'));";
-		try {
-         $result = DB::select($query);
-        }
+        $search_data = "(match(articles.title) against('{$query_str}') or match(text.text) against('{$query_str}'))";
+	    try {
+        $result = DB::table('articles')
+                    ->join('pages', 'articles.page_id', '=', 'pages.page_id')
+                    ->join('texttype', 'articles.texttype_id', '=', 'texttype.texttype_id')
+                    ->join('text', 'articles.article_id', '=', 'text.article_id')
+                    ->select('articles.article_id', 'articles.title', 'pages.Name as page', 'texttype.name as type', 'text.text', 'articles.img', 'articles.isText')
+                    ->where('text.texttype_id', '!=', 1)
+                    ->whereRAW($search_data)
+                    ->distinct('articles.article_id')
+                    ->paginate(5);
+		}
         catch(QueryException $e)
         {
             return null;
         }
-		return $result;
+        return $result;
 	}
 
 	public static function getArticles (Array $search_data)
 	{
-		$query= "SELECT a.id, a.title, p.Name AS page, tt.name AS type FROM articles AS a  JOIN pages AS p JOIN texttype AS tt
-			WHERE ";
-
-			$keys = array_keys($search_data);
+            $query = "";
+            $count = count($search_data)-1;
 			foreach ($search_data as $key => $value) {
 				switch ($key) {
-					case 'type':
-						$query .= " a.type_id = ${value} "; 
+					case 'texttype':
+						$query .= " articles.texttype_id = ${value} "; 
 						break;
 					
 					case 'title':
-						$query .= " match(a.title) against('${value}') ";
+						$query .= " match(articles.title) against('${value}') ";
 						break;
 
 					case 'page':
-						$query .= " a.page_id = ${value} ";
+						$query .= " articles.page_id = ${value} ";
 						break;	
 
 					default:
 						break;
 				}
-				$query .= "AND"; 
+                if ($count > 0)
+				 $query .= "AND"; 
+                $count--;
 			}
-		$query .= " a.page_id = p.id AND a.type_id = tt.id ORDER BY(a.id) LIMIT 0,100;";
 		try {
-         $result = DB::select($query);
-        }
+         $result = DB::table('articles')
+                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
+                    ->select('articles.article_id', 'articles.title', 'pages.Name as page', 'texttype.name as type')
+                    ->whereRAW($query)
+                    ->orderBy('articles.article_id')
+                    ->paginate(10);
+       
+         }
         catch(QueryException $e)
         {
             return null;
         }
-		return $result;
+        return $result;
 	}
 
 
@@ -161,10 +198,15 @@ class Articles extends Model
             $article->page_id = $page_id;
 
         if ($type_id != null)
-            $article->type_id = $type_id;
+            $article->texttype_id = $type_id;
 
-            $article->save();
-
+        try{
+           $article->save();
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
         return $article;
 
     }
@@ -183,7 +225,13 @@ class Articles extends Model
         
         if ($page_id != null)
             $AddData['page_id'] = $page_id;
-
+        try{
             Articles::where('id',$id)->update($AddData);
+        }
+        catch(QueryException $e)
+        {
+            return False;
+        }
+        return True;
     }
 }

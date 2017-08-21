@@ -7,6 +7,7 @@
  .btn-default{
  	background: rgba(105, 146, 255, 0.33) !important;
  	//background: #063cc7 !important;
+ 	//background: #1f5dff !important;
  	margin-top:10px;
  	margin-bottom:10px;
  	height:32px;
@@ -31,7 +32,7 @@
  	overflow: auto;
  }
  .message .message-text{
- 	background-color: #386eff;
+ 	background-color: #22ef68;
  	padding: 10px;
  	border-radius: 2px;
  }
@@ -42,7 +43,7 @@
  	right: 10px;
 	width: 0;
 	height: 0;
-	border-top: 10px solid #386eff;
+	border-top: 10px solid #22ef68;
 	border-left: 10px solid transparent;
 
  }
@@ -84,11 +85,41 @@
 
 #scrollbar::-webkit-scrollbar
 {
-	width: 6px;
+	width: 5px;
 	background-color: #F5F5F5;
 }
 
 #scrollbar::-webkit-scrollbar-thumb
 {
-	background-color:  #063cc7;
+	background-color:  black;
+	border-radius: 10px;
+}
+
+
+
+.search_btn{
+	margin-top:10px;
+	margin-bottom:10px;
+ 	padding-top: 5px !important;
+ 	padding-bottom: 5px !important;
+ 	margin-left: 5px !important;
+ 	margin-right: 5px !important;
+}
+
+
+.info-message{
+	margin: 10px;
+	padding: 10px;
+	padding-left: 30px;
+	background-color: #ddd; 
+	border-radius: 10px;
+
+}
+.info-message img{
+	height: 32px;
+}
+.info-message .row{
+ font-size: 12pt;
+ color: white;
+ font-weight: bold;
 }

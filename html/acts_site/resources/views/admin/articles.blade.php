@@ -14,21 +14,21 @@
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('admin.page_articles')</h3></div>
                 
                  <form method="GET">
-                	<input name = "seach_title" placeholder="@lang('admin.enter_search_text')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
+                	<input name = "search_title" placeholder="@lang('admin.enter_search_text')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
                     <div class="text-right">
-                     <select name = "page" style=" border-color: #063cc7;">
+                     <select name = "page_search" style=" border-color: #063cc7;">
                         <option selected disabled>@lang('admin.select_page')</option>
                         @foreach ($pages as $p)
-                        <option value="{{ $p->id }}">{{ $p->Name }}</option>
+                        <option value="{{ $p->page_id }}">{{ $p->Name }}</option>
                         @endforeach
                      </select>
                       <select name = "type" style=" border-color: #063cc7;">
                         <option selected disabled>@lang('admin.select_type_page')</option>
                         @foreach ($types_article as $ta)
-                        <option value="{{ $ta->id }}">{{ $ta->name }}</option>
+                        <option value="{{ $ta->texttype_id }}">{{ $ta->name }}</option>
                         @endforeach
                      </select>
-                     <input type="submit" name="seach" class="btn btn-default text-right" value="@lang('admin.search_btn')">
+                     <input type="submit" name="seach" class="btn search_btn text-right" value="@lang('admin.search_btn')">
                     </div>
                  </form>
                 
@@ -48,11 +48,11 @@
                 <td>
                     <form method = "POST" action="{{ route('deletearticle') }}">
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="num" value="{{ $article->id }}">
+                        <button type="submit" class="btn" name="num" value="{{ $article->article_id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/admin/articles/change/{{$article->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/admin/articles/change/{{$article->article_id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $article->title }}</td>
                 <td>{{ $article->page }}</td>
@@ -61,8 +61,13 @@
                 @endforeach
                 </tbody>
                 </table>
-                
-
+                <div class = "text-center">
+                @if(isset($search_data))
+                    {{ $articles->appends($search_data)->links() }}
+                @else
+                 {{ $articles->links() }}
+                @endif
+                </div>
                 @else
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('messages.no_data')</h3></div>
                 @endif

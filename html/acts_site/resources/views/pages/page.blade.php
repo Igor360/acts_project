@@ -11,16 +11,27 @@
 	@else
 		<h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')
 		</h2><hr>
-	@endif
+	@endif	
 @elseif ($page == "news_archive")
   @include('article.generateNews')
 @else
 <h2 class="c__block-title col-xs-12" style="text-align: left;">@lang('messages.no_data')
 </h2><hr>
 @endif
-  
-
-
+  @if (isset($Articles) and $page != 'more')
+   	<div class="text-center">
+  	@if (isset($search_query))
+  		{{ $Articles->appends($search_query)->links() }}
+  	@else
+       {{ $Articles->links() }}
+    @endif
+    </div>
+  @endif
+  @if (isset($NewsMain))
+  	<div class="text-center">
+		{{ $NewsMain->links() }}
+    </div>
+  @endif
 
 </div>
 </div>

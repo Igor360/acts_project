@@ -7,6 +7,12 @@ return [
 	'no_publications' => 'На жадь, публікації відсутні',
 	'no_conference' => 'На жаль, конференції відсутні',
 
+	// messages
+
+	'successfully_changed' => 'Зміни збережено.',
+	'error_change' => 'Ошибка! Зміни не були збережені.',
+	'add_data' => "Дані додано.", 
+
 ];
 
 ?>

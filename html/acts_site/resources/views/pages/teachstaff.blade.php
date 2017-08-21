@@ -33,7 +33,7 @@ else
   echo          "<h4 class= \"teacher_name\">".$person->LastName." ".$person->FirstName." ".$person->MiddleName. "</h4><br/>";
   echo           "<p class=  \"teachDescr\">".$person->position." ".$person->Profession."</p>";
   if ($person->isteacher)
-  	echo           "<a class = \"teacherbtn\" href=\"/teachstaff/more/{$person->id}\">".__('article.article_morebtn')."</a>";
+  	echo           "<a class = \"teacherbtn\" href=\"/teachstaff/more/{$person->teacher_id}\">".__('article.article_morebtn')."</a>";
   echo       "</div>";
   echo     "</div>"; 
 $rowcol +=1;

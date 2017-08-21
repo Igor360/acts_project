@@ -10,10 +10,11 @@ class Works extends Model
 {
     //
     protected $table = "works";
+    protected $primaryKey = 'work_id';
 
     public static function InsertData($type, $date,$title, $link, $user_id, $typework_id)
     {
-    		$AddData = array(
+    	$AddData = array(
     			'type' => $type,
     			'DatePublish' => $date,
     			'title' => $title,
@@ -21,34 +22,69 @@ class Works extends Model
     			'user_id' => $user_id,
     			'typework_id' => $typework_id
     			 );
-    		echo var_dump($AddData);
+    	try{
     		DB::table('works')->insert($AddData);
+    	}
+        catch(QueryException $e)
+        {
+            return False;
+        }
+        return True;
     }
 
 
 
 	public static function UpdateData($id,$type, $date,$title, $link, $user_id = null, $typework_id = null)
 	{
+		$fields_with_data = 0;
 		$changedata = array();
 		if ($type != null)
+		{
 			$changedata['type'] = $type;
+			$fields_with_data++;
+		}
 
 		if ($date != null)
+		{
 			$changedata['DatePublish'] = $date;
+			$fields_with_data++;
+		}
 
 		if ($title != null)
+		{
 			$changedata['title'] = $title;
+			$fields_with_data++;
+		}
 
 		if ($link != null)
+		{
 			$changedata['link'] = $link;
+			$fields_with_data++;
+		}
 
 		if ($user_id != null)
+		{
 			$changedata['user_id'] = $user_id;
+			$fields_with_data++;
+		}
 
 		if ($typework_id != null)
+		{
 			$changedata['typework_id'] = $typework_id;
+			$fields_with_data++;
+		}
 
-		Works::where('id',$id)->update($changedata);
+		if ($fields_with_data == 0)
+			return False;
+
+		try{
+		Works::where('work_id',$id)->update($changedata);
+		}
+        catch(QueryException $e)
+        {
+            return False;
+        }
+        return True;
 	} 
 
 
@@ -107,4 +143,21 @@ class Works extends Model
 		return $result;
 	}
 
+
+	public static function search_work($search_query, $typework_id, $user_id)
+	{
+		try{
+		$result = DB::table('works')
+				  ->select('works.*')
+				  ->where('works.typework_id', '=', $typework_id)
+				  ->where('works.user_id', '=', $user_id)
+				  ->whereRAW(" (works.title Like('%${search_query}%') or works.datePublish like('%${search_query}%') or works.type Like('%${search_query}%') )")
+				  ->paginate(5);
+		}
+        catch(QueryException $e)
+        {
+            return null;
+        }
+		return $result;
+	}
 }

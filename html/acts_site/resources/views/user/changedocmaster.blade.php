@@ -10,10 +10,15 @@
   </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-          @if ( $page != null )
+          @if ( $page != null and $work != null)
                 <div class="panel-heading">
                 <a href="/user/masterdocs/" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
                 <h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_change')</h3></div>
+@if (isset ($message))
+<div class="info-message" style="background-color:{{ $message->has_errors ? '#f6979e' : '#ddd' }};">
+ <div class="row"><img src="{{ $message->has_errors ? asset('img/icons/error.png') : asset('img/icons/info.png') }}"> &nbsp{{ $message->text }}</div>
+</div>
+@endif
                  <div class="form-user">
                        <form method = "POST" action="{{ route('updatemasterdoc') }}">
                 {{ csrf_field() }}
@@ -78,7 +83,7 @@
                     <form method = "POST" action="{{ route('deletemasterfile') }}" >
                     {{ csrf_field() }}
                       <input type="hidden" name="id_mw" value="{{$id}}">
-                        <button type="submit" class="btn" name="num" value="{{ $file->id }}">
+                        <button type="submit" class="btn" name="num" value="{{ $file->file_id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>

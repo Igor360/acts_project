@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `page_id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
+  PRIMARY KEY (`page_id`),
+  UNIQUE KEY `id_UNIQUE` (`page_id`),
   UNIQUE KEY `Name_UNIQUE` (`Name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:25
+-- Dump completed on 2017-08-22  0:31:20

@@ -26,6 +26,7 @@ use App\Http\Controllers\Input;
 
 
 require_once ('AddImageToDB.php');
+require_once ('Validators.php');
 
 class UsersController extends Controller
 {
@@ -48,7 +49,7 @@ class UsersController extends Controller
     {
         $args = array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
         if ($args['user']->isadmin)
             return redirect()->route('adminhome'); 
         $args['page'] = 'home';
@@ -59,7 +60,7 @@ class UsersController extends Controller
     {
         $args =array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
         $args['page'] = 'home';
         $args['typework'] = 1;
         $args['user_id'] = Auth::user()->getId();
@@ -70,19 +71,23 @@ class UsersController extends Controller
     {
         $args =array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('id',  Auth::user()->getId())->get()->first(); 
+        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first(); 
         $args['page'] = 'home';
         $args['typework'] = 2;
         $args['user_id'] =  Auth::user()->getId();
         return view('user.home',$args);
     }
 
-    public function changeUserData($message = null)
+    public function changeUserData($message = null, $errors = null)
     {
         $args =array();
-        $args['message'] = $message;
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         $args['page'] = 'user';
-        $args['user'] = User::where('id',  Auth::user()->getId())->get()->first();  
+        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first();  
         return view('user.changeuserdata',$args);
     }
 
@@ -104,20 +109,33 @@ class UsersController extends Controller
          {   
            $Validator = Validator::make($request->all(), $Rules);
            if ($Validator->fails())
-            return redirect()->back()->withErrors($Validator->errors());
+            return redirect()->back()-> Errors($Validator->errors());
          }
-        User::UpdateData($id,$username,$password,$email);       
-        $message = "Дані змінено";
+        if (User::UpdateData($id,$username,$password,$email)) // перевірка чи були примінені зміни до даних
+           $message = [
+            'text' => __('messages.successfully_changed'), 
+            'has_errors' => 0,
+            ];
+         else
+            $message = [
+             'text' => __('messages.error_change'),
+             'has_errors' => 1,
+        ];          
         return redirect()->route('updateuserdata',$message);
     }
 
-    public function changeTeacherData()
+    public function changeTeacherData($message = null, $error = null)
     {
         $args =array();
         $args['page'] = 'teacher';
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $error,
+               ];
         if (Auth::check())
         {
-            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
             $args['teacher'] = Teachers::where('user_id',  Auth::user()->getId())->get()->first();
         }
         $args['positions'] = Positions::getAll();
@@ -125,7 +143,7 @@ class UsersController extends Controller
     }
     public function updateTeacherData(Request $request)
     {
-        $id = Teachers::getTeacher( Auth::user()->getId())->id;
+        $id = Teachers::getTeacher( Auth::user()->getId())->teacher_id;
         $firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
@@ -150,25 +168,32 @@ class UsersController extends Controller
             $photo = route('getimage', $photo_file->filename);
             
         }
-        Teachers::UpdateData($id, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position);
-
-        $args =array();
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
-        $args['page'] = 'teacher';
-        $args['positions'] = Positions::getAll();
-        $args['message'] = "Дані змінено";
-        return view('user.changeteacherdata',$args);
+        if (Teachers::UpdateData($id, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position))
+            $message = [
+            'text' => __('messages.successfully_changed'), 
+            'has_errors' => 0,
+            ];
+        else
+            $message = [
+             'text' => __('messages.error_change'),
+             'has_errors' => 1,
+        ];          
+        return redirect()->action('UsersController@changeTeacherData', $message);
     }
 
 
-    public function changeLinks()
+    public function changeLinks($message = null, $errors = null)
     {
         $args =array();
         $args['page'] = 'links';
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         if (Auth::check())
         {
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
             $args['links'] = Links::where('user_id', Auth::user()->getId())->get()->first();
         }
         return view('user.changelinks',$args);
@@ -176,26 +201,42 @@ class UsersController extends Controller
 
     public function updateLinks(Request $request)
     {
-        $args =array();
         $id = Auth::user()->getId();
+        $Validator = UserLinksValidator([
+            'anothersite',
+            'intellect' ,
+            'timetable' 
+            ], $request);
+         if ($Validator->fails())
+            return redirect()->back()->withErrors($Validator->errors());
         $AnotherSite = $request['anothersite'];
         $Intellect = $request['intellect'];
         $TimeTable = $request['timetable'];
-        if (Auth::check())
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
-        Links::UpdateData($id, $AnotherSite, $Intellect, $TimeTable);
-        $args['message'] = 'Дані змінено';
-        $args['page'] = 'links';
-        return view('user.changelinks',$args);
+         if (Links::UpdateData($id, $AnotherSite, $Intellect, $TimeTable)) // перевірка чи були примінені зміни до даних
+           $message = [
+            'text' => __('messages.successfully_changed'), 
+            'has_errors' => 0,
+            ];
+         else
+            $message = [
+             'text' => __('messages.error_change'),
+             'has_errors' => 1,
+        ];        
+        return redirect()->action('UsersController@changeLinks',$message);
     }
 
-    public function changePublications()
+    public function changePublications(Request $request)
     {
         $args =array();
         $args['page'] = 'publications';
         if (Auth::check())
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
-        $args['publications'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 1)->get();
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0]; 
+        $args['publications'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 1)->paginate(5); // отримання публыкаций из бд по 5 елементов для каждой страници 
+        if (isset($request['search_title']))
+            { 
+               $args['publications'] = Works::search_work($request['search_title'], 1, Auth::user()->getId());
+               $args['search_query'] = ['search_title', $request['search_title']];   
+            }
         return view('user.changepublications',$args);
     }
 
@@ -213,42 +254,60 @@ class UsersController extends Controller
     public function deletePublication(Request $request)
     {
         $id_publication = $request['numpublication'];
-        Works::where('id',$id_publication)->delete();
-        return redirect()->route('changepublications_user');
+        Works::where('work_id',$id_publication)->delete();
+        return back()->withInput();
     }
 
 
-    public function changePublication(Request $request,$id = null)
+    public function changePublication(Request $request, $id = null, $message  = null,  $errors = null)
     {
         $args =array();
         $args['id_publication'] = $id;
         $args['page'] = 'publications';
-        $args['work'] = Works::where('id', $id)->where('typework_id', 1)->get()->first();
+        $args['work'] = Works::where('work_id', $id)->where('typework_id', 1)->get()->first();
+         if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('user.changework',$args);
     }
 
-public function updatePublication(Request $request)
+    public function updatePublication(Request $request)
     {
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $id = $request['page'];
         $title = $request['name'];
-        Works::UpdateData($id,$type,$date,$title,$link);
-        return redirect()->route('changepublications_user');
+        if (Works::UpdateData($id,$type,$date,$title,$link))
+            $message = [
+             'id' => $id,
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'id' => $id,
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+        ];        
+        return redirect()->action('UsersController@changePublication', $message);
     }
 
-
-
-
-
-    public function changeConference()
+    public function changeConference(Request $request)
     {
         $args =array();
         $args['page'] = 'conference';
          if (Auth::check())
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
-         $args['conferences'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 2)->get();
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0]; 
+        if (isset($request['search_title']))
+            { 
+               $args['conferences'] = Works::search_work($request['search_title'], 2, Auth::user()->getId());
+               $args['search_query'] = ['search_title', $request['search_title']];   
+               return view('user.changeconference',$args);
+            }
+        $args['conferences'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 2)->paginate(5); // отримання 5 елеметлов из бд для отной сторінки
         return view('user.changeconference',$args);
     }
 
@@ -268,29 +327,46 @@ public function updatePublication(Request $request)
     public function deleteConference(Request $request)
     {
         $id_publication = $request['numconference'];
-        Works::where('id',$id_publication)->delete();
-        return redirect()->route('changeconference_user');
+        Works::where('work_id',$id_publication)->delete();
+        return back()->withInput();
     }
 
 
-    public function changeoneConference(Request $request,$id = null)
+    public function changeoneConference(Request $request,$id = null, $message = null, $errors = null)
     {
         $args =array();
         $args['id_publication'] = $id;
         $args['page'] = 'conference';
-        $args['work'] = Works::where('id', $id)->where('typework_id', 2)->get()->first();
+        $args['work'] = Works::where('work_id', $id)->where('typework_id', 2)->get()->first();
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('user.changework',$args);
     }
 
-public function updateConference(Request $request)
+    public function updateConference(Request $request)
     {
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
         $id = $request['page'];
         $title = $request['name'];
-        Works::UpdateData($id,$type,$date,$title,$link);
-        return redirect()->route('changeconference_user');    }
+        if (Works::UpdateData($id,$type,$date,$title,$link))
+            $message = [
+             'id' => $id,
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'id' => $id,
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+        ];        
+        return redirect()->action('UsersController@changeoneConference', $message);  
+    }
 
     public function changeMasterDocs(Request $request)
     {
@@ -298,8 +374,13 @@ public function updateConference(Request $request)
         $args['page'] = 'master';
         if (Auth::check())
         {
-            $args['works'] = MasterWorks::where('user_id', Auth::user()->getId())->get();
-            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
+            $args['works'] = MasterWorks::where('user_id', Auth::user()->getId())->paginate(5);// отримання 5 статей
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+        }
+        if (isset($request['search_title']))
+        {
+            $args['works'] = MasterWorks::search_data($request['search_title']);
+            $args['search_query'] = [ 'search_title' => $request['search_title'] ];
         }
         return view('user.changemasterdocs',$args);
     }
@@ -312,9 +393,10 @@ public function updateConference(Request $request)
         $maintext = $request['maintext'];
         $id = Auth::user()->getId();
         MasterWorks::InsertData($name, $description,$maintext, $date, $id);
-        $work = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->id; 
+        $work_id = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->masterwork_id; 
         $files = $request['filefield'];
-        HomeController::UploadFiles($files,$work);
+        if ($files != null)
+            UsersController::UploadFiles($files,$work_id);
         return redirect()->route('masterdocs');
     }
 
@@ -322,11 +404,11 @@ public function updateConference(Request $request)
     public function deleteMasterDocs(Request $request)
     {
         $id = $request['num'];
-        MasterWorks::where('id',$id)->delete();
-        return redirect()->route('masterdocs');
+        MasterWorks::where('masterwork_id',$id)->delete();
+        return back()->withInput();
     }
 
-     public function changeoneMasterDoc(Request $request,$id = null)
+     public function changeoneMasterDoc(Request $request,$id = null, $message = null, $errors = null)
     {
         $args =array();
         $args['id'] = $id;
@@ -334,9 +416,14 @@ public function updateConference(Request $request)
         $args['files'] = MasterFiles::getFiles($id);
          if (Auth::check())
         {
-            $args['work'] = MasterWorks::where('id', $id)->get()->first();
-            $args['user'] = User::where('id', Auth::user()->getId())->get()->first(); 
+            $args['work'] = MasterWorks::where('masterwork_id', $id)->get()->first();
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
         }
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('user.changedocmaster',$args);
     }
     
@@ -347,8 +434,19 @@ public function updateConference(Request $request)
         $date = $request['datepublication'];
         $description = $request['description'];
         $maintext = $request['maintext'];
-        MasterWorks::UpdateData($id, $name, $description,$maintext, $date);
-        return redirect()->route('masterdocs');
+         if (MasterWorks::UpdateData($id, $name, $description,$maintext, $date))
+            $message = [
+             'id' => $id,
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'id' => $id,
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+        ];   
+        return redirect()->action('UsersController@changeoneMasterDoc', $message);
     }
 
 
@@ -356,7 +454,7 @@ public function updateConference(Request $request)
     {
         $id_file = $request['num'];
         $id = $request['id_mw']; 
-        Files::where('id',$id_file)->delete();
+        Files::where('file_id',$id_file)->delete();
         $args['files'] = MasterFiles::getFiles($id);
         return redirect()->route('changemasterdata',$id);
     }
@@ -365,12 +463,13 @@ public function updateConference(Request $request)
     {
         $id = $request['id_mw']; 
         $files = $request['filefield'];
-        HomeController::UploadFiles($files,$id);
+        UsersController::UploadFiles($files,$id);
         return redirect()->route('changemasterdata',$id);
     }
 
     public static  function UploadFiles($files,$work_id)
     {
+    if ($files != null)
      foreach ($files as $file) {
           
         $extension = $file->getClientOriginalExtension();
@@ -379,11 +478,11 @@ public function updateConference(Request $request)
         $entry->mime = $file->getClientMimeType();
         $entry->originalname = $file->getClientOriginalName();
         $entry->filename = $file->getFilename().'.'.$extension;
-        $id = Auth::id();
+        $id = Auth::user()->getId();
         $entry->user_id = $id;
         $entry->size = filesize($file);
         $entry->save();
-        MasterFiles::InsertData($work_id, $entry->id);
+        MasterFiles::InsertData($work_id, $entry->file_id);
      }
 
     }

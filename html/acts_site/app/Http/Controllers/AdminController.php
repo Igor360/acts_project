@@ -46,26 +46,35 @@ class AdminController extends Controller
         $args['page'] = 'home';
         if (Auth::check())
         {
-            $args['user'] = User::where('id',  Auth::user()->getId())->get()[0]; 
+            $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first(); 
             $args['users'] = User::getUsers();
             if(isset($request['search_title']))
-             $args['users'] = User::findData($request['search_title']);         
+            {
+              $args['users'] = User::findData($request['search_title']);         
+              $args['search_query'] = ['search_title' => $request['search_title']];
+            }
         }
         return view('admin.adminhome',$args);
 	}
 
 	//
-	public function Adduser()
+	public function Adduser($message = null, $errors = null)
 	{
 		$args =array();
 		$args['positions'] = Positions::getAll();
         $args['page'] = 'Add';
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('admin.adduser',$args);
 	}
 
 	public function insertUser(UserDataRequest $request)
 	{
-		$args = array();
+
+		$is_data_add = false;
 		$password = $request['password'];
         $password2 = $request['password2'];
         $username = $request['username'];
@@ -74,6 +83,8 @@ class AdminController extends Controller
         $hasmasters = $request['hasmaster'];     
 
 		$user_id = User::InsertData($username, $password, $email, $isadmin, $hasmasters);
+        if($user_id != null)
+            $is_data_add = true;
 		
         $firstname = $request['firstname'];
         $middlename = $request['middlename'];
@@ -109,15 +120,23 @@ class AdminController extends Controller
 
         Links::InsertData($user_id, $AnotherSite, $Intellect, $TimeTable);
 
-        $args['page'] = "Add";
-        $args['positions'] = Positions::getAll();
-		$args['message'] = "Користувача додано";
-		return view('admin.adduser',$args);
+        if($is_data_add)
+            $message = [
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+        else
+            $message = [
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+         ];
+		return redirect()->action('AdminController@Adduser', $message);
 	}
 
 
 	public function updateUser(Request $request, $id = null)
 	{
+        $is_data_add = false;
 		$user_id = $request['id_user'];
 		$args = array();
 		$password = $request['password'];
@@ -125,9 +144,11 @@ class AdminController extends Controller
         $email = $request['email'];
         $isadmin = $request['isadmin'];
         $hasmasters = $request['hasmaster']; 
-        UserDataValidator($password, $username, $email, $isadmin, $hasmasters);
-		User::UpdateData($user_id, $username, $password, $email, $isadmin, $hasmasters);
-		$firstname = $request['firstname'];
+        UserDataValidator($request); // валидация даних користувача
+	
+    	$is_data_add = User::UpdateData($user_id, $username, $password, $email, $isadmin, $hasmasters);
+	
+    	$firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
         $photo = $request['photo'];
@@ -141,9 +162,8 @@ class AdminController extends Controller
         $disciplines = $request['disciplines'];
         $department = $request['department'];
         $isteacher = $request['isteacher'];
-        TeacherDataValidator($firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher);
-
-        $id_teacher = Teachers::where('user_id',$user_id)->get()[0]->id;
+        TeacherDataValidator($request); // валидаци даних учителя
+        $id_teacher = Teachers::where('user_id',$user_id)->get()->first()->teacher_id;
         $photo_file = $request['photofile'];
         if (AddImage($photo_file, $user_id))
         {
@@ -152,18 +172,36 @@ class AdminController extends Controller
                     ->orWhere('mime','image/png')->get()->first();
             $photo = route('getimage', $photo_file->filename);            
         }
-        Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
+        if (!$is_data_add)
+         $is_data_add = Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
+        else
+            Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
 
         $AnotherSite = $request['anothersite'];
         $Intellect = $request['intellect'];
         $TimeTable = $request['timetable'];
         LinksValidator([
-            'anothersite' => $anothersite,
-            'intellect' => $Intellect,
-            'timetable' => $TimeTable
-            ]);
-        Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
-		return redirect()->route('adminhome');
+            'anothersite',
+            'intellect' ,
+            'timetable' 
+            ], $request); // валидация введених силок
+        if (!$is_data_add)
+         $is_data_add = Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
+        else
+         	Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);	
+        if($is_data_add)
+            $message = [
+             'id' => $user_id,
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'id' => $user_id,
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+         ];
+        return redirect()->action('AdminController@changeUser', $message);
 	}
 
 
@@ -172,26 +210,24 @@ class AdminController extends Controller
     {
         $args =array();
         $id = $request['user_id'];
-        User::where('id',$id)->delete();
-        if (Auth::check())
-        {
-            $args['users'] = User::get();
-            $args['user'] = User::where('id', Auth::user()->getId())->get()[0]; 
-
-        }
-        $args['page'] = 'home';
-        return view('admin.adminhome',$args);
+        User::where('user_id',$id)->delete();
+        return back()->withInput();
     }
 
-    public function  changeUser($id = null)
+    public function  changeUser($id = null, $message = null, $errors = null)
     {
     	$args = array();
     	$args['positions'] = Positions::getAll();
     	$args['page'] = 'home';
     	$args['userid'] = $id;
         $args['teacher'] = Teachers::where('user_id', $id)->get()->first();
-        $args['user'] = User::where('id', $id)->get()->first();
+        $args['user'] = User::where('user_id', $id)->get()->first();
         $args['links'] = Links::where('user_id', $id)->get()->first();
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('admin.changedata',$args);
     }
 
@@ -200,49 +236,61 @@ class AdminController extends Controller
 		$args =array();
     
         $search_query = array();
-        if (isset($request['seach_title']))
-            if ($request['seach_title'] != null)
-                $search_query['title'] = $request['seach_title'];
-        if (isset($request['page']))
-            $search_query['page'] = $request['page'];
+        $search_data = array();
+        if (isset($request['search_title']))
+            if ($request['search_title'] != null)
+            {
+                $search_query['title'] = $request['search_title'];
+                $search_data['search_title'] = $request['search_title'];
+            }
+        if (isset($request['page_search']))
+            {
+              $search_query['page'] = $request['page_search'];
+              $search_data['page_search'] = $request['page_search'];    
+            }
         if (isset($request['type']))
-            $search_query['type'] = $request['type'];
+            {
+              $search_query['texttype'] = $request['type'];
+              $search_data['type'] = $request['type'];
+            }
 
         if (count($search_query) > 0)
-            $args ['articles'] = Articles::getArticles($search_query);
+        {
+            $args['articles'] = Articles::getArticles($search_query);
+            $args['search_data'] = $search_data;
+        }
             else
-                  $args['articles'] = Articles::getAll();
+                $args['articles'] = Articles::getAll();
 		
         $args['page'] = 'articles';
         $args['pages'] = Pages::get();
-        $args['types_article'] = TextType::where('id', '>', 2 )->get();
+        $args['types_article'] = TextType::where('texttype_id', '>', 2 )->get();
         return view('admin.articles',$args); 
 	}
 
     public function deleteArticles(Request $request)
     {
-        Articles::where('id', $request['num'])->delete();
-        return redirect()->route('adminarticles');
+        Articles::where('article_id', $request['num'])->delete();
+        return back()->withInput();
     }
 
-	public function AddArticle()
+	public function AddArticle($message = null, $errors = null)
 	{
 		$args =array();
         $args['pages'] = Pages::get();
-        $args['typesarticle'] = TextType::where('id','>',2)->get();
+        $args['typesarticle'] = TextType::where('texttype_id','>',2)->get();
         $args['page'] = 'addarticles';
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('admin.addarticle',$args);
 	}
 
     public function insertArticle(Request $request)
     {
-        $args = array();
-        $args['pages'] = Pages::get();
-        $args['typesarticle'] = TextType::where('id','>',2)->get();
-        $args['textelements'] = TextElement::get();
-        $args['message'] = "Дані додано";
-        $args['page'] = 'addarticles';
-
+        $is_data_add = false; // перевырка чи дані додані до бд
         $title = $request['title'];
         $description = $request['description'];
         $page_id = $request['page'];
@@ -252,7 +300,7 @@ class AdminController extends Controller
         if (count($text) > 0)
             $isText = 1;
         else 
-            $isText = 0;
+            $isText = 0;        
 
         $photo_file = $request['photofile'];
         if ($photo_file != null)
@@ -261,41 +309,59 @@ class AdminController extends Controller
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
         }
-        $article_id = Articles::InsertData($title, $img, $isText, $page_id, $articletype_id)->id;
-        if (isset($add_articledoc))
-            ArticleFiles::InsertData($article_id,$add_articledoc->id);
-        $files = $request['filesfield'];
-        AdminController::UploadFiles($files,$article_id);
-        if (count($text) > 0)
-            Text::InsertData($text, $article_id, 1);
-        Text::InsertData($description, $article_id, 2);
-        return view('admin.addarticle',$args);
+        $article = Articles::InsertData($title, $img, $isText, $page_id, $articletype_id);
+        if ($article != null)
+        {
+         $article_id = $article->article_id;
+         if (isset($add_articledoc))
+            $is_data_add = ArticleFiles::InsertData($article_id,$add_articledoc->file_id);
+         
+         $files = $request['filesfield'];
+         AdminController::UploadFiles($files,$article_id);
+         
+         if (count($text) > 0)
+           $is_data_add = Text::InsertData($text, $article_id, 1);
+         
+         $is_data_add = Text::InsertData($description, $article_id, 2);
+        }
+         if($is_data_add)
+            $message = [
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+         ];
+        return redirect()->action('AdminController@AddArticle', $message);
     }
 
 
 
-    public function changeArticle($id)
+    public function changeArticle($id, $message = null, $errors = null)
     {
         $args =array();
         $args['pages'] = Pages::get();
-        $args['types'] = TextType::where('id','<',3)->get();
-        $args['typesarticle'] = TextType::where('id','>',2)->get();
-        $args['text'] = Text::where('article_id', $id)->where('type_id', 1 )->get();
-        $args['description'] = Text::where('article_id', $id)->where('type_id', 2 )->get();
-        $args['article'] = Articles::where('id',$id)->get()[0];
+        $args['types'] = TextType::where('texttype_id','<',3)->get();
+        $args['typesarticle'] = TextType::where('texttype_id','>',2)->get();
+        $args['text'] = Text::where('article_id', $id)->where('texttype_id', 1 )->get();
+        $args['description'] = Text::where('article_id', $id)->where('texttype_id', 2 )->get();
+        $args['article'] = Articles::where('article_id',$id)->get()[0];
         $args['page'] = 'articles';
         $args['article_id'] = $id;
-        $args['files'] = ArticleFiles::getFiles($id,Articles::where('id',$id)->get()[0]->img);
+        $args['files'] = ArticleFiles::getFiles($id,Articles::where('article_id',$id)->get()[0]->img);
+        if ($message != null)
+            $args['message'] = (object)[ 
+               'text' => $message, 
+               'has_errors' => $errors,
+               ];
         return view('admin.changearticle',$args);
     }
 
     public function updateArticle(Request $request)
-    {
-        $args =array();
-        $args['articles'] = Articles::getAll();
-        $args['page'] = 'articles';
-
-        
+    {        
+        $is_data_add = false; // перевырка чи дані додані до бд
         $article_id = $request['article'];
         $title = $request['title'];
         $page_id = $request['page'];
@@ -311,25 +377,37 @@ class AdminController extends Controller
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
             isArticlePhoto($article_id);
-            ArticleFiles::InsertData($article_id,$add_articledoc->id);
+            ArticleFiles::InsertData($article_id,$add_articledoc->file_id);
         }
-        Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
-        $texts = Text::where('article_id', $article_id)->where('type_id',1)->get();
-
+        $is_data_add = Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
+        $texts = Text::where('article_id', $article_id)->where('texttype_id',1)->get();
         if (count($texts) > 0)
         {
-            Text::UpdateData($texts[0]->id,$text);
+            $is_data_add = Text::UpdateData($texts[0]->id,$text);
         }
         else
-            Text::InsertData($text, $article_id, 1);
-        $descriptions = Text::where('article_id', $article_id)->where('type_id',2)->get();
+            $is_data_add = Text::InsertData($text, $article_id, 1);
+        $descriptions = Text::where('article_id', $article_id)->where('texttype_id',2)->get();
         if (count($descriptions) > 0)
         {
-            Text::UpdateData($descriptions[0]->id, $description);
+           $is_data_add = Text::UpdateData($descriptions[0]->id, $description);
         }
         else         
-            Text::InsertData($description, $article_id, 2);
-        return redirect()->route('adminarticles');
+           $is_data_add = Text::InsertData($description, $article_id, 2);
+
+        if($is_data_add)
+            $message = [
+             'id' => $article_id,
+             'message' => __('messages.successfully_changed'), 
+             'errors' => 0,
+            ];
+         else
+            $message = [
+             'id' => $article_id,
+             'message' => __('messages.error_change'),
+             'errors' => 1,
+         ];
+        return redirect()->action('AdminController@changeArticle', $message);
     }
 
 
@@ -337,7 +415,7 @@ class AdminController extends Controller
     {
         $id_file = $request['num'];
         $id = $request['id_a']; 
-        Files::where('id',$id_file)->delete();
+        Files::where('file_id',$id_file)->delete();
         return redirect()->route('changearticledata',$id);
     }
 
@@ -352,6 +430,7 @@ class AdminController extends Controller
 
     public static  function UploadFiles($files,$article_id)
     {
+    if ($files != null)
      foreach ($files as $file) 
      {
         $extension = $file->getClientOriginalExtension();
@@ -360,11 +439,11 @@ class AdminController extends Controller
         $entry->mime = $file->getClientMimeType();
         $entry->originalname = $file->getClientOriginalName();
         $entry->filename = $file->getFilename().'.'.$extension;
-        $id = Auth::id();
+        $id = Auth::user()->getId();
         $entry->user_id = $id;
         $entry->size = filesize($file);
         $entry->save();
-        ArticleFiles::InsertData($article_id, $entry->id);
+        ArticleFiles::InsertData($article_id, $entry->file_id);
      }
 
     }

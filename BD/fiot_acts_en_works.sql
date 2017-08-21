@@ -23,21 +23,23 @@ DROP TABLE IF EXISTS `works`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `works` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `work_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(100) DEFAULT NULL,
   `datePublish` date DEFAULT NULL,
-  `title` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_id` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(500) DEFAULT NULL,
+  `link` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `typework_id` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
+  PRIMARY KEY (`work_id`),
+  UNIQUE KEY `id_UNIQUE` (`work_id`),
   KEY `user_id_idx` (`user_id`),
   KEY `typework_idx` (`typework_id`),
-  CONSTRAINT `typework` FOREIGN KEY (`typework_id`) REFERENCES `typework` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `user_id_` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `search_year` (`datePublish`),
+  FULLTEXT KEY `search_data` (`type`,`title`),
+  CONSTRAINT `typework` FOREIGN KEY (`typework_id`) REFERENCES `typework` (`typework_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user_id_` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +48,7 @@ CREATE TABLE `works` (
 
 LOCK TABLES `works` WRITE;
 /*!40000 ALTER TABLE `works` DISABLE KEYS */;
-INSERT INTO `works` VALUES (2,'re','0001-11-11','sdds','1',1,1,'2017-06-17 20:53:04'),(5,'err','3233-02-23','dsf',NULL,1,2,'2017-06-18 08:48:39'),(6,'re','2011-12-12','addfff',NULL,1,1,NULL),(7,NULL,'0001-02-12','dffd',NULL,16,1,NULL);
+INSERT INTO `works` VALUES (2,'re','0001-11-11','sdds','1','1',1,'2017-06-17 20:53:04'),(5,'err','3233-02-23','dsf',NULL,'1',2,'2017-06-18 08:48:39'),(6,'re','2011-12-12','addfff',NULL,'1',1,NULL);
 /*!40000 ALTER TABLE `works` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:23
+-- Dump completed on 2017-08-22  0:31:19

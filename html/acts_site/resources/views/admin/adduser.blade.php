@@ -14,7 +14,9 @@
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_main_data')</h3></div>
 
 @if (isset ($message))
-<div class="row" style="text-align: center;">{{ $message }}</div>
+<div class="info-message" style="background-color:{{ $message->has_errors ? '#f6979e' : '#ddd' }};">
+ <div class="row"><img src="{{ $message->has_errors ? asset('img/icons/error.png') : asset('img/icons/info.png') }}"> &nbsp{{ $message->text }}</div>
+</div>
 @endif
           	  	<form method = "POST" action="{{ route('adminadduser')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -143,7 +145,7 @@
          <div class = "col-md-8">
             <select name="position">
             @foreach ($positions as $position)
-                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                <option value="{{ $position->position_id }}">{{ $position->name }}</option>
             @endforeach
             </select>
          </div>

@@ -16,8 +16,11 @@
       <a href="/admin/articles/" class="btn btn-submit"> <i class="fa fa-chevron-left" aria-hidden="true"></i></a>
       <h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_chang_article')</h3></div>
 
+
 @if (isset ($message))
-<div class="row" style="text-align: center;">{{ $message }}</div>
+<div class="info-message" style="background-color:{{ $message->has_errors ? '#f6979e' : '#ddd' }};">
+ <div class="row"><img src="{{ $message->has_errors ? asset('img/icons/error.png') : asset('img/icons/info.png') }}"> &nbsp{{ $message->text }}</div>
+</div>
 @endif
   <form method = "POST" action="{{ route('updatearticle')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -37,13 +40,13 @@
          <div class = "col-md-8">
             <select name="page">
             @foreach ($pages as $p)
-             @if($p->id == $article->page_id)
+             @if($p->page_id == $article->page_id)
               <option selected disabled>{{ $p->Name }}</option>
               @break
              @endif
             @endforeach
             @foreach ($pages as $p)
-            <option value="{{ $p->id }}">{{ $p->Name }}</option>
+            <option value="{{ $p->page_id }}">{{ $p->Name }}</option>
             @endforeach
             </select>
          </div>
@@ -71,7 +74,7 @@
         <div class = "col-md-8">
             <textarea id = "description"  name = "description">
             @foreach ($description as $d)
-            {{  $d->text }}
+             {{ $d->text }}
             @endforeach
              </textarea>
         </div>
@@ -84,7 +87,7 @@
         <div class = "col-md-8">
             <textarea id = "idtext"  name = "text">
             @foreach ($text as $t)
-            {{  $t->text }}
+             {{ $t->text }}
             @endforeach
              </textarea>
         </div>

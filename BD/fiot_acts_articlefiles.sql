@@ -23,15 +23,15 @@ DROP TABLE IF EXISTS `articlefiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `articlefiles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idarticle` int(11) DEFAULT NULL,
-  `idfile` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_article_idx` (`idarticle`),
-  KEY `id_file_idx` (`idfile`),
-  CONSTRAINT `id_article` FOREIGN KEY (`idarticle`) REFERENCES `articles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `id_file_` FOREIGN KEY (`idfile`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `articlefile_id` int(11) NOT NULL AUTO_INCREMENT,
+  `article_id` int(11) DEFAULT NULL,
+  `file_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`articlefile_id`),
+  KEY `id_article_idx` (`article_id`),
+  KEY `id_file_idx` (`file_id`),
+  CONSTRAINT `id_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `id_file_` FOREIGN KEY (`file_id`) REFERENCES `files` (`file_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,4 +70,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:24
+-- Dump completed on 2017-08-22  0:31:19

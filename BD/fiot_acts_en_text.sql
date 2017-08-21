@@ -23,17 +23,17 @@ DROP TABLE IF EXISTS `text`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `text` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `text_id` int(20) NOT NULL AUTO_INCREMENT,
   `text` mediumtext COLLATE utf8_unicode_ci,
   `article_id` int(20) NOT NULL,
-  `type_id` int(11) NOT NULL,
+  `texttype_id` int(11) NOT NULL,
   `updated_at` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`text_id`),
   KEY `id_article_idx` (`article_id`),
-  KEY `type_text_idx` (`type_id`),
+  KEY `type_text_idx` (`texttype_id`),
   FULLTEXT KEY `text_index` (`text`),
-  CONSTRAINT `article_id` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `type_text` FOREIGN KEY (`type_id`) REFERENCES `texttype` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `article_id` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `type_text` FOREIGN KEY (`texttype_id`) REFERENCES `texttype` (`texttype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:23
+-- Dump completed on 2017-08-22  0:31:18

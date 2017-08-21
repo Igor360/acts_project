@@ -12,6 +12,12 @@
             <div class="panel panel-default">
           @if ( $page != null )
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_change_conference')</h3></div>
+                   <form method="GET">
+                    <input name = "search_title" placeholder="@lang('user.search_query_conference')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
+                    <div class="text-right">
+                     <input type="submit" name="seach" class="btn search_btn text-right" value="@lang('admin.search_btn')">
+                    </div>
+                 </form>
                 	  <table class="table">
                     <caption style="text-align: center;">@lang('user.conference_table.title')</caption>
                 <thead>
@@ -29,11 +35,11 @@
                 <td>
                     <form method = "POST" action="{{ route('deleteconference') }}">
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="numconference" value="{{ $conference->id }}">
+                        <button type="submit" class="btn" name="numconference" value="{{ $conference->work_id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/user/changeconference/{{$conference->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/changeconference/{{$conference->work_id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $conference->type }}</td>
                 <td>{{ $conference->datePublish }}</td>
@@ -43,7 +49,13 @@
                 @endforeach
                 </tbody>
                 </table>
-
+                <div class="text-center">
+                @if(isset($search_query))
+                  {{ $conferences->appends($search_query)->links() }}
+                @else
+                 {{ $conferences->links() }}
+                @endif
+                </div>
                  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_add_conference')</h3></div>
                  <div class="form-user">
                        <form method = "POST" action="{{ route('addconference') }}">

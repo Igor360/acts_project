@@ -11,7 +11,7 @@
  		 <h2 class="c__block-title col-xs-12" style="text-align: left;">{{ $doc->name }}</h2>
          {!! $doc->description !!}
       <br>
-  		<p class="text-right"><a class="social-url" href = "/masterdocs/more/{{$doc->id}}/"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p>
+  		<p class="text-right"><a class="social-url" href = "/masterdocs/more/{{$doc->masterwork_id}}/"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p>
     </section>    <br>  
   @endforeach
 @elseif (isset($doc))

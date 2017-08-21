@@ -8,6 +8,7 @@ class TextType extends Model
 {
     //
     protected $table = "texttype";
+    protected $primaryKey = 'texttype_id';
 
    	public function articles()
     {

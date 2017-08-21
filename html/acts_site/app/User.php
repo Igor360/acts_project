@@ -13,6 +13,7 @@ use Auth;
 class User extends Authenticatable
 {
     protected $table = "users";
+    protected $primaryKey = "user_id"; 
     use Notifiable;
 
     /**
@@ -52,16 +53,22 @@ class User extends Authenticatable
         if ($hasmasters != null)
             $changedata['hasmasters'] = $hasmasters;
 
-        DB::connection('mysql2')->table('users')->update($changedata);
-        DB::connection('mysql')->table('users')->update($changedata);
-       
+        try{
+        DB::connection('mysql2')->table('users')->where('user_id', $id)->update($changedata);
+        DB::connection('mysql')->table('users')->where('user_id', $id)->update($changedata);
+        }
+        catch(QueryException $e)
+        {
+            return False;
+        }
+        return True;
     } 
 
 
     public static function InsertData($username, $password, $email, $isadmin, $hasmasters)
     {
         $AddData = array();
-        $AddData['id'] =  uniqid();
+        $AddData['user_id'] =  uniqid();
         if ($username != null)
             $AddData['username'] = $username;
 
@@ -77,18 +84,24 @@ class User extends Authenticatable
         if ($hasmasters != null)
             $AddData['hasmasters'] = $hasmasters;
 
-        DB::connection('mysql2')->table('users')->insert($AddData);
-        DB::connection('mysql')->table('users')->insert($AddData);
-        return  $AddData['id'];
+        try{
+         DB::connection('mysql2')->table('users')->insert($AddData);
+         DB::connection('mysql')->table('users')->insert($AddData);
+        }
+        catch(QueryException $e)
+        {
+            return null;
+        }
+        return  $AddData['user_id'];
     }
 
     public static function getUsers()
     {
-        $query = "SELECT u.id, u.hasmasters, u.isadmin, u.username, u.email, u.password, u.updated_at, t.id AS teacherid
-                    FROM users AS u join teachers as t
-                    WHERE u.id = t.user_id; ";
-        try {
-         $result = DB::select($query);
+        try{
+            $result = DB::table('users')
+                    ->join('teachers', 'users.user_id', '=', 'teachers.user_id')
+                    ->select('users.user_id', 'users.hasmasters', 'users.isadmin', 'users.username', 'users.email', 'users.password', 'users.updated_at', 'teachers.teacher_id AS teacherid')
+                    ->paginate(10);
         }
         catch(QueryException $e)
         {
@@ -100,11 +113,13 @@ class User extends Authenticatable
 
     public static function findData($query_str)
     {
-        $query = "SELECT u.id, u.hasmasters, u.isadmin, u.username, u.email, u.password, u.updated_at, t.id AS teacherid
-                    FROM users AS u join teachers as t
-                    WHERE u.id = t.user_id AND MATCH(u.email,u.username) AGAINST('${query_str}');";
-        try {
-         $result = DB::select($query);
+        try{
+            $result = DB::table('users')
+                        ->join('teachers', 'teachers.user_id', '=', 'users.user_id')
+                        ->select('users.user_id', 'users.hasmasters', 'users.isadmin', 'users.username', 'users.email', 'users.password', 'users.updated_at', 'teachers.teacher_id AS teacherid')
+                        ->whereRAW("MATCH(
+                            users.email,users.username) AGAINST('${query_str}')")
+                        ->paginate(10);
         }
         catch(QueryException $e)
         {
@@ -119,7 +134,7 @@ class User extends Authenticatable
         if (Auth::check())
         {
          $user = Auth::user();
-         $query = "SELECT u.id FROM users AS u
+         $query = "SELECT u.user_id FROM users AS u
                     WHERE u.username = '{$user->username}' AND u.email = '{$user->email}';";
          try {
           $result = DB::select($query);
@@ -128,7 +143,7 @@ class User extends Authenticatable
          {
             return null;
          }
-         return $result[0]->id;
+         return $result[0]->user_id;
         }
         return null;
     }

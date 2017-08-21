@@ -14,7 +14,9 @@
           @if ( $page != null )
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color:black;">@lang('user.page_change_links')</h3></div>
 @if (isset ($message))
-<div class="row" style="text-align: center;">{{ $message }}</div>
+<div class="info-message" style="background-color:{{ $message->has_errors ? '#f6979e' : '#ddd' }};">
+ <div class="row"><img src="{{ $message->has_errors ? asset('img/icons/error.png') : asset('img/icons/info.png') }}"> &nbsp{{ $message->text }}</div>
+</div>
 @endif
                 <form method = "POST" action="{{ route('changelinks') }}">
                 {{ csrf_field() }}
@@ -23,9 +25,15 @@
         <span>@lang('teachstaff.website')</span>  
         </div>
         <div class = "col-md-4">
-            <input type = "text" name = "anothersite" placeholder="{{ $links->AnoterSite }}">
+            <input type = "text" name = "anothersite" placeholder="{{ $links->AnotherSite }}">
         </div>
     </div>
+
+    @if ($errors->has('anothersite'))
+      <span class="help-block">
+       <strong>{{ $errors->first('anothersite') }}</strong>
+      </span>
+     @endif
 
     <div class = "row">
         <div class = "col-md-4">
@@ -36,6 +44,12 @@
         </div>
     </div>
 
+    @if ($errors->has('intellect')) 
+      <span class="help-block">
+       <strong>{{ $errors->first('intellect') }}</strong>
+      </span>
+     @endif
+
     <div class = "row">
         <div class = "col-md-4">
         <span>@lang('teachstaff.timetable')</span>   
@@ -44,6 +58,12 @@
             <input type = "text" name = "timetable" placeholder="{{ $links->TimeTable }}">
         </div>
     </div>
+
+    @if ($errors->has('timetable'))
+      <span class="help-block">
+       <strong>{{ $errors->first('timetable') }}</strong>
+      </span>
+     @endif
 
     <input type="hidden" name="page" value="next">
     <div class = "row text-right">

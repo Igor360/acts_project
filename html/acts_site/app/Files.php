@@ -8,6 +8,7 @@ class Files extends Model
 {
     //
     protected $table = "files";
+    protected $primaryKey = 'file_id';
 
 
     public function index()

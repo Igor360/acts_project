@@ -87,15 +87,15 @@ Route::group(['prefix' => 'user'], function (){
 
  Route::get('/conference/', 'UsersController@conference');
 
- Route::get('/changeuser/{message?}/','UsersController@changeUserData')->name('updateuserdata');
+ Route::get('/changeuser/{message?}/{errors?}','UsersController@changeUserData')->name('updateuserdata');
 
  Route::post('/changeuser/update/','UsersController@updateUserData')->name('changeuser');
 
- Route::get('/changeteacher','UsersController@changeTeacherData');
+ Route::get('/changeteacher/{message?}/{errors?}','UsersController@changeTeacherData');
 
  Route::post('/changeteacher','UsersController@updateTeacherData')->name('changeteacher');
 
- Route::get('/changelink','UsersController@changeLinks');
+ Route::get('/changelink/{message?}/{errors?}','UsersController@changeLinks');
 
  Route::post('/changelink','UsersController@updateLinks')->name('changelinks');
 
@@ -109,7 +109,7 @@ Route::group(['prefix' => 'user'], function (){
 
 	Route::post('/{id?}/','UsersController@updatePublication')->name('updatepublication');
 
-	Route::get('/{id?}/','UsersController@changePublication');
+	Route::get('/{id?}/{message?}/{errors?}','UsersController@changePublication');
 
 });
 
@@ -123,7 +123,7 @@ Route::group(['prefix' => 'changeconference'], function(){
 
 	Route::post('/{id?}/','UsersController@updateConference')->name('updateconference');
 
-	Route::get('/{id?}/','UsersController@changeoneConference');
+	Route::get('/{id?}/{message?}/{errors?}','UsersController@changeoneConference');
 
 });
 
@@ -135,7 +135,7 @@ Route::group(['prefix' => 'masterdocs'], function(){
 
 	Route::post('/delete/','UsersController@deleteMasterDocs')->name('deletemasterdoc');
 
-	Route::get('/change/{id?}','UsersController@changeoneMasterDoc')->name('changemasterdata');
+	Route::get('/change/{id?}/{message?}/{errors?}','UsersController@changeoneMasterDoc')->name('changemasterdata');
 
 	Route::post('/change/update','UsersController@updateMasterDoc')->name('updatemasterdoc');
 
@@ -154,13 +154,13 @@ Route:: group([ 'prefix' => 'admin'], function (){
 
  Route::get('/','AdminController@index')->name('adminhome');
 
- Route::get('/add/','AdminController@Adduser')->name('adminadd');
+ Route::get('/add/{message?}/{errors?}','AdminController@Adduser')->name('adminadd');
 
  Route::post('/add/user','AdminController@insertUser')->name('adminadduser');
 
  Route::post('/delete/','AdminController@deleteUser')->name('deleteuser');
 
- Route::get('/user/change/{id?}','AdminController@changeUser')->name('changeuser_admin');
+ Route::get('/user/change/{id?}/{message?}/{errors?}','AdminController@changeUser')->name('changeuser_admin');
 
  Route::post('/user/change/{id?}','AdminController@updateUser')->name('changeuserdata_admin');
  
@@ -168,13 +168,13 @@ Route:: group([ 'prefix' => 'admin'], function (){
 
 	Route::get('/','AdminController@AllArticles')->name('adminarticles');
 
-	Route::get('/add','AdminController@AddArticle')->name('adminarticleadd');	
+	Route::get('/add/{message?}/{errors?}','AdminController@AddArticle')->name('adminarticleadd');	
 
 	Route::post('/add','AdminController@insertArticle')->name('insertarticle');
 
 	Route::post('/delete','AdminController@deleteArticles')->name('deletearticle');
 
-	Route::get('/change/{id}','AdminController@changeArticle')->name('changearticledata');
+	Route::get('/change/{id}/{message?}/{errors?}','AdminController@changeArticle')->name('changearticledata');
 
 	Route::post('/change/update','AdminController@updateArticle')->name('updatearticle');
 

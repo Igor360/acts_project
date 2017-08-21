@@ -23,18 +23,20 @@ DROP TABLE IF EXISTS `masterworks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `masterworks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `masterwork_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT '"Дані відсутні"',
   `description` mediumtext COLLATE utf8_unicode_ci,
   `mainText` longtext COLLATE utf8_unicode_ci,
   `datepublish` date DEFAULT NULL,
   `user_id` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`masterwork_id`),
   KEY `user_id_idx` (`user_id`),
   KEY `user_id_itdx` (`user_id`),
-  CONSTRAINT `user_id__` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `search_year` (`datepublish`),
+  FULLTEXT KEY `search_data` (`name`,`description`,`mainText`),
+  CONSTRAINT `user_id__` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,7 @@ CREATE TABLE `masterworks` (
 
 LOCK TABLES `masterworks` WRITE;
 /*!40000 ALTER TABLE `masterworks` DISABLE KEYS */;
-INSERT INTO `masterworks` VALUES (41,'dds','<p>sdffdfsd</p>','<p>sdafaff</p>','2017-06-07',16,'2017-06-21 18:57:15');
+INSERT INTO `masterworks` VALUES (41,'dds','<p>sdffdfsd</p>','<p>sdafaff</p>','2017-06-07','16','2017-06-21 18:57:15'),(42,'ш',NULL,NULL,'2017-08-23','16','2017-08-16 16:10:00'),(47,'df',NULL,NULL,'2017-08-10','16',NULL);
 /*!40000 ALTER TABLE `masterworks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:25
+-- Dump completed on 2017-08-22  0:31:20

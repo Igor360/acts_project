@@ -16,7 +16,7 @@
                  <form method="GET">
                     <input name = "search_title" placeholder="@lang('admin.enter_user_data')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
                     <div class="text-right">
-                     <input type="submit" name="seach" class="btn btn-default text-right" value="@lang('admin.search_btn')">
+                     <input type="submit" name="seach" class="btn search_btn text-right" value="@lang('admin.search_btn')">
                     </div>
                  </form>
                 
@@ -38,11 +38,11 @@
                 <td>
                     <form method = "POST" action="{{ route('deleteuser') }}">
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="user_id" value="{{$u->id}}">
+                        <button type="submit" class="btn" name="user_id" value="{{$u->user_id}}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/admin/user/change/{{$u->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/admin/user/change/{{$u->user_id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $u->email }}</td>
                 <td><a href="/teachstaff/more/{{ $u->teacherid }}">{{ $u->username }}</a></td>
@@ -52,8 +52,13 @@
                 @endforeach
                 </tbody>
                 </table>
-
-
+                <div class= "text-center">
+                @if (isset($search_query))
+                  {{ $users->appends($search_query)->links() }}
+                @else
+                  {{ $users->links() }}
+                @endif
+                </div>
                 @else
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('messages.no_data')</h3></div>
                 @endif

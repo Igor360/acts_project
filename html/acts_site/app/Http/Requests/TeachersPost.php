@@ -24,6 +24,7 @@ class TeachersPost extends FormRequest
     public function rules()
     {
         return [
+        
             //
         ];
     }

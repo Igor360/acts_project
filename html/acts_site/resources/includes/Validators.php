@@ -1,18 +1,23 @@
 <?php
 
-    function UserDataValidator($password, $username, $email, $isadmin = null, $hasmasters = null)
+    function UserDataValidator($request)
     {
        $Rules = array();
-        if ($password != null) 
-            $Rules['password'] = 'required|string|min:6|confirmed';    
-        if ($username != null) 
+        if ($request['password'] != null) 
+            $Rules['password'] = 'required|string|min:6|confirmed'; 
+
+        if ($request['username'] != null) 
             $Rules['username'] = 'required|string|max:255|unique:users'; 
-        if ($email != null)
+        
+        if ($request['email'] != null)
             $Rules['email'] = 'required|string|email|max:255|unique:users';
-        if ($isadmin != null)
+        
+        if ($request['isadmin'] != null)
         	$Rules['isadmin'] = 'required|boolean';
-        if ($hasmasters != null)
+        
+        if ($request['hasmasters'] != null)
         	$Rules['hasmasters'] = 'required|boolean'; 
+        
         if (count($Rules) > 0)
          {   
            $Validator = \Validator::make($request->all(), $Rules);
@@ -21,36 +26,50 @@
          }
     } 
 
-    function TeacherDataValidator($firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $is_teacher)
+    function TeacherDataValidator($request)
     {
-         $Rules = array();
-        if ($firstname != null) 
+        $Rules = array();
+        
+        if ($request['firstname'] != null) 
             $Rules['firstname'] = 'required|string|min:6';    
-        if ($middlename != null) 
+        
+        if ($request['middlename'] != null) 
             $Rules['middlename'] = 'required|string|min:6'; 
-        if ($lastname != null)
+        
+        if ($request['lastname'] != null)
             $Rules['lastname'] = 'required|string|min:6';
-        if ($department != null)
+        
+        if ($request['department'] != null)
         	$Rules['department'] = 'required|string|min:4';
-        if ($profession != null)
+        
+        if ($request['profession'] != null)
         	$Rules['profession'] = 'required|string|min:6';
-        if ($photo != null)
+     
+        if ($request['photo'] != null)
         	$Rules['photo'] = 'mimes:jpeg,png,bmp,gif';
-        if ($timedate != null)
+     
+        if ($request['datetime'] != null)
         	$Rules['datetime'] = 'required|min:4';
-        if ($room != null)
+        
+        if ($request['room'] != null)
         	$Rules['room'] = 'required|string';
-        if ($phone != null)
+        
+        if ($request['phone'] != null)
         	$Rules['phone'] = 'required|min:10';
-        if ($mobile != null)
+        
+        if ($request['mobile'] != null)
         	$Rules['mobile'] = 'required|min:10';
-        if ($profinterests != null)
+        
+        if ($request['profint'] != null)
         	$Rules['profint'] = 'required|min:6';
-        if ($disciplines != null)
+        
+        if ($request['disciplines'] != null)
         	$Rules['disciplines'] = 'required|min:6';
-        if ($position != null)
+       
+        if ($request['position'] != null)
         	$Rules['position'] = 'required|min:6';
-        if ($is_teacher != null)
+     
+        if ($request['isteacher'] != null)
         	$Rules['isteacher'] = 'required|boolean';
         if (count($Rules) > 0)
          {   
@@ -61,17 +80,31 @@
     } 
 
 
-    function LinksValidator(Array $links_array){
+    function LinksValidator($links_array, $request){
     	$Rules = array();
-    	foreach ($links_array as $key => $value) {
-    		if ($value != null)
-    		 $Rules[$key] = 'requred|url|min:2';
+    	foreach ($links_array as $key) {
+    		if ($request[$key] != null)
+    		 $Rules[$key] = 'required|url|min:2';
     	}
     	if (count($Rules) > 0)
          {   
            $Validator = \Validator::make($request->all(), $Rules);
            if ($Validator->fails())
             return redirect()->back()->withErrors($Validator->errors());
+         }
+    }
+
+    function UserLinksValidator($links_array, $request)
+    {
+        $Rules = array();
+        foreach ($links_array as $key) {
+            if ($request[$key] != null)
+             $Rules[$key] = 'required|url|min:2';
+        }
+        if (count($Rules) > 0)
+         {   
+           $Validator = \Validator::make($request->all(), $Rules);
+           return $Validator;
          }
     }
 

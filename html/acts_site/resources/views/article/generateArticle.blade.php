@@ -16,9 +16,9 @@ use App\ArticleFiles;
           <?php
 
             if($page != "more")
-              $texts = Text::where('article_id', $article->id)->where('type_id',2)->get();
+              $texts = Text::where('article_id', $article->article_id)->where('texttype_id',2)->get();
             else
-              $texts = Text::where('article_id', $article->id)->orderBy('type_id', 'desc')->get();
+              $texts = Text::where('article_id', $article->article_id)->orderBy('texttype_id', 'desc')->get();
 
              foreach ($texts as $text)
              {
@@ -28,7 +28,7 @@ use App\ArticleFiles;
              if ($page == 'more')
              {
                
-                $files = ArticleFiles::getFiLes($article->id,$article->img);
+                $files = ArticleFiles::getFiLes($article->article_id,$article->img);
                 if ($files != null)
                  { 
                   echo "<hr>";
@@ -42,7 +42,7 @@ use App\ArticleFiles;
       <br>
      </div>
      @if ($article->isText and $page != 'more')
-  			<p class="text-right"><a class="social-url" href = "/read/{{$article->id}}"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p> 
+  			<p class="text-right"><a class="social-url" href = "/read/{{$article->article_id}}"><button type = "button" class = "btn btn-default">@lang('article.article_morebtn')</button></a></p> 
      @endif
 
     </section>    <br>  

@@ -91,6 +91,11 @@ return [
 	'save_btn' => 'Save',
 	'add_btn' => 'Add',
 
+	// search works
+
+	'search_query_publication' => 'Enter a title, type, or date of publication',
+	'search_query_conference' => 'Enter a title, type, or date of conference',
+	'search_query' => 'Search',
 
 ];
 

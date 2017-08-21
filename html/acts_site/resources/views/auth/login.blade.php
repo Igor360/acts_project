@@ -5,13 +5,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">@lang('auth.login')</div>
+                <div class="panel-heading"><img src="{{ asset('img/icons/key.png') }}" height="24px"> <b> @lang('auth.login')</b></div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <label for="username" class="col-md-4 control-label">@lang('auth.user_login')</label>
+                            <label for="username" class="col-md-4 control-label"> @lang('auth.user_login')</label>
 
                             <div class="col-md-6">
                                 <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
@@ -48,15 +48,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group text-right">
                             <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary" style="background-color: #063cc7;">
-                                    @lang('auth.login_btn')
+                                <button type="submit" class="btn btn-primary" style="background-color: #1f5dff;">@lang('auth.login_btn')
+                                   <i class="fa fa-unlock" aria-hidden="true"></i> 
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                               <!-- <a class="btn btn-link" href="{{ route('password.request') }}">
                                     @lang('auth.forgot_password')
                                 </a>
+                                -->
                             </div>
                         </div>
                     </form>

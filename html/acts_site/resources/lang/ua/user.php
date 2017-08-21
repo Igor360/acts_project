@@ -92,6 +92,12 @@ return [
 	'add_btn' => 'Додати',
 
 
+	// search works
+
+	'search_query_publication' => 'Введіть назву, тип чи дату публікації',
+	'search_query_conference' => 'Введіть назву, тип чи дату конференції',
+	'search_query' => 'Пошук',
+
 ];
 
 ?>

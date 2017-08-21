@@ -13,6 +13,14 @@
           @if ( $page != null )
                 <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_change_publications')</h3></div>
                 	
+                  <form method="GET">
+                    <input name = "search_title" placeholder="@lang('user.search_query_publication')" style = "width: 100%; border-color: #063cc7; color : #063cc7;"> 
+                    <div class="text-right">
+                     <input type="submit" name="seach" class="btn search_btn text-right" value="@lang('admin.search_btn')">
+                    </div>
+                 </form>
+
+
                 <table class="table">
                     <caption style="text-align: center;">@lang('user.publication_table.title')</caption>
                 <thead>
@@ -30,11 +38,11 @@
                 <td>
                     <form method = "POST" action="{{ route('deletepublication') }}">
                     {{ csrf_field() }}
-                        <button type="submit" class="btn" name="numpublication" value="{{ $publication->id }}">
+                        <button type="submit" class="btn" name="numpublication" value="{{ $publication->work_id }}">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </form>
-                    <a class="btn" href="/user/changepublications/{{$publication->id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn" href="/user/changepublications/{{$publication->work_id}}/"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 </td>
                 <td>{{ $publication->type }}</td>
                 <td>{{ $publication->datePublish }}</td>
@@ -44,7 +52,13 @@
                 @endforeach
                 </tbody>
                 </table>
-
+                    <div class="text-center">
+                    @if (isset($search_query))
+                        {{ $publications->appends($search_query)->links() }}
+                    @else
+                        {{ $publications->links() }}
+                    @endif
+                    </div>
                  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important;">@lang('user.page_add_publication')</h3></div>
                  <div class="form-user">
                        <form method = "POST" action="{{ route('addpublication') }}">

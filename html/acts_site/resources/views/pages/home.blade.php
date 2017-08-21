@@ -15,7 +15,7 @@
        <div class="news">
 @if ($NewsMain != null)
   @foreach ($NewsMain as $news) 
-        <a class="news__news" href="/read/{{$news->id}}">
+        <a class="news__news" href="/read/{{$news->article_id}}">
         <div class="news__news__img">
         <img src="{{ $news->img }}" alt="">
         </div>

@@ -8,6 +8,7 @@ class Pages extends Model
 {
     //
     protected $table = "pages";
+    protected $primaryKey = 'page_id';
 
     public function articles()
     {

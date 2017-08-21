@@ -23,21 +23,21 @@ DROP TABLE IF EXISTS `articles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `articles` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `article_id` int(20) NOT NULL AUTO_INCREMENT,
   `title` text COLLATE utf8_unicode_ci,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `img` text CHARACTER SET cp1251,
   `isText` tinyint(1) NOT NULL DEFAULT '0',
   `page_id` int(10) NOT NULL,
-  `type_id` int(11) NOT NULL,
+  `texttype_id` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`article_id`),
   KEY `pages_idx` (`page_id`),
-  KEY `type_idx` (`type_id`),
+  KEY `type_idx` (`texttype_id`),
   FULLTEXT KEY `title_index` (`title`),
-  CONSTRAINT `pages` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `type` FOREIGN KEY (`type_id`) REFERENCES `texttype` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `pages` FOREIGN KEY (`page_id`) REFERENCES `pages` (`page_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `type` FOREIGN KEY (`texttype_id`) REFERENCES `texttype` (`texttype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-15 19:24:22
+-- Dump completed on 2017-08-22  0:31:17
