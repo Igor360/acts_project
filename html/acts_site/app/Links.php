@@ -47,8 +47,8 @@ class Links extends Model
             return False;
         }
 		return True;
-	} 
-    
+	}
+
     // додавання нових даних до бд
     public static function InsertData($user_id, $anotersite, $intellect, $timetable)
     {
@@ -60,11 +60,11 @@ class Links extends Model
             $AddData['AnotherSite'] = $anotersite;
 
         if ($intellect != null)
-            $AddData['Intellect'] = $intellect; 
- 
+            $AddData['Intellect'] = $intellect;
+
         if ($timetable != null)
             $AddData['TimeTable'] = $timetable;
-    
+
         try{
         DB::connection('mysql2')->table('links')->insert($AddData); // підключенні до бд та виполнение запита
         DB::connection('mysql')->table('links')->insert($AddData);
@@ -74,6 +74,34 @@ class Links extends Model
             return False;
         }
         return True;
+    }
+
+    public static function LinksValidator($links_array, $request){
+      $Rules = array();
+      foreach ($links_array as $key) {
+        if ($request[$key] != null)
+         $Rules[$key] = 'required|url|min:2';
+      }
+      if (count($Rules) > 0)
+         {
+           $Validator = \Validator::make($request->all(), $Rules);
+           if ($Validator->fails())
+            return redirect()->back()->withErrors($Validator->errors());
+         }
+    }
+
+    public static function UserLinksValidator($links_array, $request)
+    {
+        $Rules = array();
+        foreach ($links_array as $key) {
+            if ($request[$key] != null)
+             $Rules[$key] = 'required|url|min:2';
+        }
+        if (count($Rules) > 0)
+         {
+           $Validator = \Validator::make($request->all(), $Rules);
+           return $Validator;
+         }
     }
 
 }

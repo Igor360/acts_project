@@ -1,6 +1,3 @@
-  <?php  
-  require_once('convertDate.php');
-   ?>
 @include('layouts.header')
 @include('layouts.slider')
 <div class="container-fluid">
@@ -14,7 +11,7 @@
        <h2 class="c__block-title" align="center">@lang('article.news')</h2>
        <div class="news">
 @if ($NewsMain != null)
-  @foreach ($NewsMain as $news) 
+  @foreach ($NewsMain as $news)
         <a class="news__news" href="/read/{{$news->article_id}}">
         <div class="news__news__img">
         <img src="{{ $news->img }}" alt="">
@@ -23,7 +20,7 @@
         {{ $news->title }}
         </h3>
         <span class="news__news__date">
-        <?php  echo ConvertDate($news->date); ?>
+        <?php  echo \App\Articles::ConvertDate($news->date); ?>
         </span>
         </a>
   @endforeach
@@ -39,12 +36,8 @@
 </div>
 <!-- Scroll To Top Button -->
 <a href="#" class="scroll-to-top-btn">
- <i class="icon-arrow-up"></i>   
+ <i class="icon-arrow-up"></i>
 </a><!-- .scroll-to-top-btn -->
 <!-- flie Footer -->
 @include('layouts.footer')
 <!-- end Footer -->
-
-
-
-

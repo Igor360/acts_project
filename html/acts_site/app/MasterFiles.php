@@ -14,7 +14,7 @@ class MasterFiles extends Model
 
    	public static function getFiles($masterwork_id)
 	{
-		$query = "SELECT f.originalname, f.file_id, f.size, f.filename FROM masterworks AS 		mw JOIN masterfiles AS mf JOIN files AS f   
+		$query = "SELECT f.originalname, f.file_id, f.size, f.filename FROM masterworks AS 		mw JOIN masterfiles AS mf JOIN files AS f
 					WHERE mw.user_id =  f.user_id AND mw.masterwork_id = mf.masterwork_id AND f.file_id = mf.file_id AND mw.masterwork_id = {$masterwork_id};";
 		try {
          $result = DB::select($query);
@@ -45,6 +45,6 @@ class MasterFiles extends Model
         return True;
     } 
 
-    
+
 
 }

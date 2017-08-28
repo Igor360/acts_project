@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
                 break;
                 // internal server error
                 case '500':
-                    return response()->view('errors.500',[],500);    
+                    return response()->view('errors.500',[],500);
                 break;
 
                 default:
@@ -61,8 +61,8 @@ class Handler extends ExceptionHandler
                 break;
             }
         }
-return response()->view('errors.error');
-   // return parent::render($request, $exception);
+//return response()->view('errors.error');
+    return parent::render($request, $exception);
     }
 
     /**

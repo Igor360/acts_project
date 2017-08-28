@@ -26,9 +26,6 @@ use App\TextType as TextType;
 use App\Pages as Pages;
 
 
-require_once ('AddImageToDB.php');
-require_once ('Validators.php');
-
 class AdminController extends Controller
 {
 
@@ -38,7 +35,7 @@ class AdminController extends Controller
         $this->middleware('auth');
     }
 
-    protected $guard = 'admin';
+ protected $guard = 'admin';
     //
 	public function index(Request $request)
 	{
@@ -46,11 +43,11 @@ class AdminController extends Controller
         $args['page'] = 'home';
         if (Auth::check())
         {
-            $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first();
             $args['users'] = User::getUsers();
             if(isset($request['search_title']))
             {
-              $args['users'] = User::findData($request['search_title']);         
+              $args['users'] = User::findData($request['search_title']);
               $args['search_query'] = ['search_title' => $request['search_title']];
             }
         }
@@ -64,8 +61,8 @@ class AdminController extends Controller
 		$args['positions'] = Positions::getAll();
         $args['page'] = 'Add';
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('admin.adduser',$args);
@@ -80,12 +77,16 @@ class AdminController extends Controller
         $username = $request['username'];
         $email = $request['email'];
         $isadmin = $request['isadmin'];
-        $hasmasters = $request['hasmaster'];     
+        $hasmasters = $request['hasmaster'];
 
 		$user_id = User::InsertData($username, $password, $email, $isadmin, $hasmasters);
         if($user_id != null)
-            $is_data_add = true;
-		
+            $is_data_add = true;        echo var_dump((object)[
+          $Validator_user != null ? $Validator_user->errors() : null,
+          $Validator_links != null ?  $Validator_links->errors() : null,
+          $Validator_teacher != null ? $Validator_teacher->errors() : null
+         ]);
+
         $firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
@@ -101,7 +102,7 @@ class AdminController extends Controller
         $department = $request['department'];
         $isteacher = $request['isteacher'];
         $photo_file = $request['photofile'];
-        
+
         if (AddImage($photo_file, $user_id))
         {
             $photo_file = Files::where('user_id' , $user_id)
@@ -109,7 +110,7 @@ class AdminController extends Controller
                     ->orWhere('mime','image/png')->get()->first();
             if ($photo_file != null)
                 $photo = route('getimage', $photo_file->filename);
-            
+
         }
 
         Teachers::InsertData($firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
@@ -122,7 +123,7 @@ class AdminController extends Controller
 
         if($is_data_add)
             $message = [
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
         else
@@ -137,17 +138,31 @@ class AdminController extends Controller
 	public function updateUser(Request $request, $id = null)
 	{
         $is_data_add = false;
-		$user_id = $request['id_user'];
-		$args = array();
-		$password = $request['password'];
+		    $user_id = $request['id_user'];
+		    $args = array();
+		    $password = $request['password'];
         $username = $request['username'];
         $email = $request['email'];
         $isadmin = $request['isadmin'];
-        $hasmasters = $request['hasmaster']; 
-        UserDataValidator($request); // валидация даних користувача
-	
+        $hasmasters = $request['hasmaster'];
+        $Validator_user = User::DataValidator($request); // валидация даних користувача
+        $Validator_teacher = Teachers::DataValidator($request); // валидаци даних учителя
+        $Validator_links = Links::UserLinksValidator([
+            'anothersite',
+            'intellect' ,
+            'timetable'
+          ], $request);
+         if (( $Validator_links != null ? $Validator_links->fails() : false ) or ($Validator_user ? $Validator_user->fails() : false ) or ($Validator_teacher ? $Validator_teacher->fails() : false))
+            return redirect()->back()->withErrors((object)[
+            $Validator_user != null ? $Validator_user->errors() : null,
+            $Validator_links != null ?  $Validator_links->errors() : null,
+            $Validator_teacher != null ? $Validator_teacher->errors() : null
+           ]); // валидация введених силок
+
+
+
     	$is_data_add = User::UpdateData($user_id, $username, $password, $email, $isadmin, $hasmasters);
-	
+
     	$firstname = $request['firstname'];
         $middlename = $request['middlename'];
         $lastname = $request['lastname'];
@@ -162,15 +177,14 @@ class AdminController extends Controller
         $disciplines = $request['disciplines'];
         $department = $request['department'];
         $isteacher = $request['isteacher'];
-        TeacherDataValidator($request); // валидаци даних учителя
         $id_teacher = Teachers::where('user_id',$user_id)->get()->first()->teacher_id;
         $photo_file = $request['photofile'];
-        if (AddImage($photo_file, $user_id))
+        if (Files::AddImage($photo_file, $user_id))
         {
             $photo_file = Files::where('user_id' , $user_id)
                     ->where('mime','image/jpeg')
                     ->orWhere('mime','image/png')->get()->first();
-            $photo = route('getimage', $photo_file->filename);            
+            $photo = route('getimage', $photo_file->filename);
         }
         if (!$is_data_add)
          $is_data_add = Teachers::UpdateData($id_teacher, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position, $isteacher, $user_id);
@@ -180,19 +194,15 @@ class AdminController extends Controller
         $AnotherSite = $request['anothersite'];
         $Intellect = $request['intellect'];
         $TimeTable = $request['timetable'];
-        LinksValidator([
-            'anothersite',
-            'intellect' ,
-            'timetable' 
-            ], $request); // валидация введених силок
+
         if (!$is_data_add)
          $is_data_add = Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
         else
-         	Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);	
+         	Links::UpdateData($user_id, $AnotherSite, $Intellect, $TimeTable);
         if($is_data_add)
             $message = [
              'id' => $user_id,
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -224,8 +234,8 @@ class AdminController extends Controller
         $args['user'] = User::where('user_id', $id)->get()->first();
         $args['links'] = Links::where('user_id', $id)->get()->first();
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('admin.changedata',$args);
@@ -234,7 +244,7 @@ class AdminController extends Controller
 	public function AllArticles(Request $request)
 	{
 		$args =array();
-    
+
         $search_query = array();
         $search_data = array();
         if (isset($request['search_title']))
@@ -246,7 +256,7 @@ class AdminController extends Controller
         if (isset($request['page_search']))
             {
               $search_query['page'] = $request['page_search'];
-              $search_data['page_search'] = $request['page_search'];    
+              $search_data['page_search'] = $request['page_search'];
             }
         if (isset($request['type']))
             {
@@ -261,11 +271,11 @@ class AdminController extends Controller
         }
             else
                 $args['articles'] = Articles::getAll();
-		
+
         $args['page'] = 'articles';
         $args['pages'] = Pages::get();
         $args['types_article'] = TextType::where('texttype_id', '>', 2 )->get();
-        return view('admin.articles',$args); 
+        return view('admin.articles',$args);
 	}
 
     public function deleteArticles(Request $request)
@@ -281,8 +291,8 @@ class AdminController extends Controller
         $args['typesarticle'] = TextType::where('texttype_id','>',2)->get();
         $args['page'] = 'addarticles';
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('admin.addarticle',$args);
@@ -299,13 +309,13 @@ class AdminController extends Controller
         $articletype_id = $request['typearticle'];
         if (count($text) > 0)
             $isText = 1;
-        else 
-            $isText = 0;        
+        else
+            $isText = 0;
 
         $photo_file = $request['photofile'];
         if ($photo_file != null)
         {
-            $add_articledoc = AddArticleDocs($photo_file, Auth::user()->getId());
+            $add_articledoc = Articles::AddArticleDocs($photo_file, Auth::user()->getId());
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
         }
@@ -315,18 +325,18 @@ class AdminController extends Controller
          $article_id = $article->article_id;
          if (isset($add_articledoc))
             $is_data_add = ArticleFiles::InsertData($article_id,$add_articledoc->file_id);
-         
+
          $files = $request['filesfield'];
          AdminController::UploadFiles($files,$article_id);
-         
+
          if (count($text) > 0)
            $is_data_add = Text::InsertData($text, $article_id, 1);
-         
+
          $is_data_add = Text::InsertData($description, $article_id, 2);
         }
          if($is_data_add)
             $message = [
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -352,15 +362,15 @@ class AdminController extends Controller
         $args['article_id'] = $id;
         $args['files'] = ArticleFiles::getFiles($id,Articles::where('article_id',$id)->get()[0]->img);
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('admin.changearticle',$args);
     }
 
     public function updateArticle(Request $request)
-    {        
+    {
         $is_data_add = false; // перевырка чи дані додані до бд
         $article_id = $request['article'];
         $title = $request['title'];
@@ -373,10 +383,10 @@ class AdminController extends Controller
         $photo_file = $request['photofile'];
         if($photo_file != null)
         {
-            $add_articledoc = AddArticleDocs($photo_file, Auth::user()->getId());
+            $add_articledoc = Articles::AddArticleDocs($photo_file, Auth::user()->getId());
             if ($add_articledoc != null)
               $img = route('getdocarticle', $add_articledoc->filename);
-            isArticlePhoto($article_id);
+            Articles::isArticlePhoto($article_id);
             ArticleFiles::InsertData($article_id,$add_articledoc->file_id);
         }
         $is_data_add = Articles::UpdateData($article_id , $title, $img, $isText, $page_id);
@@ -392,13 +402,13 @@ class AdminController extends Controller
         {
            $is_data_add = Text::UpdateData($descriptions[0]->id, $description);
         }
-        else         
+        else
            $is_data_add = Text::InsertData($description, $article_id, 2);
 
         if($is_data_add)
             $message = [
              'id' => $article_id,
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -414,14 +424,14 @@ class AdminController extends Controller
     public function deleteArticleFile(Request $request)
     {
         $id_file = $request['num'];
-        $id = $request['id_a']; 
+        $id = $request['id_a'];
         Files::where('file_id',$id_file)->delete();
         return redirect()->route('changearticledata',$id);
     }
 
     public function addArticleFiles(Request $request)
     {
-        $id = $request['id_a']; 
+        $id = $request['id_a'];
         $files = $request['filesfield'];
         AdminController::UploadFiles($files,$id);
         return redirect()->route('changearticledata',$id);
@@ -431,7 +441,7 @@ class AdminController extends Controller
     public static  function UploadFiles($files,$article_id)
     {
     if ($files != null)
-     foreach ($files as $file) 
+     foreach ($files as $file)
      {
         $extension = $file->getClientOriginalExtension();
         Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
@@ -448,4 +458,3 @@ class AdminController extends Controller
 
     }
 }
-

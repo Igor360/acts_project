@@ -7,13 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Response;
 
 use Auth;
 
 class User extends Authenticatable
 {
     protected $table = "users";
-    protected $primaryKey = "user_id"; 
+    protected $primaryKey = "user_id";
     use Notifiable;
 
     /**
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'username', 'email', 'password', 'isadmin', 'isinsystem'
     ];
 
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -33,7 +35,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
 
     public static function UpdateData($id, $username, $password, $email,  $isadmin = null, $hasmasters = null)
     {
@@ -45,7 +46,7 @@ class User extends Authenticatable
             $changedata['password'] = Hash::make($password);
 
         if ($email != null)
-            $changedata['email'] = $email; 
+            $changedata['email'] = $email;
 
         if ($isadmin != null)
             $changedata['isadmin'] = $isadmin;
@@ -62,7 +63,7 @@ class User extends Authenticatable
             return False;
         }
         return True;
-    } 
+    }
 
 
     public static function InsertData($username, $password, $email, $isadmin, $hasmasters)
@@ -76,8 +77,8 @@ class User extends Authenticatable
             $AddData['password'] =  Hash::make($password);
 
         if ($email != null)
-            $AddData['email'] = $email; 
-        
+            $AddData['email'] = $email;
+
         if ($isadmin != null)
             $AddData['isadmin'] = $isadmin;
 
@@ -147,5 +148,56 @@ class User extends Authenticatable
         }
         return null;
     }
+
+    public static function UserDataValidator($request)
+    {
+       $Rules = array();
+        if ($request['password'] != null)
+            $Rules['password'] = 'required|string|min:6|confirmed';
+
+        if ($request['username'] != null)
+            $Rules['username'] = 'required|string|max:255|unique:users';
+
+        if ($request['email'] != null)
+            $Rules['email'] = 'required|string|email|max:255|unique:users';
+
+        if ($request['isadmin'] != null)
+          $Rules['isadmin'] = 'required|boolean';
+
+        if ($request['hasmasters'] != null)
+          $Rules['hasmasters'] = 'required|boolean';
+
+        if (count($Rules) > 0)
+         {
+           $Validator = \Validator::make($request->all(), $Rules);
+           if ($Validator->fails())
+            return redirect()->back()->withErrors($Validator->errors());
+         }
+    }
+    public static function DataValidator($request)
+    {
+       $Rules = array();
+        if ($request['password'] != null)
+            $Rules['password'] = 'required|string|min:6|confirmed';
+
+        if ($request['username'] != null)
+            $Rules['username'] = 'required|string|max:255|unique:users';
+
+        if ($request['email'] != null)
+            $Rules['email'] = 'required|string|email|max:255|unique:users';
+
+        if ($request['isadmin'] != null)
+          $Rules['isadmin'] = 'required|boolean';
+
+        if ($request['hasmasters'] != null)
+          $Rules['hasmasters'] = 'required|boolean';
+
+        if (count($Rules) > 0)
+         {
+           $Validator = \Validator::make($request->all(), $Rules);
+           return $Validator;
+         }
+    }
+
 
 }

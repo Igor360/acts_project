@@ -22,9 +22,9 @@ class Articles extends Model
 	{
         try {
          $result = DB::table('articles')
-                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('pages', 'articles.page_id', '=', 'pages.page_id')
                     ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
-                    ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                    ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date',
                         'articles.date', 'articles.isText', 'pages.Name', 'texttype.name')
                     ->where('pages.Name', '=', $page)
                     ->where('texttype.name', '=', 'article')
@@ -44,7 +44,7 @@ class Articles extends Model
         try{
          $result = DB::table('articles')
                      ->join('pages', 'articles.page_id', '=', 'pages.page_id')
-                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date',
                         'articles.isText', 'pages.Name')
                      ->where('pages.Name', '=', 'news')
                      ->orderBy('articles.date', 'desc')
@@ -63,7 +63,7 @@ class Articles extends Model
 		try {
          $result = DB::table('articles')
                      ->join('pages', 'articles.page_id', '=', 'pages.page_id')
-                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date',
                         'articles.isText', 'pages.Name')
                      ->where('pages.Name', '=', 'news')
                      ->orderBy('articles.date', 'desc')
@@ -84,7 +84,7 @@ class Articles extends Model
 		try {
          $result =  DB::table('articles')
                      ->join('pages', 'articles.page_id', '=', 'pages.page_id')
-                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date', 
+                     ->select('articles.article_id', 'articles.title', 'articles.img', 'articles.date',
                         'articles.isText', 'pages.Name')
                      ->where('pages.Name', '=', 'news')
                      ->where('articles.article_id', '=', $news_id)
@@ -103,7 +103,7 @@ class Articles extends Model
 	{
 		try {
          $result = DB::table('articles')
-                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('pages', 'articles.page_id', '=', 'pages.page_id')
                     ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
                     ->select('articles.article_id', 'articles.title', 'pages.Name as page', 'texttype.name as type')
                     ->orderBy('articles.article_id')
@@ -145,33 +145,33 @@ class Articles extends Model
 			foreach ($search_data as $key => $value) {
 				switch ($key) {
 					case 'texttype':
-						$query .= " articles.texttype_id = ${value} "; 
+						$query .= " articles.texttype_id = ${value} ";
 						break;
-					
+
 					case 'title':
 						$query .= " match(articles.title) against('${value}') ";
 						break;
 
 					case 'page':
 						$query .= " articles.page_id = ${value} ";
-						break;	
+						break;
 
 					default:
 						break;
 				}
                 if ($count > 0)
-				 $query .= "AND"; 
+				 $query .= "AND";
                 $count--;
 			}
 		try {
          $result = DB::table('articles')
-                    ->join('pages', 'Articles.page_id', '=', 'pages.page_id')
+                    ->join('pages', 'articles.page_id', '=', 'pages.page_id')
                     ->join('texttype', 'texttype.texttype_id', '=', 'articles.texttype_id')
                     ->select('articles.article_id', 'articles.title', 'pages.Name as page', 'texttype.name as type')
                     ->whereRAW($query)
                     ->orderBy('articles.article_id')
                     ->paginate(10);
-       
+
          }
         catch(QueryException $e)
         {
@@ -192,8 +192,8 @@ class Articles extends Model
             $article->img =  $img;
 
         if ($isText != null)
-            $article->isText = $isText; 
-        
+            $article->isText = $isText;
+
         if ($page_id != null)
             $article->page_id = $page_id;
 
@@ -221,8 +221,8 @@ class Articles extends Model
             $AddData['img'] =  $img;
 
         if ($isText != null)
-            $AddData['isText'] = $isText; 
-        
+            $AddData['isText'] = $isText;
+
         if ($page_id != null)
             $AddData['page_id'] = $page_id;
         try{
@@ -234,4 +234,23 @@ class Articles extends Model
         }
         return True;
     }
+  public static function ConvertDate($Date)
+      {
+      	$locale = \App::getLocale();
+      	switch ($locale)
+      	{
+      		case 'ua':
+      	   	$MonthArray = array('Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень');
+      		break;
+
+      		case 'en':
+        	$MonthArray = array('January','February','March','April','May','June','July','August','September','October','November','December');
+        	break;
+
+        	default:
+        	break;
+        }
+        list($year,$month,$day) = explode('-', $Date);
+        return $MonthArray[$month-1]." ".$day[0].$day[1].", ".$year;
+      }
 }

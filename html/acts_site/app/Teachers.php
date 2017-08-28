@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 
 class Teachers extends Model
 {
@@ -99,7 +100,7 @@ class Teachers extends Model
 		if ($isteacher != null)
 		{
 			$changedata['isteacher'] = $isteacher;
-			$fields_with_data++;		
+			$fields_with_data++;
 		}
 
 		if ($fields_with_data == 0)
@@ -113,8 +114,8 @@ class Teachers extends Model
             return False;
         }
         return True;
-	} 
-    
+	}
+
 
     public static function InsertData($firstname, $middlename, $lastname, $department, $profession, $photo, $timeday, $room, $phone, $mobile, $profinterests, $discipline, $position, $isteacher, $user_id)
 	{
@@ -175,7 +176,7 @@ class Teachers extends Model
             return False;
         }
         return True;
-	} 
+	}
 
 	public static function getTeachersForPage($isteacher)
 	{
@@ -201,7 +202,7 @@ class Teachers extends Model
 		$query = "SELECT t.teacher_id, t.FirstName, t.MiddleName, t.LastName, t.Department, t.Profession,
 					 t.Photo, t.TimeDay, t.Room, t.Phone, t.Mobile, t.ProfInterest, t.Discipline,
 					p.name as position, u.email as Email, l.AnotherSite, l.Intellect, l.TimeTable, t.isteacher
- 					FROM teachers as t inner join positions as p 
+ 					FROM teachers as t inner join positions as p
 					inner join users as u inner join links as l
 					WHERE t.position_id = p.position_id and l.user_id = u.user_id and t.user_id = u.user_id and t.teacher_id ={$id};";
 		try {
@@ -217,15 +218,15 @@ class Teachers extends Model
 	}
 
 
-	
+
    	public static function getTeacher($user_id)
 	{
 		$query = "SELECT t.teacher_id, t.FirstName, t.MiddleName, t.LastName, t.Department, t.Profession,
 					 t.Photo, t.TimeDay, t.Room, t.Phone, t.Mobile, t.ProfInterest, t.Discipline,
 					p.name as position, u.email as Email, l.AnotherSite, l.Intellect, l.TimeTable, t.isteacher
- 					FROM teachers as t inner join positions as p 
+ 					FROM teachers as t inner join positions as p
 					inner join users as u inner join links as l
-					WHERE t.position_id = p.position_id and l.user_id = u.user_id and t.user_id = u.user_id and t.user_id = 
+					WHERE t.position_id = p.position_id and l.user_id = u.user_id and t.user_id = u.user_id and t.user_id =
 					'{$user_id}';";
 		try {
 		 $result = DB::select($query);
@@ -238,4 +239,108 @@ class Teachers extends Model
 			return $result[0];
 		return null;
 	}
+
+  public static function TeacherDataValidator($request)
+  {
+      $Rules = array();
+
+      if ($request['firstname'] != null)
+          $Rules['firstname'] = 'required|string|min:6';
+
+      if ($request['middlename'] != null)
+          $Rules['middlename'] = 'required|string|min:6';
+
+      if ($request['lastname'] != null)
+          $Rules['lastname'] = 'required|string|min:6';
+
+      if ($request['department'] != null)
+        $Rules['department'] = 'required|string|min:4';
+
+      if ($request['profession'] != null)
+        $Rules['profession'] = 'required|string|min:6';
+
+      if ($request['photo'] != null)
+        $Rules['photo'] = 'mimes:jpeg,png,bmp,gif';
+
+      if ($request['datetime'] != null)
+        $Rules['datetime'] = 'required|min:4';
+
+      if ($request['room'] != null)
+        $Rules['room'] = 'required|string';
+
+      if ($request['phone'] != null)
+        $Rules['phone'] = 'required|min:10';
+
+      if ($request['mobile'] != null)
+        $Rules['mobile'] = 'required|min:10';
+
+      if ($request['profint'] != null)
+        $Rules['profint'] = 'required|min:6';
+
+      if ($request['disciplines'] != null)
+        $Rules['disciplines'] = 'required|min:6';
+
+      if ($request['position'] != null)
+        $Rules['position'] = 'required|min:6';
+
+      if ($request['isteacher'] != null)
+        $Rules['isteacher'] = 'required|boolean';
+      if (count($Rules) > 0)
+       {
+         $Validator = \Validator::make($request->all(), $Rules);
+         if ($Validator->fails())
+          return redirect()->back()->withErrors($Validator->errors());
+       }
+  }
+  public static function DataValidator($request)
+  {
+      $Rules = array();
+
+      if ($request['firstname'] != null)
+          $Rules['firstname'] = 'required|string|min:6';
+
+      if ($request['middlename'] != null)
+          $Rules['middlename'] = 'required|string|min:6';
+
+      if ($request['lastname'] != null)
+          $Rules['lastname'] = 'required|string|min:6';
+
+      if ($request['department'] != null)
+        $Rules['department'] = 'required|string|min:4';
+
+      if ($request['profession'] != null)
+        $Rules['profession'] = 'required|string|min:6';
+
+      if ($request['photo'] != null)
+        $Rules['photo'] = 'mimes:jpeg,png,bmp,gif';
+
+      if ($request['datetime'] != null)
+        $Rules['datetime'] = 'required|min:4';
+
+      if ($request['room'] != null)
+        $Rules['room'] = 'required|string';
+
+      if ($request['phone'] != null)
+        $Rules['phone'] = 'required|min:10';
+
+      if ($request['mobile'] != null)
+        $Rules['mobile'] = 'required|min:10';
+
+      if ($request['profint'] != null)
+        $Rules['profint'] = 'required|min:6';
+
+      if ($request['disciplines'] != null)
+        $Rules['disciplines'] = 'required|min:6';
+
+      if ($request['position'] != null)
+        $Rules['position'] = 'required|min:6';
+
+      if ($request['isteacher'] != null)
+        $Rules['isteacher'] = 'required|boolean';
+      if (count($Rules) > 0)
+       {
+         $Validator = \Validator::make($request->all(), $Rules);
+         return $Validator;
+       }
+  }
 }

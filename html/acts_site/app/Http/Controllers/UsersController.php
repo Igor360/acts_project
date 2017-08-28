@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth as Auth; 
+use Illuminate\Support\Facades\Auth as Auth;
 use Illuminate\Http\Request;
 
 
@@ -25,8 +25,6 @@ use App\MasterWorks as MasterWorks;
 use App\Http\Controllers\Input;
 
 
-require_once ('AddImageToDB.php');
-require_once ('Validators.php');
 
 class UsersController extends Controller
 {
@@ -49,9 +47,9 @@ class UsersController extends Controller
     {
         $args = array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
         if ($args['user']->isadmin)
-            return redirect()->route('adminhome'); 
+            return redirect()->route('adminhome');
         $args['page'] = 'home';
         return view('user.main',$args);
     }
@@ -60,7 +58,7 @@ class UsersController extends Controller
     {
         $args =array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+        $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
         $args['page'] = 'home';
         $args['typework'] = 1;
         $args['user_id'] = Auth::user()->getId();
@@ -71,7 +69,7 @@ class UsersController extends Controller
     {
         $args =array();
         $args['teacher'] = Teachers::getTeacher(Auth::user()->getId());
-        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first(); 
+        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first();
         $args['page'] = 'home';
         $args['typework'] = 2;
         $args['user_id'] =  Auth::user()->getId();
@@ -82,12 +80,12 @@ class UsersController extends Controller
     {
         $args =array();
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         $args['page'] = 'user';
-        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first();  
+        $args['user'] = User::where('user_id',  Auth::user()->getId())->get()->first();
         return view('user.changeuserdata',$args);
     }
 
@@ -96,31 +94,31 @@ class UsersController extends Controller
         $id =  Auth::user()->getId();
         $password = $request['password'];
         $username = $request['username'];
-        $email = $request['email'];     
+        $email = $request['email'];
 
         $Rules = array();
-        if ($password != null) 
-            $Rules['password'] = 'required|string|min:6|confirmed';    
-        if ($username != null) 
-            $Rules['username'] = 'required|string|max:255|unique:users'; 
+        if ($password != null)
+            $Rules['password'] = 'required|string|min:6|confirmed';
+        if ($username != null)
+            $Rules['username'] = 'required|string|max:255|unique:users';
         if ($email != null)
             $Rules['email'] = 'required|string|email|max:255|unique:users';
         if (count($Rules) > 0)
-         {   
+         {
            $Validator = Validator::make($request->all(), $Rules);
            if ($Validator->fails())
-            return redirect()->back()-> Errors($Validator->errors());
+            return redirect()->back()->withErrors($Validator->errors());
          }
         if (User::UpdateData($id,$username,$password,$email)) // перевірка чи були примінені зміни до даних
            $message = [
-            'text' => __('messages.successfully_changed'), 
+            'text' => __('messages.successfully_changed'),
             'has_errors' => 0,
             ];
          else
             $message = [
              'text' => __('messages.error_change'),
              'has_errors' => 1,
-        ];          
+        ];
         return redirect()->route('updateuserdata',$message);
     }
 
@@ -129,13 +127,13 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'teacher';
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $error,
                ];
         if (Auth::check())
         {
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
             $args['teacher'] = Teachers::where('user_id',  Auth::user()->getId())->get()->first();
         }
         $args['positions'] = Positions::getAll();
@@ -159,25 +157,25 @@ class UsersController extends Controller
         $department = $request['department'];
 
         $photo_file = $request['photofile'];
-        
+
         if (AddImage($photo_file, Auth::user()->getId()))
         {
             $photo_file = Files::where('user_id', Auth::user()->getId())
                     ->where('mime','image/jpeg')
                     ->orWhere('mime','image/png')->get()->first();
             $photo = route('getimage', $photo_file->filename);
-            
+
         }
         if (Teachers::UpdateData($id, $firstname, $middlename, $lastname, $department, $profession, $photo, $timedate, $room, $phone, $mobile, $profinterests, $disciplines, $position))
             $message = [
-            'text' => __('messages.successfully_changed'), 
+            'text' => __('messages.successfully_changed'),
             'has_errors' => 0,
             ];
         else
             $message = [
              'text' => __('messages.error_change'),
              'has_errors' => 1,
-        ];          
+        ];
         return redirect()->action('UsersController@changeTeacherData', $message);
     }
 
@@ -187,13 +185,13 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'links';
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         if (Auth::check())
         {
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
             $args['links'] = Links::where('user_id', Auth::user()->getId())->get()->first();
         }
         return view('user.changelinks',$args);
@@ -202,10 +200,10 @@ class UsersController extends Controller
     public function updateLinks(Request $request)
     {
         $id = Auth::user()->getId();
-        $Validator = UserLinksValidator([
+        $Validator = Links::UserLinksValidator([
             'anothersite',
             'intellect' ,
-            'timetable' 
+            'timetable'
             ], $request);
          if ($Validator->fails())
             return redirect()->back()->withErrors($Validator->errors());
@@ -214,14 +212,14 @@ class UsersController extends Controller
         $TimeTable = $request['timetable'];
          if (Links::UpdateData($id, $AnotherSite, $Intellect, $TimeTable)) // перевірка чи були примінені зміни до даних
            $message = [
-            'text' => __('messages.successfully_changed'), 
+            'text' => __('messages.successfully_changed'),
             'has_errors' => 0,
             ];
          else
             $message = [
              'text' => __('messages.error_change'),
              'has_errors' => 1,
-        ];        
+        ];
         return redirect()->action('UsersController@changeLinks',$message);
     }
 
@@ -230,12 +228,12 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'publications';
         if (Auth::check())
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0]; 
-        $args['publications'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 1)->paginate(5); // отримання публыкаций из бд по 5 елементов для каждой страници 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0];
+        $args['publications'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 1)->paginate(5); // отримання публыкаций из бд по 5 елементов для каждой страници
         if (isset($request['search_title']))
-            { 
+            {
                $args['publications'] = Works::search_work($request['search_title'], 1, Auth::user()->getId());
-               $args['search_query'] = ['search_title', $request['search_title']];   
+               $args['search_query'] = ['search_title', $request['search_title']];
             }
         return view('user.changepublications',$args);
     }
@@ -266,8 +264,8 @@ class UsersController extends Controller
         $args['page'] = 'publications';
         $args['work'] = Works::where('work_id', $id)->where('typework_id', 1)->get()->first();
          if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('user.changework',$args);
@@ -283,7 +281,7 @@ class UsersController extends Controller
         if (Works::UpdateData($id,$type,$date,$title,$link))
             $message = [
              'id' => $id,
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -291,7 +289,7 @@ class UsersController extends Controller
              'id' => $id,
              'message' => __('messages.error_change'),
              'errors' => 1,
-        ];        
+        ];
         return redirect()->action('UsersController@changePublication', $message);
     }
 
@@ -300,11 +298,11 @@ class UsersController extends Controller
         $args =array();
         $args['page'] = 'conference';
          if (Auth::check())
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0]; 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()[0];
         if (isset($request['search_title']))
-            { 
+            {
                $args['conferences'] = Works::search_work($request['search_title'], 2, Auth::user()->getId());
-               $args['search_query'] = ['search_title', $request['search_title']];   
+               $args['search_query'] = ['search_title', $request['search_title']];
                return view('user.changeconference',$args);
             }
         $args['conferences'] = Works::where('user_id', Auth::user()->getId())->where('typework_id', 2)->paginate(5); // отримання 5 елеметлов из бд для отной сторінки
@@ -313,7 +311,7 @@ class UsersController extends Controller
 
     public function addConference(Request $request)
     {
-     
+
         $type = $request['type'];
         $date = $request['datepublication'];
         $link = $request['link'];
@@ -339,8 +337,8 @@ class UsersController extends Controller
         $args['page'] = 'conference';
         $args['work'] = Works::where('work_id', $id)->where('typework_id', 2)->get()->first();
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('user.changework',$args);
@@ -356,7 +354,7 @@ class UsersController extends Controller
         if (Works::UpdateData($id,$type,$date,$title,$link))
             $message = [
              'id' => $id,
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -364,8 +362,8 @@ class UsersController extends Controller
              'id' => $id,
              'message' => __('messages.error_change'),
              'errors' => 1,
-        ];        
-        return redirect()->action('UsersController@changeoneConference', $message);  
+        ];
+        return redirect()->action('UsersController@changeoneConference', $message);
     }
 
     public function changeMasterDocs(Request $request)
@@ -375,7 +373,7 @@ class UsersController extends Controller
         if (Auth::check())
         {
             $args['works'] = MasterWorks::where('user_id', Auth::user()->getId())->paginate(5);// отримання 5 статей
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
         }
         if (isset($request['search_title']))
         {
@@ -393,7 +391,7 @@ class UsersController extends Controller
         $maintext = $request['maintext'];
         $id = Auth::user()->getId();
         MasterWorks::InsertData($name, $description,$maintext, $date, $id);
-        $work_id = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->masterwork_id; 
+        $work_id = MasterWorks::where('name',$name)->where('description',$description)->get()->first()->masterwork_id;
         $files = $request['filefield'];
         if ($files != null)
             UsersController::UploadFiles($files,$work_id);
@@ -417,16 +415,16 @@ class UsersController extends Controller
          if (Auth::check())
         {
             $args['work'] = MasterWorks::where('masterwork_id', $id)->get()->first();
-            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first(); 
+            $args['user'] = User::where('user_id', Auth::user()->getId())->get()->first();
         }
         if ($message != null)
-            $args['message'] = (object)[ 
-               'text' => $message, 
+            $args['message'] = (object)[
+               'text' => $message,
                'has_errors' => $errors,
                ];
         return view('user.changedocmaster',$args);
     }
-    
+
     public function updateMasterDoc(Request $request)
     {
         $id = $request['id_mw'];
@@ -437,7 +435,7 @@ class UsersController extends Controller
          if (MasterWorks::UpdateData($id, $name, $description,$maintext, $date))
             $message = [
              'id' => $id,
-             'message' => __('messages.successfully_changed'), 
+             'message' => __('messages.successfully_changed'),
              'errors' => 0,
             ];
          else
@@ -445,7 +443,7 @@ class UsersController extends Controller
              'id' => $id,
              'message' => __('messages.error_change'),
              'errors' => 1,
-        ];   
+        ];
         return redirect()->action('UsersController@changeoneMasterDoc', $message);
     }
 
@@ -453,7 +451,7 @@ class UsersController extends Controller
     public function deleteMasterFile(Request $request)
     {
         $id_file = $request['num'];
-        $id = $request['id_mw']; 
+        $id = $request['id_mw'];
         Files::where('file_id',$id_file)->delete();
         $args['files'] = MasterFiles::getFiles($id);
         return redirect()->route('changemasterdata',$id);
@@ -461,7 +459,7 @@ class UsersController extends Controller
 
     public function addMasterFile(Request $request)
     {
-        $id = $request['id_mw']; 
+        $id = $request['id_mw'];
         $files = $request['filefield'];
         UsersController::UploadFiles($files,$id);
         return redirect()->route('changemasterdata',$id);
@@ -471,7 +469,7 @@ class UsersController extends Controller
     {
     if ($files != null)
      foreach ($files as $file) {
-          
+
         $extension = $file->getClientOriginalExtension();
         Storage::disk('documents')->put($file->getFilename().'.'.$extension,  File::get($file));
         $entry = new Files();
@@ -488,5 +486,3 @@ class UsersController extends Controller
     }
 
 }
-
-

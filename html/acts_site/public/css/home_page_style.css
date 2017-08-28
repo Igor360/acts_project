@@ -29,7 +29,7 @@
   background-color: #3f4fe8;
 }
 
-.nav-toggle span:before, 
+.nav-toggle span:before,
 .nav-toggle span:after {
   position: absolute;
   content: "";
@@ -74,7 +74,7 @@
 @media screen and (min-width: 250px) and (max-width: 450px) {
   .site-logo{
     margin-bottom: 15px;
-  } 
+  }
   .header-text{
     visibility: hidden !important;
   }
@@ -247,7 +247,7 @@
 @media screen and (min-width: 451px) and (max-width: 991px) {
   .site-logo{
     margin-bottom: 15px;
-  } 
+  }
   .header-text{
     visibility: hidden !important;
   }
@@ -875,8 +875,8 @@
 
 .header-text{
   display: block;
-  position: absolute; 
-  top: -2px; 
+  position: absolute;
+  top: -2px;
   margin-right: 6% !important;
   color: green !important;
 }
@@ -1104,7 +1104,7 @@
 
 .lang__active{
 	border: solid 1px #e7e7e7;
-	border-radius: 10px; 
+	border-radius: 10px;
 
 }
 .search_btn:hover{
@@ -1131,7 +1131,7 @@
   margin-top: 100px;
   margin-bottom:100px;
   margin-right: 20%;
-  margin-left: 20%; 
+  margin-left: 20%;
   border: solid 5px #FFFFFF;
 }
 .slider__botoom{
@@ -1202,7 +1202,7 @@
   float: right;
 }
 .article_block {
-  border-bottom: solid 1px #063cc7;	
+  border-bottom: solid 1px #063cc7;
 }
 .footer{
   background: white;
@@ -1217,7 +1217,7 @@
 }
 .footer__menu__logo{
 	margin-bottom: -30px;
-} 
+}
 .footer__header h1{
 	font-size: 19pt;
 }
@@ -1277,7 +1277,7 @@
 .social-url{
   border: none;
   color: #3f4fe8;
-  cursor: pointer;  
+  cursor: pointer;
   font-weight: 600;
   transition: color 0.5s;
 }
@@ -1289,8 +1289,8 @@
 	font-size: 16px;
 }
 .links li:hover{
-	text-shadow: 3px 2px 1px #cccccc; 
-	background: 
+	text-shadow: 3px 2px 1px #cccccc;
+	background:
 }
 .links li a{
 	display: inline-block;
@@ -1467,17 +1467,21 @@
       text-shadow: 0px 0px 5px #063cc7;
 }
 
-.pagination>.active>a, 
+.pagination>.active>a,
 .pagination>.active>a:focus,
-.pagination>.active>a:hover, 
-.pagination>.active>span, 
-.pagination>.active>span:focus, 
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
 .pagination>.active>span:hover{
   background-color: #063cc7;
   border-color: #063cc7;
 }
 
-.pagination>li>a, 
+.pagination>li>a,
 .pagination>li>span{
   color: #063cc7;
-} 
+}
+.btn .fa{
+  margin-top: 0.3em;
+
+}

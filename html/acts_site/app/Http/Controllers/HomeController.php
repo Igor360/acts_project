@@ -20,27 +20,27 @@ class HomeController extends Controller
     //
 	public function changelocation ($locale)
 	{
-  		if (in_array($locale, Config::get('app.locales'))) 
-  		{   													# Проверяем, что у пользователя выбран доступный язык 
+  		if (in_array($locale, Config::get('app.locales')))
+  		{   													# Проверяем, что у пользователя выбран доступный язык
     		Session::put('locale', $locale);                    # И устанавливаем его в сессии под именем locale
    		}
   		return redirect()->back();
-	}	
+	}
 
 
-    public function index () 
+    public function index ()
     {
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('home'); 
-		$args['NewsMain'] = Articles::getSomeNews(3); 
+		$args['Articles'] = Articles::getpageArticles('home');
+		$args['NewsMain'] = Articles::getSomeNews(3);
 		$args['page'] = "home";
     	return view('pages.home',$args);
 	}
 
-	public function department_page () 
+	public function department_page ()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('about_page'); 
+		$args['Articles'] = Articles::getpageArticles('about_page');
 		$args['page'] = "about";
     	return view('pages.page',$args);
 	}
@@ -48,7 +48,7 @@ class HomeController extends Controller
 	public function history_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('history_page'); 
+		$args['Articles'] = Articles::getpageArticles('history_page');
 		$args['page'] = "about";
     	return view('pages.page',$args);
 	}
@@ -56,7 +56,7 @@ class HomeController extends Controller
 	public function studLife_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('studLife'); 
+		$args['Articles'] = Articles::getpageArticles('studLife');
 		$args['page'] = "about";
     	return view('pages.page',$args);
 	}
@@ -64,7 +64,7 @@ class HomeController extends Controller
 	public function diplom_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('diplomWorks'); 
+		$args['Articles'] = Articles::getpageArticles('diplomWorks');
 		$args['page'] = "about";
     	return view('pages.page',$args);
 	}
@@ -72,7 +72,7 @@ class HomeController extends Controller
 	public function employment_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('employment'); 
+		$args['Articles'] = Articles::getpageArticles('employment');
 		$args['page'] = "about";
    		return view('pages.page',$args);
 	}
@@ -80,7 +80,7 @@ class HomeController extends Controller
 	public function practice_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('practice'); 
+		$args['Articles'] = Articles::getpageArticles('practice');
 		$args['page'] = "about";
     	return view('pages.page',$args);
 	}
@@ -89,7 +89,7 @@ class HomeController extends Controller
 	public function incoming_1kurs_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_1kurs'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_1kurs');
 		$args['page'] = "incoming";
     	return view('pages.page',$args);
 	}
@@ -97,23 +97,23 @@ class HomeController extends Controller
 	public function incoming_5kurs_page ()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_5kurs'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_5kurs');
 		$args['page'] = "incoming";
     	return view('pages.page',$args);
 	}
-	
+
 	public function incoming_offDoc_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_offDoc'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_offDoc');
 	 	$args['page'] = "incoming";
 	    return view('pages.page',$args);
 	}
 
-	public function incoming_learnToActs_page() 
+	public function incoming_learnToActs_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_learnToActs'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_learnToActs');
 		$args['page'] = "incoming";
     	return view('pages.page',$args);
 	}
@@ -121,7 +121,7 @@ class HomeController extends Controller
 	public function incoming_actualInfo_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_actualInfo'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_actualInfo');
 		$args['page'] = "incoming";
     	return view('pages.page',$args);
 	}
@@ -129,7 +129,7 @@ class HomeController extends Controller
 	public function incoming_contacts_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('incoming_contacts'); 
+		$args['Articles'] = Articles::getpageArticles('incoming_contacts');
 		$args['page'] = "incoming";
 	    return view('pages.page',$args);
 	}
@@ -137,15 +137,15 @@ class HomeController extends Controller
 	public function forStudents_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('forStudents'); 
+		$args['Articles'] = Articles::getpageArticles('forStudents');
 		$args['page'] = "students";
     	return view('pages.page',$args);
 	}
 
-	public function aspirantura_page() 
+	public function aspirantura_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('aspirantura'); 
+		$args['Articles'] = Articles::getpageArticles('aspirantura');
 		$args['page'] = "aspirantura";
     	return view('pages.page',$args);
 	}
@@ -153,7 +153,7 @@ class HomeController extends Controller
 	public function development_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('development'); 
+		$args['Articles'] = Articles::getpageArticles('development');
 		$args['page'] = "development";
     	return view('pages.page',$args);
 	}
@@ -161,7 +161,7 @@ class HomeController extends Controller
 	public function science_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('science'); 
+		$args['Articles'] = Articles::getpageArticles('science');
 		$args['page'] = "science";
     	return view('pages.page',$args);
 	}
@@ -169,7 +169,7 @@ class HomeController extends Controller
 	public function sport_page()
 	{
 		$args = array();
-		$args['Articles'] = Articles::getpageArticles('sport'); 
+		$args['Articles'] = Articles::getpageArticles('sport');
 		$args['page'] = "sport";
 	    return view('pages.page',$args);
 	}
@@ -178,7 +178,7 @@ class HomeController extends Controller
 	public function news_archive_page()
 	{
 		$args = array();
-		$args['NewsMain'] = Articles::getNews(); 
+		$args['NewsMain'] = Articles::getNews();
 		$args['page'] = 'news_archive';
    		return view('pages.page',$args);
 	}
@@ -195,7 +195,7 @@ class HomeController extends Controller
 	public function teachstaffmore_page($id = null)
 	{
 		$args = array();
-		$args['page'] = 'about';
+		$args['page'] = 'about_teacher';
 		$args['teacher'] = Teachers::getTeacherData($id);
 		$teacher = Teachers::where('teacher_id', $id)->get()->first();
     		if ($teacher != null)
@@ -236,7 +236,7 @@ class HomeController extends Controller
 	{
 		$args = array();
 		if ($article_number != null)
-			$args['Articles'] = Articles::where('article_id', $article_number)->get(); 
+			$args['Articles'] = Articles::where('article_id', $article_number)->get();
 		$args['page'] = "more";
     	return view('pages.page',$args);
 	}
@@ -244,10 +244,10 @@ class HomeController extends Controller
 	public function search_article_page(Request $request)
 	{
 		$args = array();
-		$args['Articles'] = Articles::searchArticle($request['search_data']); 
+		$args['Articles'] = Articles::searchArticle($request['search_data']);
 		$args['search_query'] = [ 'search_data' => $request['search_data'] ];
 		$args['page'] = "search";
     	return view('pages.page',$args);
 
 	}
-}	
+}

@@ -5,7 +5,7 @@
     <div class="row">
     <div class="col-md-2 sidebar  col-md-offset-1">
                 <h3 class="page-header" align="center">@lang('admin.sidebar_title')</h3>
-     @include('admin.sidebar')  
+     @include('admin.sidebar')
   </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="col-md-12 panel panel-default">
@@ -26,7 +26,7 @@
                 {{ csrf_field() }}
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>@lang('auth.user_login')</span>	
+   		<span>@lang('auth.user_login')</span>
    		</div>
    		<div class = "col-md-4">
    			<input type = "text" name = "username" placeholder="{{ $user->username }}">
@@ -41,7 +41,7 @@
 
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>@lang('auth.user_password')</span>	
+   		<span>@lang('auth.user_password')</span>
    		</div>
    		<div class = "col-md-8">
    			<input type = "password" name = "password">
@@ -50,7 +50,7 @@
 
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>@lang('auth.repeat_password')</span>	
+   		<span>@lang('auth.repeat_password')</span>
    		</div>
    		<div class = "col-md-8">
    			<input type = "password" name = "password__confirmation" >
@@ -65,7 +65,7 @@
 
    	<div class = "row">
    		<div class = "col-md-4">
-   		<span>@lang('auth,user_email')</span>	
+   		<span>@lang('auth.user_email')</span>
    		</div>
    		<div class = "col-md-8">
    			<input type = "email" name = "email" placeholder="{{ $user->email }}">
@@ -80,7 +80,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('auth.is_admin.question')</span>   
+         <span>@lang('auth.is_admin.question')</span>
          </div>
          <div class = "col-md-8">
             <select name="isadmin">
@@ -98,7 +98,7 @@
 
          <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('auth.has_etudes.question')</span>   
+         <span>@lang('auth.has_etudes.question')</span>
          </div>
          <div class = "col-md-8">
             <select name="hasmaster">
@@ -113,13 +113,13 @@
        <strong>{{ $errors->first('hasmaster') }}</strong>
       </span>
      @endif
- 
+
  <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color: black;">@lang('admin.page_add_other_data')</h3></div>
    <div class = "row">
     <div class="col-md-8">
       <div class = "row">
         <div class = "col-md-6">
-        <span>@lang('teachstaff.first_name')</span>   
+        <span>@lang('teachstaff.first_name')</span>
         </div>
         <div class = "col-md-6">
             <input type = "text" name = "firstname" placeholder="{{ $teacher->FirstName }}">
@@ -134,7 +134,7 @@
 
     <div class = "row">
         <div class = "col-md-6">
-        <span>@lang('teachstaff.middle_name')</span>    
+        <span>@lang('teachstaff.middle_name')</span>
         </div>
         <div class = "col-md-6">
             <input type = "text" name = "middlename" placeholder="{{ $teacher->MiddleName }}">
@@ -149,7 +149,7 @@
 
     <div class = "row">
         <div class = "col-md-6">
-        <span>@lang('teachstaff.last_name')</span>   
+        <span>@lang('teachstaff.last_name')</span>
         </div>
         <div class = "col-md-6">
             <input type = "text" name = "lastname" placeholder="{{ $teacher->LastName }}">
@@ -181,7 +181,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.position')</span>   
+         <span>@lang('teachstaff.position')</span>
          </div>
          <div class = "col-md-8">
             <select name="position">
@@ -206,7 +206,7 @@
 
     <div class = "row">
         <div class = "col-md-4">
-        <span>@lang('teachstaff.profession')</span>   
+        <span>@lang('teachstaff.profession')</span>
         </div>
         <div class = "col-md-8">
             <input type = "text" name = "profession" placeholder="{{ $teacher->Profession }}">
@@ -221,13 +221,13 @@
 
       <div class = "row">
         <div class = "col-md-4">
-        <span>@lang('teachstaff.faculty')</span>   
+        <span>@lang('teachstaff.faculty')</span>
         </div>
         <div class = "col-md-8">
             <input type = "text" name = "department" placeholder="{{ $teacher->Department }}">
         </div>
     </div>
-    
+
       @if ($errors->has('department'))
       <span class="help-block">
        <strong>{{ $errors->first('department') }}</strong>
@@ -238,7 +238,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.datetime')</span>   
+         <span>@lang('teachstaff.datetime')</span>
          </div>
          <div class = "col-md-8">
             <input type = "text" name = "datetime" placeholder="{{ $teacher->TimeDay }}">
@@ -253,7 +253,7 @@
 
      <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.room')</span>   
+         <span>@lang('teachstaff.room')</span>
          </div>
          <div class = "col-md-8">
             <input type = "text" name = "room" placeholder="{{ $teacher->Room }}">
@@ -268,7 +268,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.phone')</span>   
+         <span>@lang('teachstaff.phone')</span>
          </div>
          <div class = "col-md-8">
             <input type = "text" name = "phone" placeholder="{{ $teacher->Phone }}">
@@ -283,7 +283,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.mobile')</span>   
+         <span>@lang('teachstaff.mobile')</span>
          </div>
          <div class = "col-md-8">
             <input type = "text" name = "mobile" placeholder="{{ $teacher->Mobile }}">
@@ -300,7 +300,7 @@
 
       <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.profinterest')</span>   
+         <span>@lang('teachstaff.profinterest')</span>
          </div>
          <div class = "col-md-8">
             <textarea name = "profint" id = "profint">{{ $teacher->ProfInterest }}</textarea>
@@ -312,10 +312,10 @@
        <strong>{{ $errors->first('profint') }}</strong>
       </span>
      @endif
-          
-      <div class = "row">         
-         <div class = "col-md-4">         
-         <span>@lang('teachstaff.disciplines')</span>   
+
+      <div class = "row">
+         <div class = "col-md-4">
+         <span>@lang('teachstaff.disciplines')</span>
          </div>
          <div class = "col-md-8">
             <textarea name = "disciplines" id = "disciplines">{{ $teacher->Discipline }}</textarea>
@@ -330,7 +330,7 @@
 
         <div class = "row">
          <div class = "col-md-4">
-         <span>@lang('teachstaff.is_teacher.question')</span>   
+         <span>@lang('teachstaff.is_teacher.question')</span>
          </div>
          <div class = "col-md-8">
             <select name="isteacher">
@@ -349,14 +349,14 @@
       <div class="panel-heading"><h3 class="page-header" style="margin-top: 10px !important; color:black;">@lang('admin.page_add_links')</h3></div>
     <div class = "row">
         <div class = "col-md-4">
-        <span>@lang('teachstaff.website')</span>  
+        <span>@lang('teachstaff.website')</span>
         </div>
         <div class = "col-md-4">
             <input type = "text" name = "anothersite" placeholder="{{ $links->AnotherSite }}">
         </div>
     </div>
 
-    @if ($errors->has('anotersite'))
+    @if ($errors->has('anothersite'))
       <span class="help-block">
        <strong>{{ $errors->first('anothersite') }}</strong>
       </span>
@@ -364,7 +364,7 @@
 
     <div class = "row">
         <div class = "col-md-4">
-        <span>@lang('teachstaff.intellect')</span> 
+        <span>@lang('teachstaff.intellect')</span>
         </div>
         <div class = "col-md-8">
             <input type = "text" name = "intellect" placeholder="{{ $links->Intellect }}">
@@ -379,7 +379,7 @@
 
     <div class = "row">
         <div class = "col-md-4">
-        <span>@lang('teachstaff.timetable')</span>   
+        <span>@lang('teachstaff.timetable')</span>
         </div>
         <div class = "col-md-8">
             <input type = "text" name = "timetable" placeholder="{{ $links->TimeTable }}">
@@ -421,30 +421,30 @@
  <script src="{{ asset ('js/ckeditor/ckeditor.js') }}"  type="text/javascript" charset="utf-8" ></script>
  <script>
       CKEDITOR.replace("profint",{
-       language: '<?php 
+       language: '<?php
   switch (\App::getLocale()) {
     case 'en':
      echo 'en';
       break;
-    
+
     default:
      echo 'uk';
       break;
-    } 
+    }
     ?>',
-       uiColor: '#f0f0f0', 
+       uiColor: '#f0f0f0',
      });
        CKEDITOR.replace("disciplines",{
-       language: '<?php 
+       language: '<?php
   switch (\App::getLocale()) {
     case 'en':
      echo 'en';
       break;
-    
+
     default:
      echo 'uk';
       break;
-    } 
+    }
     ?>',
        uiColor: '#f0f0f0',
      });

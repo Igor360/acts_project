@@ -1,11 +1,8 @@
-<?php  
-require_once("header_title.php");
-?>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ua">
 <head>
   <meta charset="UTF-8">
-  <?php  echo GetTitle($page);?>
+  <?php  echo \App\Pages::GetTitle($page);?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="author" content="Dmitry Korzunov">
   <meta name="author" content="Igor Davidenko">
@@ -16,8 +13,8 @@ require_once("header_title.php");
   <link rel="stylesheet" media="screen" href="{{ asset ('masterslider/style/masterslider.css') }}"  type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/normalise.css') }}" type="text/css">
   <link rel="stylesheet" media="all" href="{{ asset ('css/home_page_style.css') }}" type="text/css" >
-  @if ($page == "teachstaff" or $page == 'otherpersonal') 
-  <link rel="stylesheet" media="all" href="{{ asset ('css/teacher.css') }}"> 
+  @if ($page == "teachstaff" or $page == 'otherpersonal' or $page == 'about_teacher')
+  <link rel="stylesheet" media="all" href="{{ asset ('css/teacher.css') }}">
   @endif
   <link rel="shortcut icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
   <link rel="icon" href="{{ asset ('favicon.ico') }}" type="image/x-icon">
@@ -72,7 +69,7 @@ require_once("header_title.php");
     <ul class="menu">
       <li class="menu-item-has-children  @if ($page == "home" or $page == "about" or $page == 'teachstaff') current-menu-item @endif">
       <a class="menu_name">@lang('header.about')</a>
-        <ul class="sub-menu"> 
+        <ul class="sub-menu">
          <li><a href="/about/department/">@lang('header.aboutdepartment')</a></li>
          <li><a href="/about/history/">@lang('header.historydepartment')</a></li>
          <li><a href="/teachstaff/">@lang('header.teachstaff')</a></li>
@@ -80,7 +77,7 @@ require_once("header_title.php");
          <li><a href="/about/studlife/">@lang('header.studLife')</a></li>
          <li><a href="/about/diplom/">@lang('header.diplomworks')</a></li>
          <li><a href="/about/work/">@lang('header.work')</a></li>
-         <li><a href="/about/practice/">@lang('header.practice')</a></li>              
+         <li><a href="/about/practice/">@lang('header.practice')</a></li>
        </ul>
      </li>
      <li class="menu-item-has-children @if ($page == "incoming")  current-menu-item @endif">
@@ -111,7 +108,5 @@ require_once("header_title.php");
     </li>
   </ul><!-- .menu -->
 </nav><!-- .main-navigation -->
-</div><!-- .container --> 
+</div><!-- .container -->
 </header>
-
-    

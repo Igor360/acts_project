@@ -16,7 +16,7 @@ return [
     'failed' => 'Логін чи пароль не співпадають.',
     'throttle' => 'Забагато спроб входу в систему. Будь ласка, повторіть спробу через :seconds секунд.',
 
-    // login page 
+    // login page
 
     'login' => 'Вхід',
     'user_mail' => 'E-Mail користувача',
@@ -25,7 +25,7 @@ return [
     'forgot_password' => 'Забули Пароль?',
     'login_btn' => 'Увійти',
 
-    // reset password page 
+    // reset password page
 
     'resetpassword' => 'Скидання пароля',
     'send_mail_btn' => 'Відправити повідомлення',

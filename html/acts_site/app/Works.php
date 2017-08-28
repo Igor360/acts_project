@@ -85,14 +85,14 @@ class Works extends Model
             return False;
         }
         return True;
-	} 
+	}
 
 
 
-    // 
+    //
 	public static function getYearWorks($typework_id, $user_id)
 	{
-		$query = "SELECT DISTINCT year(w.datePublish) AS year FROM works AS w 
+		$query = "SELECT DISTINCT year(w.datePublish) AS year FROM works AS w
 			WHERE w.typework_id = ${typework_id} AND w.user_id = ${user_id} ORDER BY(year);";
 		 try {
          $result = DB::select($query);
@@ -115,7 +115,7 @@ class Works extends Model
             return null;
         }
 		return $result;
-	} 
+	}
 
 	public static function getPeriodWorks($year_start, $year_end,$typework_id, $user_id, $type)
 	{
@@ -160,4 +160,81 @@ class Works extends Model
         }
 		return $result;
 	}
+
+
+  // метод котрий сотртирует дание
+  public static function GetWorks($typework_id, $user_id)
+  {
+  $years = Works::getYearWorks($typework_id, $user_id); // года
+  $types = Works::getTypesWorks($typework_id, $user_id); // типи робіт
+  $lenth = count($years); // розмір масиву з роками
+  $ListWorks = array();
+  if ($years != null) // перевірка чи є роки
+   if ($lenth % 2 == 0) // сотрування по рокам
+  	{
+      // в  даному випадку  відбувається сортування по два бо величина масиву років є парне число
+  		foreach ($types as $type)
+  			for ($i=0; $i < $lenth-1; $i+= 2) {
+  				$Works = array();
+  				$Works['Type'] = $type->type;
+  				$Works['StartYear'] = $years[$i]->year;
+  				$Works['EndYear'] = $years[$i+1]->year;
+  				$Works['Works'] = Works::getPeriodWorks($years[$i]->year,$years[$i+1]->year,$typework_id, $user_id, $type->type);
+  				array_push($ListWorks, $Works);
+  		}
+  	}
+  else
+  {
+  		foreach ($types as $type)
+  			for ($i=0; $i < $lenth-2; $i+= 2) {
+  				$Works = array();
+  				$Works['Type'] = $type->type;
+  				$Works['StartYear'] = $years[$i]->year;
+  				$Works['EndYear'] = $years[$i+1]->year;
+  				$work = Works::getPeriodWorks($years[$i]->year,$years[$i+1]->year,$typework_id, $user_id, $type->type);
+  				$Works['Works'] = $work;
+  				if ($work != null)
+  					array_push($ListWorks, $Works);
+  		}
+  		foreach ($types as $type)
+  		{
+  			$lastWorks = Works::getOneYearWorks($years[$lenth-1]->year,$typework_id, $user_id, $type->type);
+  			$Works = array();
+  			$Works['Type'] = $type->type;
+  			$Works['StartYear'] = $years[$lenth-1]->year;
+  			$Works['EndYear'] = 0;
+  			$Works['Works'] = $lastWorks;
+  			if ($lastWorks != null)
+  				array_push($ListWorks, $Works);
+  		}
+  }
+
+
+  return $ListWorks;
+  }
+
+  // метод для виводу робіт
+  public static function ShowWork($typework_id, $user_id)
+  {
+
+  	$SortedWorks = Works::GetWorks($typework_id,$user_id);
+  	echo "<div class=\"row\">";
+      if (count($SortedWorks) > 0)
+      foreach ($SortedWorks as $Work) {
+      echo "<h4 class=\"text-uppercase text-center\">{$Work['Type']}</h4>";
+      echo "<h5 class=\"text-center\">{$Work['StartYear']} ";
+      if ($Work['EndYear'] != 0)
+      echo ' - '.$Work['EndYear'];
+      echo "</h5>";
+      echo "<table class=\"table table-striped\"><tbody>";
+      foreach ($Work['Works'] as $text)
+      	echo "  <tr><td><a href = \"{$text->link}\">{$text->title}</a></td></tr>";
+      echo "</tbody></table>";
+  }
+  else
+  	echo "<span class=\" c__block-title col-xs-12\" style=\"text-align: left; font-size:16pt;\">".__('teachstaff.message_no_data')."</span>";
+
+
+  echo "</div>";
+  }
 }

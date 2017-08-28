@@ -78,7 +78,7 @@ class MasterWorks extends Model
             return False;
         }
         return True;
-	} 
+	}
 
 	public static function search_data($search_query)
 	{
