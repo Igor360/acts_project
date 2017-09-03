@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
 
@@ -11,7 +11,7 @@ return [
 
 
 
-	//title page 
+	//title page
 	'page_main' => 'Головна',
 	'page_add_main_data' => 'Основні дані',
 	'page_add_other_data' => 'Додаткові дані',
@@ -20,13 +20,13 @@ return [
 	'page_add_article_main' => 'Додавання статті',
 	'page_master_work' => 'Додаткові данні',
 	'page_chang_article' => 'Редагування статті',
-	
 
 
-	// change article  page 
+
+	// change article  page
 
 	'message_article' => '*Якщо ви хочете бачити кнопку "Детальніше" то поставте галочку навпроти пункту "Додатковий текст" <br>
-		Під додатковим текстом розуміється пункт "Текст"',	
+		Під додатковим текстом розуміється пункт "Текст"',
 
 	'article_files_table' => [
 							'title' => 'Файли статті',
@@ -41,11 +41,11 @@ return [
 	'add_btn' => 'Додати',
 	'search_btn' => 'Знайти',
 
-	// admin page users 
+	// admin page users
 
 	'users_table' => [
-							'title' => 'Користувачі', 
-							'email' => 'Електтронна адреса',
+							'title' => 'Користувачі',
+							'email' => 'Електронна адреса',
 							'username' => 'Логін',
 							'changedate' => 'Дата внесення змін',
 	],
@@ -53,14 +53,14 @@ return [
 	'article_table' => [
 							'title' => 'Статті',
 							'article_title' => 'Заголовок',
-							'page' => 'Сторінка', 
+							'page' => 'Сторінка',
 							'type_article' => 'Тип статті',
 	],
 
 	// search article
 
 	'enter_search_text' => 'Введіть заголовок статті',
-	'select_page' => 'Виберіть сторінку', 
+	'select_page' => 'Виберіть сторінку',
 	'select_type_page' => 'Виберіть тип статті',
 
 
